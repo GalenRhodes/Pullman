@@ -10,12 +10,14 @@
 		1117D06C9324C77CB1EF9DE5 /* ParentNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1117D459DCBE3BF0FCBD1410 /* ParentNode.swift */; };
 		1117D2AADB5F59FB8B5A58BB /* Pullman.h in Headers */ = {isa = PBXBuildFile; fileRef = 1117D8EF86DC32144A533E89 /* Pullman.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		1117D56EE55FE4A7CE88F68E /* Node.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1117D2ACB84E10468E61E995 /* Node.swift */; };
+		1117D5C848CD71974ADD5BB8 /* NSName.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1117DEB3121890C4EA36BFBA /* NSName.swift */; };
 		1117D5E526E1061EC33C1B7E /* Document.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1117D4CFC5C9D5A75CA99C52 /* Document.swift */; };
 		1117D72950B6E9188291EF96 /* Element.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1117D13326E0B733D3BC7004 /* Element.swift */; };
 		1117D916362B6AE808C84183 /* DOMError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1117DBB13260177309456DAF /* DOMError.swift */; };
 		1117D999C7FE5B1E88878E89 /* Closures.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1117DDB85E54EC3294F4789C /* Closures.swift */; };
 		1117DAEC58659F62E2896DEF /* Attribute.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1117D73A94F7592734D21F00 /* Attribute.swift */; };
 		1117DC9842C4E8F5B4F5176B /* NamedNodeMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1117D35464B900070CF52F7A /* NamedNodeMap.swift */; };
+		1117DCD83FBAD081EEAAE502 /* RegexPatterns.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1117D18ED0F024AAB5455379 /* RegexPatterns.swift */; };
 		1117DD1C5F845C0EB8A8AF20 /* TextNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1117D148E4309379ED740DD9 /* TextNode.swift */; };
 		830F5E65274FC1D600A2F726 /* Pullman.docc in Sources */ = {isa = PBXBuildFile; fileRef = 830F5E64274FC1D600A2F726 /* Pullman.docc */; };
 		830F5E6B274FC1D600A2F726 /* Pullman.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 830F5E60274FC1D600A2F726 /* Pullman.framework */; };
@@ -37,6 +39,7 @@
 /* Begin PBXFileReference section */
 		1117D13326E0B733D3BC7004 /* Element.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Element.swift; sourceTree = "<group>"; };
 		1117D148E4309379ED740DD9 /* TextNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextNode.swift; sourceTree = "<group>"; };
+		1117D18ED0F024AAB5455379 /* RegexPatterns.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegexPatterns.swift; sourceTree = "<group>"; };
 		1117D2ACB84E10468E61E995 /* Node.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Node.swift; sourceTree = "<group>"; };
 		1117D35464B900070CF52F7A /* NamedNodeMap.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NamedNodeMap.swift; sourceTree = "<group>"; };
 		1117D459DCBE3BF0FCBD1410 /* ParentNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ParentNode.swift; sourceTree = "<group>"; };
@@ -45,6 +48,7 @@
 		1117D8EF86DC32144A533E89 /* Pullman.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Pullman.h; sourceTree = "<group>"; };
 		1117DBB13260177309456DAF /* DOMError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DOMError.swift; sourceTree = "<group>"; };
 		1117DDB85E54EC3294F4789C /* Closures.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Closures.swift; sourceTree = "<group>"; };
+		1117DEB3121890C4EA36BFBA /* NSName.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSName.swift; sourceTree = "<group>"; };
 		830F5E60274FC1D600A2F726 /* Pullman.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pullman.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		830F5E64274FC1D600A2F726 /* Pullman.docc */ = {isa = PBXFileReference; lastKnownFileType = folder.documentationcatalog; path = Pullman.docc; sourceTree = "<group>"; };
 		830F5E6A274FC1D600A2F726 /* PullmanTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PullmanTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -117,6 +121,8 @@
 				1117DBB13260177309456DAF /* DOMError.swift */,
 				1117D13326E0B733D3BC7004 /* Element.swift */,
 				1117D148E4309379ED740DD9 /* TextNode.swift */,
+				1117D18ED0F024AAB5455379 /* RegexPatterns.swift */,
+				1117DEB3121890C4EA36BFBA /* NSName.swift */,
 			);
 			path = Pullman;
 			sourceTree = "<group>";
@@ -283,6 +289,8 @@
 				1117D916362B6AE808C84183 /* DOMError.swift in Sources */,
 				1117D72950B6E9188291EF96 /* Element.swift in Sources */,
 				1117DD1C5F845C0EB8A8AF20 /* TextNode.swift in Sources */,
+				1117DCD83FBAD081EEAAE502 /* RegexPatterns.swift in Sources */,
+				1117D5C848CD71974ADD5BB8 /* NSName.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

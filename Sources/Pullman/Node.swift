@@ -86,6 +86,10 @@ public class Node {
         throw DOMError.IllegalOperation(description: "Node cannot be renamed.")
     }
 
+    func set(prefix: String?) throws {
+        throw DOMError.IllegalOperation(description: "Node prefix cannot be changed.")
+    }
+
     public func forEachInHierarchy<T>(do body: (Node) throws -> T?) rethrows -> T? {
         if let r: T = try body(self) { return r }
         if let p = parentNode { return try p.forEachInHierarchy(do: body) }
