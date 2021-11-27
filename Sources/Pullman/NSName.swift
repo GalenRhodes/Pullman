@@ -28,7 +28,7 @@ public struct NSName: Hashable {
     public private(set) var localName:    String
     public private(set) var namespaceURI: String?
 
-    public var name: String { (((namespaceURI == nil) || (prefix == nil)) ? localName : "\(prefix!):\(localName)") }
+    public var qualifiedName: String { (((namespaceURI == nil) || (prefix == nil)) ? localName : "\(prefix!):\(localName)") }
 
     public init(prefix: String?, localName: String, namespaceURI: String?) throws {
         if let uri = namespaceURI?.trimmed, uri.isNotEmpty {
@@ -56,29 +56,35 @@ public struct NSName: Hashable {
         }
     }
 
-    public mutating func rename(name: String) throws {
-        try rename(prefix: nil, localName: name, namespaceURI: nil)
+    public mutating func set(prefix: String?) throws {
+        try set(prefix: prefix, localName: localName, namespaceURI: namespaceURI)
     }
 
-    public mutating func rename(prefix: String?) throws {
-        try rename(prefix: prefix, localName: localName, namespaceURI: namespaceURI)
-    }
-
-    public mutating func rename(qualifiedName: String, namespaceURI: String?) throws {
+    public mutating func set(qualifiedName: String, namespaceURI: String?) throws {
         if let i = qualifiedName.firstIndex(of: ":") {
-            try rename(prefix: String(qualifiedName[..<i]), localName: String(qualifiedName[i...]), namespaceURI: namespaceURI)
+            try set(prefix: String(qualifiedName[..<i]), localName: String(qualifiedName[i...]), namespaceURI: namespaceURI)
         }
         else {
-            try rename(prefix: nil, localName: qualifiedName, namespaceURI: namespaceURI)
+            try set(prefix: nil, localName: qualifiedName, namespaceURI: namespaceURI)
         }
     }
 
-    public mutating func rename(prefix: String?, localName: String, namespaceURI: String?) throws {
+    public mutating func set(prefix: String?, localName: String, namespaceURI: String?) throws {
         let p = self.prefix
         let l = self.localName
         let u = self.namespaceURI
 
-        
+        if let uri = namespaceURI?.trimmed, uri.isNotEmpty {
+            self.namespaceURI = uri
+            self.prefix = ((prefix ?? "").isEmpty ? nil : prefix)
+            self.localName = localName
+        }
+        else if let p = prefix {
+            self.localName = "\(p):\(localName)"
+        }
+        else {
+            self.localName = localName
+        }
 
         try _validate(p, l, u)
     }
@@ -86,10 +92,11 @@ public struct NSName: Hashable {
     mutating func _validate(_ p: String?, _ l: String, _ u: String?) throws {
         do {
             if let uri = namespaceURI {
-                guard validate(name: localName) else { throw DOMError.InvalidNameError(description: "Invalid character in name.") }
+                guard validate(uri: uri) else { throw DOMError.InvalidNameError(description: "Invalid character in the namespace URI: \"\(uri)\"") }
+                guard validate(name: localName) else { throw DOMError.InvalidNameError(description: "Invalid character in the local name: \"\(localName)\"") }
 
                 if let pfx = prefix {
-                    guard validate(prefix: pfx) else { throw DOMError.InvalidNameError(description: "Invalid character in prefix.") }
+                    guard validate(prefix: pfx) else { throw DOMError.InvalidNameError(description: "Invalid character in the prefix: \"\(pfx)\"") }
 
                     if pfx == _pfx1 && uri != _uri1 { throw domError1(pfx: pfx, uri: uri) }
                     if pfx == _pfx2 && uri != _uri2 { throw domError1(pfx: pfx, uri: uri) }
@@ -101,9 +108,11 @@ public struct NSName: Hashable {
                     if uri == _uri2 && localName != _pfx2 { throw domError2(qName: localName, uri: uri) }
                 }
             }
-            else {
-                guard prefix == nil else { throw DOMError.NamespaceError(description: "Missing namespace URI.") }
-                guard validate(name: localName) else { throw DOMError.InvalidNameError(description: "Invalid character in name.") }
+            else if let pfx = prefix {
+                throw DOMError.NamespaceError(description: "Missing namespace URI. Prefix: \"\(pfx)\"")
+            }
+            else if !validate(name: localName) {
+                throw DOMError.InvalidNameError(description: "Invalid character in qualified name: \"\(localName)\"")
             }
         }
         catch {

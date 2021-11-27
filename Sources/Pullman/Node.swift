@@ -78,11 +78,11 @@ public class Node {
         return try removeNode(xNode)
     }
 
-    func renameNode(nodeName: String) throws {
+    func set(nodeName: String) throws {
         throw DOMError.IllegalOperation(description: "Node cannot be renamed.")
     }
 
-    func renameNode(prefix: String?, localName: String, namespaceURL: String) throws {
+    func set(prefix: String?, localName: String, namespaceURL: String) throws {
         throw DOMError.IllegalOperation(description: "Node cannot be renamed.")
     }
 

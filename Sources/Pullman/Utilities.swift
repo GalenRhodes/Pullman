@@ -1,9 +1,9 @@
 /*===============================================================================================================================================================================*
  *     PROJECT: Pullman
- *    FILENAME: Document.swift
+ *    FILENAME: Utilities.swift
  *         IDE: AppCode
  *      AUTHOR: Galen Rhodes
- *        DATE: 11/26/21
+ *        DATE: 11/27/21
  *
  * Copyright © 2021. All rights reserved.
  *
@@ -19,22 +19,13 @@ import Foundation
 import CoreFoundation
 import Rubicon
 
-public class Document: ParentNode {
-    //@f:0
-    public  override var nodeType:       NodeType { .Document }
-    public  override var nodeName:       String   { "#document" }
-    public  override var ownerDocument:  Document { self }
-    //@f:1
+@inlinable public func testString(pattern: String, string: String) -> Bool {
+    let rx = getRX(pattern: pattern)
+    return (rx.firstMatch(in: string) != nil)
+}
 
-    public override init() {
-        super.init()
-    }
-
-    public func renameNode(node: Node, nodeName: String) throws {
-        try node.set(nodeName: nodeName)
-    }
-
-    public func renameNode(node: Node, prefix: String?, localName: String, namespaceURI: String) throws {
-        try node.set(prefix: prefix, localName: localName, namespaceURL: namespaceURI)
-    }
+@inlinable public func getRX(pattern: String) -> RegularExpression {
+    var error: Error? = nil
+    guard let rx = RegularExpression(pattern: pattern, error: &error) else { fatalError(error!.localizedDescription) }
+    return rx
 }
