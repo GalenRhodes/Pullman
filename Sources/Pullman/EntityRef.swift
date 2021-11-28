@@ -1,9 +1,9 @@
 /*===============================================================================================================================================================================*
  *     PROJECT: Pullman
- *    FILENAME: Document.swift
+ *    FILENAME: EntityRef.swift
  *         IDE: AppCode
  *      AUTHOR: Galen Rhodes
- *        DATE: 11/26/21
+ *        DATE: 11/28/21
  *
  * Copyright © 2021. All rights reserved.
  *
@@ -19,22 +19,22 @@ import Foundation
 import CoreFoundation
 import Rubicon
 
-public class Document: ParentNode {
+public class EntityRef: Node {
     //@f:0
-    public  override var nodeType:       NodeType { .Document }
-    public  override var nodeName:       String   { "#document" }
-    public  override var ownerDocument:  Document { self }
+    public override var nodeType:     NodeType { .EntityRef }
+    public override var nodeName:     String   { nsName.qualifiedName }
+    public override var localName:    String   { nsName.localName }
+    public override var prefix:       String?  { nsName.prefix }
+    public override var namespaceURI: String?  { nsName.namespaceURI }
+
+    public          var name:         String   { nsName.qualifiedName }
+
+    private         let nsName:       NSName
+    internal        var entity:       EntityDecl?
     //@f:1
 
-    public override init() {
-        super.init()
-    }
-
-    public func renameNode(node: Node, nodeName: String) throws {
-        try node.set(qualifiedName: nodeName, namespaceURI: nil)
-    }
-
-    public func renameNode(node: Node, prefix: String?, localName: String, namespaceURI: String) throws {
-        try node.set(prefix: prefix, localName: localName, namespaceURI: namespaceURI)
+    public init(ownerDocument: Document, qualifiedName: String, namespaceURI: String?) throws {
+        nsName = try NSName(qualifiedName: qualifiedName, namespaceURI: namespaceURI)
+        super.init(ownerDocument: ownerDocument)
     }
 }

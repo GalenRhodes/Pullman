@@ -1,6 +1,6 @@
 /*===============================================================================================================================================================================*
  *     PROJECT: Pullman
- *    FILENAME: TextNode.swift
+ *    FILENAME: CharacterContent.swift
  *         IDE: AppCode
  *      AUTHOR: Galen Rhodes
  *        DATE: 11/26/21

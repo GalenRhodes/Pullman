@@ -24,35 +24,43 @@ public class Attribute: Node {
     public override      var nodeType:     NodeType { .Attribute }
     public override      var nodeValue:    String?  { get { value } set { value = (newValue ?? "") } }
     public override      var textContent:  String   { get { value } set { value = newValue } }
+    public override      var nodeName:     String   { nsName.qualifiedName }
+    public override      var localName:    String   { nsName.localName }
+    public override      var prefix:       String?  { nsName.prefix }
+    public override      var namespaceURI: String?  { nsName.namespaceURI }
 
-    public               var name:         String   { nodeName }
+    public               var name:         String   { nsName.qualifiedName }
     public               var value:        String
     public               var isSpecified:  Bool
     public               var isID:         Bool
     public internal(set) var ownerElement: Element? = nil
+
+    private              var nsName:       NSName
     //@f:1
 
-    init(ownerDocument: Document, ownerElement: Element? = nil, name: String, value: String, isSpecified: Bool, isID: Bool) throws {
+    init(ownerDocument: Document, ownerElement: Element? = nil, qualifiedName: String, namespaceURI: String?, value: String, isSpecified: Bool, isID: Bool) throws {
+        self.nsName = try NSName(qualifiedName: qualifiedName, namespaceURI: namespaceURI)
         self.value = value
         self.isSpecified = isSpecified
         self.isID = isID
         self.ownerElement = ownerElement
         super.init(ownerDocument: ownerDocument)
-        localName = name
-        prefix = nil
-        namespaceURI = nil
     }
 
     init(ownerDocument: Document, ownerElement: Element? = nil, prefix: String?, localName: String, namespaceURI: String, value: String, isSpecified: Bool, isID: Bool) throws {
+        self.nsName = try NSName(prefix: prefix, localName: localName, namespaceURI: namespaceURI)
         self.value = value
         self.isSpecified = isSpecified
         self.isID = isID
         self.ownerElement = ownerElement
         super.init(ownerDocument: ownerDocument)
-        self.localName = localName
-        self.prefix = prefix
-        self.namespaceURI = namespaceURI
     }
+
+    override func set(qualifiedName: String, namespaceURI: String?) throws { try nsName.set(qualifiedName: qualifiedName, namespaceURI: namespaceURI) }
+
+    override func set(prefix: String?, localName: String, namespaceURI: String) throws { try nsName.set(prefix: prefix, localName: localName, namespaceURI: namespaceURI) }
+
+    override func set(prefix: String?) throws { try nsName.set(prefix: prefix) }
 }
 
 extension Document {
@@ -61,7 +69,7 @@ extension Document {
         try Attribute(ownerDocument: self, ownerElement: ownerElement, prefix: prefix, localName: localName, namespaceURI: namespaceURI, value: value, isSpecified: isSpecified, isID: isID)
     }
 
-    public func createAttribute(ownerElement: Element? = nil, name: String, value: String, isSpecified: Bool = false, isID: Bool = false) throws -> Attribute {
-        try Attribute(ownerDocument: self, name: name, value: value, isSpecified: isSpecified, isID: isID)
+    public func createAttribute(ownerElement: Element? = nil, qualifiedName: String, namespaceURI: String? = nil, value: String, isSpecified: Bool = false, isID: Bool = false) throws -> Attribute {
+        try Attribute(ownerDocument: self, qualifiedName: qualifiedName, namespaceURI: namespaceURI, value: value, isSpecified: isSpecified, isID: isID)
     }
 }

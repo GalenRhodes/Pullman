@@ -21,26 +21,36 @@ import Rubicon
 
 public class Element: ParentNode {
     //@f:0
-    public override var nodeType:    NodeType { .Element }
-    public override var textContent: String   { get { super.textContent } set { setTextContent(content: newValue) } }
+    public override var nodeType:     NodeType { .Element }
+    public override var textContent:  String   { get { super.textContent } set { setTextContent(content: newValue) } }
+    public override var localName:    String   { nsName.localName }
+    public override var nodeName:     String   { nsName.qualifiedName }
+    public override var prefix:       String?  { nsName.prefix }
+    public override var namespaceURI: String?  { nsName.namespaceURI }
 
-    public          var tagName:     String   { nodeName }
+    public          var tagName:      String   { nsName.qualifiedName }
+
+    private var nsName: NSName
     //@f:1
 
-    init(ownerDocument: Document, tagName: String) throws {
+    init(ownerDocument: Document, tagName: String, namespaceURI: String?) throws {
+        nsName = try NSName(qualifiedName: tagName, namespaceURI: namespaceURI)
         super.init(ownerDocument: ownerDocument)
-        self.localName = tagName
     }
 
     init(ownerDocument: Document, prefix: String?, localName: String, namespaceURI: String) throws {
+        nsName = try NSName(prefix: prefix, localName: localName, namespaceURI: namespaceURI)
         super.init(ownerDocument: ownerDocument)
-        self.localName = localName
-        self.prefix = prefix
-        self.namespaceURI = namespaceURI
     }
 
     private func setTextContent(content: String) {
         removeAllNodes()
         _ = try? appendNode(TextNode(ownerDocument: ownerDocument, content: content))
     }
+
+    override func set(qualifiedName: String, namespaceURI: String?) throws { try nsName.set(qualifiedName: qualifiedName, namespaceURI: namespaceURI) }
+
+    override func set(prefix: String?, localName: String, namespaceURI: String) throws { try nsName.set(prefix: prefix, localName: localName, namespaceURI: namespaceURI) }
+
+    override func set(prefix: String?) throws { try nsName.set(prefix: prefix) }
 }

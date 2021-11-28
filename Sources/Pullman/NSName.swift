@@ -45,11 +45,9 @@ public struct NSName: Hashable {
         try _validate(self.prefix, self.localName, self.namespaceURI)
     }
 
-    public init(name: String) throws { try self.init(prefix: nil, localName: name, namespaceURI: nil) }
-
-    public init(qualifiedName: String, namespaceURI: String) throws {
-        if let i = qualifiedName.firstIndex(of: ":") {
-            try self.init(prefix: String(qualifiedName[..<i]), localName: String(qualifiedName[i...]), namespaceURI: namespaceURI)
+    public init(qualifiedName: String, namespaceURI: String?) throws {
+        if let uri = namespaceURI, let i = qualifiedName.firstIndex(of: ":") {
+            try self.init(prefix: String(qualifiedName[..<i]), localName: String(qualifiedName[i...]), namespaceURI: uri)
         }
         else {
             try self.init(prefix: nil, localName: qualifiedName, namespaceURI: namespaceURI)
@@ -89,7 +87,7 @@ public struct NSName: Hashable {
         try _validate(p, l, u)
     }
 
-    mutating func _validate(_ p: String?, _ l: String, _ u: String?) throws {
+    private mutating func _validate(_ p: String?, _ l: String, _ u: String?) throws {
         do {
             if let uri = namespaceURI {
                 guard validate(uri: uri) else { throw DOMError.InvalidNameError(description: "Invalid character in the namespace URI: \"\(uri)\"") }

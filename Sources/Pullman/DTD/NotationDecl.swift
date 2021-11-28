@@ -1,9 +1,9 @@
 /*===============================================================================================================================================================================*
  *     PROJECT: Pullman
- *    FILENAME: Document.swift
+ *    FILENAME: NotationDecl.swift
  *         IDE: AppCode
  *      AUTHOR: Galen Rhodes
- *        DATE: 11/26/21
+ *        DATE: 11/28/21
  *
  * Copyright © 2021. All rights reserved.
  *
@@ -19,22 +19,10 @@ import Foundation
 import CoreFoundation
 import Rubicon
 
-public class Document: ParentNode {
-    //@f:0
-    public  override var nodeType:       NodeType { .Document }
-    public  override var nodeName:       String   { "#document" }
-    public  override var ownerDocument:  Document { self }
-    //@f:1
+public class NotationDecl: DTDLocated {
+    public override var nodeType: NodeType { .Notation }
 
-    public override init() {
-        super.init()
-    }
-
-    public func renameNode(node: Node, nodeName: String) throws {
-        try node.set(qualifiedName: nodeName, namespaceURI: nil)
-    }
-
-    public func renameNode(node: Node, prefix: String?, localName: String, namespaceURI: String) throws {
-        try node.set(prefix: prefix, localName: localName, namespaceURI: namespaceURI)
+    public override init(ownerDocument: Document, qualifiedName: String, namespaceURI: String?, location: Location, publicID: String, systemID: String) throws {
+        try super.init(ownerDocument: ownerDocument, qualifiedName: qualifiedName, namespaceURI: namespaceURI, location: location, publicID: publicID, systemID: systemID)
     }
 }

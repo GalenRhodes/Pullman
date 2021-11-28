@@ -1,9 +1,9 @@
 /*===============================================================================================================================================================================*
  *     PROJECT: Pullman
- *    FILENAME: Document.swift
+ *    FILENAME: ProcessingInstruction.swift
  *         IDE: AppCode
  *      AUTHOR: Galen Rhodes
- *        DATE: 11/26/21
+ *        DATE: 11/28/21
  *
  * Copyright © 2021. All rights reserved.
  *
@@ -19,22 +19,20 @@ import Foundation
 import CoreFoundation
 import Rubicon
 
-public class Document: ParentNode {
+public class ProcessingInstruction: Node {
     //@f:0
-    public  override var nodeType:       NodeType { .Document }
-    public  override var nodeName:       String   { "#document" }
-    public  override var ownerDocument:  Document { self }
+    public override var nodeType:  NodeType { .ProcessingInstruction }
+    public override var nodeName:  String   { target }
+    public override var localName: String   { target }
+    public override var nodeValue: String?  { get { data } set { data = newValue ?? "" } }
+
+    public          let target:    String
+    public          var data:      String
     //@f:1
 
-    public override init() {
-        super.init()
-    }
-
-    public func renameNode(node: Node, nodeName: String) throws {
-        try node.set(qualifiedName: nodeName, namespaceURI: nil)
-    }
-
-    public func renameNode(node: Node, prefix: String?, localName: String, namespaceURI: String) throws {
-        try node.set(prefix: prefix, localName: localName, namespaceURI: namespaceURI)
+    public init(ownerDocument: Document, target: String, data: String) {
+        self.target = target
+        self.data = data
+        super.init(ownerDocument: ownerDocument)
     }
 }

@@ -41,23 +41,22 @@ public class Node {
 
     //@f:0
     public                var nodeType:        NodeType                { fatalError("Not Implemented") }
-    public                var nodeName:        String                  { (((namespaceURI == nil) || (prefix == nil)) ? localName : "\(prefix!):\(localName)") }
+    public                var nodeName:        String                  { fatalError("Not Implemented") }
     public                var ownerDocument:   Document                { _ownerDocument! }
     public                var childNodes:      [Node]                  { [] }
     public                var attributes:      NamedNodeMap<Attribute> { NamedNodeMap<Attribute>() }
     public                var textContent:     String                  { get { "" } set {} }
     public                var nodeValue:       String?                 { get { nil } set {} }
+    public                var localName:       String                  { "" }
+    public                var prefix:          String?                 { nil }
+    public                var namespaceURI:    String?                 { nil }
+    public  internal(set) var firstChildNode:  Node?                   { get { nil } set {} }
+    public  internal(set) var lastChildNode:   Node?                   { get { nil } set {} }
 
-    public  internal(set) var localName:       String                  = ""
-    public  internal(set) var prefix:          String?                 = nil
-    public  internal(set) var namespaceURI:    String?                 = nil
     public  internal(set) var baseURL:         String?                 = nil
-
     public  internal(set) var parentNode:      Node?                   = nil
     public  internal(set) var nextSibling:     Node?                   = nil
     public  internal(set) var previousSibling: Node?                   = nil
-    public  internal(set) var firstChildNode:  Node?                   = nil
-    public  internal(set) var lastChildNode:   Node?                   = nil
 
     private               var _ownerDocument:  Document?               = nil
     internal              var isReadOnly:      Bool                    = false
@@ -78,11 +77,11 @@ public class Node {
         return try removeNode(xNode)
     }
 
-    func set(nodeName: String) throws {
+    func set(qualifiedName: String, namespaceURI: String?) throws {
         throw DOMError.IllegalOperation(description: "Node cannot be renamed.")
     }
 
-    func set(prefix: String?, localName: String, namespaceURL: String) throws {
+    func set(prefix: String?, localName: String, namespaceURI: String) throws {
         throw DOMError.IllegalOperation(description: "Node cannot be renamed.")
     }
 
