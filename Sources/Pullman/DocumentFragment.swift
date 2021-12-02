@@ -1,9 +1,9 @@
 /*===============================================================================================================================================================================*
  *     PROJECT: Pullman
- *    FILENAME: NamedNodeMap.swift
+ *    FILENAME: DocumentFragment.swift
  *         IDE: AppCode
  *      AUTHOR: Galen Rhodes
- *        DATE: 11/26/21
+ *        DATE: 11/30/21
  *
  * Copyright © 2021. All rights reserved.
  *
@@ -18,35 +18,10 @@
 import Foundation
 import CoreFoundation
 import Rubicon
-import RedBlackTree
 
-public class NamedNodeMap<T: Node>: BidirectionalCollection {
-    public typealias Index = Int
-    public typealias Element = (String, T)
+public class DocumentFragment: ParentNode {
+    public override var nodeType: NodeType { .DocumentFragment }
+    public override var nodeName: String { "#document-fragment" }
 
-    public let startIndex: Int = 0
-    public var endIndex:   Int { tree.count }
-
-    private var tree: BinaryTreeDictionary<String, T> = BinaryTreeDictionary<String, T>()
-
-    init() {}
-
-    public func index(after i: Int) -> Int {
-        guard i < endIndex else { fatalError("Index out of bounds.") }
-        return i + 1
-    }
-
-    public func index(before i: Int) -> Int {
-        guard i > startIndex else { fatalError("Index out of bounds.") }
-        return i - 1
-    }
-
-    public subscript(position: Int) -> (String, T) {
-        guard position >= startIndex && position < endIndex else { fatalError("Index out of bounds.") }
-        return tree[tree.startIndex.advanced(by: position - startIndex)]
-    }
-
-    public subscript(key: String) -> T? { nil }
-
-    public subscript(key: String, uri: String) -> T? { nil }
+    override init(ownerDocument: Document) { super.init(ownerDocument: ownerDocument) }
 }

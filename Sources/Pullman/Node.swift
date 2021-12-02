@@ -21,6 +21,8 @@ import Rubicon
 
 public class Node {
 
+    public typealias UserDataHandler = (DocumentNodeEvent, String, Any, Node, Node?) -> Void
+
     public enum NodeType: UInt8 {
         case None = 0
         case Attribute
@@ -37,6 +39,20 @@ public class Node {
         case AttributeDecl
         case Notation
         case Entity
+    }
+
+    public enum ChildNodeEvent {
+        case Added
+        case Removed
+        case Renamed
+    }
+
+    public enum DocumentNodeEvent {
+        case Adopted
+        case Cloned
+        case Removed
+        case Imported
+        case Renamed
     }
 
     //@f:0
@@ -59,6 +75,7 @@ public class Node {
     public  internal(set) var previousSibling: Node?                   = nil
 
     private               var _ownerDocument:  Document?               = nil
+    private               var userData:        [String:UserData]       = [:]
     internal              var isReadOnly:      Bool                    = false
     //@f:1
 
@@ -99,6 +116,39 @@ public class Node {
         try childNodes.forEach {
             try body($0)
             if !shallow { try $0.forEachChildNode(shallow: false, do: body) }
+        }
+    }
+
+    func sendEvent(event: DocumentNodeEvent, source: Node, destination: Node?) {
+        for ud in userData {
+            if let h = ud.value.handler {
+                h(event, ud.key, ud.value.data, source, destination)
+            }
+        }
+    }
+
+    public func getUserData(key: String) -> Any? {
+        userData[key]?.data
+    }
+
+    @discardableResult public func setUserData(key: String, data: Any?, handler: UserDataHandler? = nil) -> Any? {
+        if let data = data {
+            let o = userData.removeValue(forKey: key)?.data
+            userData[key] = UserData(data: data, handler: handler)
+            return o
+        }
+        else {
+            return userData.removeValue(forKey: key)?.data
+        }
+    }
+
+    private struct UserData {
+        let data:    Any
+        let handler: UserDataHandler?
+
+        init(data: Any, handler: UserDataHandler?) {
+            self.data = data
+            self.handler = handler
         }
     }
 }
