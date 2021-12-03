@@ -44,7 +44,6 @@ public class Node {
     public enum ChildNodeEvent {
         case Added
         case Removed
-        case Renamed
     }
 
     public enum DocumentNodeEvent {
@@ -119,6 +118,14 @@ public class Node {
         }
     }
 
+    public func addChildNodeListener(listener: ChildNodeListener) {
+        // Only parents can have children.
+    }
+
+    public func removeChildNodeListener(listener: ChildNodeListener) {
+        // Only parents can have children.
+    }
+
     func sendEvent(event: DocumentNodeEvent, source: Node, destination: Node?) {
         for ud in userData {
             if let h = ud.value.handler {
@@ -151,4 +158,5 @@ public class Node {
             self.handler = handler
         }
     }
+
 }

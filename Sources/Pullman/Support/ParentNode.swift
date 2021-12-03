@@ -20,22 +20,28 @@ import CoreFoundation
 import Rubicon
 
 public class ParentNode: Node {
-    private var _childNodes: [Node] = []
+    //@f:0
+    private                       var _childNodes:    [Node]              = []
+    private                       var _listeners:     [ChildNodeListener] = []
 
-    public override var childNodes: [Node] { _childNodes }
-
-    public internal(set) override var firstChildNode: Node? {
-        get { _childNodes.first }
-        set { if let n = newValue { _ = try? insert(node: n, before: _childNodes.first) } }
-    }
-    public internal(set) override var lastChildNode:  Node? {
-        get { _childNodes.last }
-        set { if let n = newValue { _ = try? appendNode(n) } }
-    }
+    public               override var childNodes:     [Node]              { _childNodes }
+    public internal(set) override var firstChildNode: Node?               { get { _childNodes.first } set { if let n = newValue { _ = try? insert(node: n, before: _childNodes.first) } } }
+    public internal(set) override var lastChildNode:  Node?               { get { _childNodes.last } set { if let n = newValue { _ = try? appendNode(n) } } }
+    //@f:1
 
     override init(ownerDocument: Document) { super.init(ownerDocument: ownerDocument) }
 
     override init() { super.init() }
+
+    public override func addChildNodeListener(listener: ChildNodeListener) {
+        if !_listeners.contains(where: { $0 === listener }) {
+            _listeners.append(listener);
+        }
+    }
+
+    public override func removeChildNodeListener(listener: ChildNodeListener) {
+        _listeners.removeAll { $0 === listener }
+    }
 
     public override var textContent: String {
         get {
@@ -93,6 +99,7 @@ public class ParentNode: Node {
         }
 
         _childNodes.append(node)
+        for l in _listeners { l.handleChildNodeEvent(event: .Added, parent: self, child: node) }
         return node
     }
 
@@ -107,6 +114,7 @@ public class ParentNode: Node {
         node.nextSibling = refNode
         refNode.previousSibling = node
         _childNodes.insert(node, at: position)
+        for l in _listeners { l.handleChildNodeEvent(event: .Added, parent: self, child: node) }
         return node
     }
 
@@ -121,6 +129,8 @@ public class ParentNode: Node {
         node.nextSibling = nil
         node.previousSibling = nil
         node.parentNode = nil
-        return _childNodes.remove(at: position)
+        let _node = _childNodes.remove(at: position)
+        for l in _listeners { l.handleChildNodeEvent(event: .Removed, parent: self, child: _node) }
+        return _node
     }
 }
