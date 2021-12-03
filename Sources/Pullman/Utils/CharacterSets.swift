@@ -18,3 +18,37 @@
 import Foundation
 import CoreFoundation
 import Rubicon
+
+extension CharacterSet {
+
+    public static let xmlPrefixStartChar: CharacterSet = { () -> CharacterSet in
+        var cs = CharacterSet(charactersIn: "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_")
+        cs.insert(charactersIn: UnicodeScalar(UInt8(0xC0)) ... UnicodeScalar(UInt8(0xD6)))
+        cs.insert(charactersIn: UnicodeScalar(UInt8(0xD8)) ... UnicodeScalar(UInt8(0xF6)))
+        cs.insert(charactersIn: UnicodeScalar(UInt8(0xF8)) ... UnicodeScalar(UInt32(0x2FF))!)
+        cs.insert(charactersIn: UnicodeScalar(UInt32(0x370))! ... UnicodeScalar(UInt32(0x37D))!)
+        cs.insert(charactersIn: UnicodeScalar(UInt32(0x37F))! ... UnicodeScalar(UInt32(0x1FFF))!)
+        cs.insert(charactersIn: UnicodeScalar(UInt32(0x200C))! ... UnicodeScalar(UInt32(0x200D))!)
+        cs.insert(charactersIn: UnicodeScalar(UInt32(0x2070))! ... UnicodeScalar(UInt32(0x218F))!)
+        cs.insert(charactersIn: UnicodeScalar(UInt32(0x2C00))! ... UnicodeScalar(UInt32(0x2FEF))!)
+        cs.insert(charactersIn: UnicodeScalar(UInt32(0x3001))! ... UnicodeScalar(UInt32(0xD7FF))!)
+        cs.insert(charactersIn: UnicodeScalar(UInt32(0xF900))! ... UnicodeScalar(UInt32(0xFDCF))!)
+        cs.insert(charactersIn: UnicodeScalar(UInt32(0xFDF0))! ... UnicodeScalar(UInt32(0xFFFD))!)
+        cs.insert(charactersIn: UnicodeScalar(UInt32(0x10000))! ... UnicodeScalar(UInt32(0xEFFFF))!)
+        return cs
+    }()
+
+    public static let xmlPrefixChars: CharacterSet = { () -> CharacterSet in
+        var cs = xmlPrefixStartChar.union(CharacterSet(charactersIn: "0123456789-."))
+        cs.insert(UnicodeScalar(UInt8(0xB7)))
+        cs.insert(charactersIn: UnicodeScalar(UInt32(0x300))! ... UnicodeScalar(UInt32(0x36F))!)
+        cs.insert(charactersIn: UnicodeScalar(UInt32(0x203F))! ... UnicodeScalar(UInt32(0x2040))!)
+        return cs
+    }()
+
+    public static let xmlNameStartChar: CharacterSet = xmlPrefixStartChar
+
+    public static let xmlNameChars: CharacterSet = { () -> CharacterSet in xmlPrefixChars.union(CharacterSet(charactersIn: ":")) }()
+
+    public static let xmlWSChars: CharacterSet = { () -> CharacterSet in [ UnicodeScalar(UInt8(0x20)), UnicodeScalar(UInt8(0x09)), UnicodeScalar(UInt8(0x0D)), UnicodeScalar(UInt8(0x0A)) ] }()
+}
