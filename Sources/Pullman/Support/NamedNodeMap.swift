@@ -20,7 +20,7 @@ import CoreFoundation
 import Rubicon
 import RedBlackTree
 
-public class NamedNodeMap<T: Node>: BidirectionalCollection {
+public class NamedNodeMap<T: Node>: BidirectionalCollection, ChildNodeListener {
     public typealias Index = Int
     public typealias Element = (String, T)
 
@@ -49,4 +49,7 @@ public class NamedNodeMap<T: Node>: BidirectionalCollection {
     public subscript(key: String) -> T? { nil }
 
     public subscript(key: String, uri: String) -> T? { nil }
+
+    public func handleChildNodeEvent(event: Node.ChildNodeEvent, parent: Node, child: Node) {
+    }
 }

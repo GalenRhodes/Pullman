@@ -58,6 +58,7 @@
 		1117D2CB58F9E0B5C7FB3E8E /* DOMError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DOMError.swift; sourceTree = "<group>"; };
 		1117D4CFC5C9D5A75CA99C52 /* Document.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Document.swift; sourceTree = "<group>"; };
 		1117D53C94BC29AFCB631EE6 /* EntityDecl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EntityDecl.swift; sourceTree = "<group>"; };
+		1117D54D34EF67AA03768FDD /* Package.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Package.swift; sourceTree = "<group>"; };
 		1117D58D92B37E32D19829E3 /* DocumentFragment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DocumentFragment.swift; sourceTree = "<group>"; };
 		1117D59EFB41CDC0CE3A9E31 /* Events.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Events.swift; sourceTree = "<group>"; };
 		1117D73A94F7592734D21F00 /* Attribute.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Attribute.swift; sourceTree = "<group>"; };
@@ -199,6 +200,7 @@
 				830F5E85274FC33700A2F726 /* .jazzy.yaml */,
 				830F5E84274FC33700A2F726 /* LICENSE */,
 				830F5E86274FC33700A2F726 /* README.md */,
+				1117D54D34EF67AA03768FDD /* Package.swift */,
 			);
 			name = Other;
 			sourceTree = "<group>";
