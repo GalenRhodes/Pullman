@@ -21,26 +21,31 @@ import Rubicon
 
 public class ParentNode: Node {
     //@f:0
-    private                       var _childNodes:    [Node]              = []
-    private                       var _listeners:     [ChildNodeListener] = []
+    private         var _childNodes:    [Node]                     = []
+    private         var _listeners:     [ChildNodeListenerWeakRef] = []
 
-    public               override var childNodes:     [Node]              { _childNodes }
-    public internal(set) override var firstChildNode: Node?               { get { _childNodes.first } set { if let n = newValue { _ = try? insert(node: n, before: _childNodes.first) } } }
-    public internal(set) override var lastChildNode:  Node?               { get { _childNodes.last } set { if let n = newValue { _ = try? appendNode(n) } } }
+    public override var childNodes:     NodeList<Node>             { ParentNodeList(parent: self) }
+    public override var firstChildNode: Node?                      { _childNodes.first }
+    public override var lastChildNode:  Node?                      { _childNodes.last }
     //@f:1
+
+    public enum ChildNodeEvent {
+        case ChildAdded
+        case ChildRemoved
+        case AllChildrenRemoved
+    }
 
     override init(ownerDocument: Document) { super.init(ownerDocument: ownerDocument) }
 
     override init() { super.init() }
 
     public override func addChildNodeListener(listener: ChildNodeListener) {
-        if !_listeners.contains(where: { $0 === listener }) {
-            _listeners.append(listener);
-        }
+        _listeners.removeAll { $0.listener == nil }
+        if !_listeners.contains(where: { $0.listener === listener }) { _listeners.append(ChildNodeListenerWeakRef(listener: listener)); }
     }
 
     public override func removeChildNodeListener(listener: ChildNodeListener) {
-        _listeners.removeAll { $0 === listener }
+        _listeners.removeAll { $0.listener == nil || $0.listener === listener }
     }
 
     public override var textContent: String {
@@ -60,6 +65,7 @@ public class ParentNode: Node {
             return $0
         }
         _childNodes.removeAll()
+        _listeners.forEach { $0.listener?.handleChildNodeEvent(event: .AllChildrenRemoved, parent: self, child: nil) }
         return out
     }
 
@@ -99,7 +105,8 @@ public class ParentNode: Node {
         }
 
         _childNodes.append(node)
-        for l in _listeners { l.handleChildNodeEvent(event: .Added, parent: self, child: node) }
+        _listeners.removeAll { $0.listener == nil }
+        for l in _listeners { l.listener?.handleChildNodeEvent(event: .ChildAdded, parent: self, child: node) }
         return node
     }
 
@@ -114,7 +121,8 @@ public class ParentNode: Node {
         node.nextSibling = refNode
         refNode.previousSibling = node
         _childNodes.insert(node, at: position)
-        for l in _listeners { l.handleChildNodeEvent(event: .Added, parent: self, child: node) }
+        _listeners.removeAll { $0.listener == nil }
+        for l in _listeners { l.listener?.handleChildNodeEvent(event: .ChildAdded, parent: self, child: node) }
         return node
     }
 
@@ -130,7 +138,14 @@ public class ParentNode: Node {
         node.previousSibling = nil
         node.parentNode = nil
         let _node = _childNodes.remove(at: position)
-        for l in _listeners { l.handleChildNodeEvent(event: .Removed, parent: self, child: _node) }
+        _listeners.removeAll { $0.listener == nil }
+        for l in _listeners { l.listener?.handleChildNodeEvent(event: .ChildRemoved, parent: self, child: _node) }
         return _node
+    }
+
+    class ChildNodeListenerWeakRef {
+        private(set) weak var listener: ChildNodeListener?
+
+        init(listener: ChildNodeListener) { self.listener = listener }
     }
 }

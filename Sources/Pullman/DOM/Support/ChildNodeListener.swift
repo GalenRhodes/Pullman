@@ -19,5 +19,5 @@ import Foundation
 
 public protocol ChildNodeListener: AnyObject {
 
-    func handleChildNodeEvent(event: Node.ChildNodeEvent, parent: Node, child: Node)
+    func handleChildNodeEvent(event: ParentNode.ChildNodeEvent, parent: Node?, child: Node?)
 }

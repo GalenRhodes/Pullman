@@ -21,16 +21,18 @@ import Rubicon
 
 public class Element: ParentNode {
     //@f:0
-    public override var nodeType:     NodeType { .Element }
-    public override var textContent:  String   { get { super.textContent } set { setTextContent(content: newValue) } }
-    public override var localName:    String   { nsName.localName }
-    public override var nodeName:     String   { nsName.qualifiedName }
-    public override var prefix:       String?  { nsName.prefix }
-    public override var namespaceURI: String?  { nsName.namespaceURI }
+    public override var nodeType:     NodeType                { .Element }
+    public override var textContent:  String                  { get { super.textContent } set { setTextContent(content: newValue) } }
+    public override var localName:    String                  { nsName.localName }
+    public override var nodeName:     String                  { nsName.qualifiedName }
+    public override var prefix:       String?                 { nsName.prefix }
+    public override var namespaceURI: String?                 { nsName.namespaceURI }
+    public override var attributes:   NamedNodeMap<Attribute> { SlaveNamedNodeMap<Attribute>(master: _attributes) }
 
-    public          var tagName:      String   { nsName.qualifiedName }
+    public          var tagName:      String                  { nsName.qualifiedName }
 
-    private var nsName: NSName
+    private         var nsName:       NSName
+    private         let _attributes:  NamedNodeMap<Attribute> = MasterNamedNodeMap<Attribute>()
     //@f:1
 
     init(ownerDocument: Document, tagName: String, namespaceURI: String?) throws {

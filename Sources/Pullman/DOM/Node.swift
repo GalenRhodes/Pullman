@@ -41,11 +41,6 @@ public class Node {
         case Entity
     }
 
-    public enum ChildNodeEvent {
-        case Added
-        case Removed
-    }
-
     public enum DocumentNodeEvent {
         case Adopted
         case Cloned
@@ -58,15 +53,15 @@ public class Node {
     public                var nodeType:        NodeType                { fatalError("Not Implemented") }
     public                var nodeName:        String                  { fatalError("Not Implemented") }
     public                var ownerDocument:   Document                { _ownerDocument! }
-    public                var childNodes:      [Node]                  { [] }
+    public                var childNodes:      NodeList<Node>          { NodeList<Node>() }
     public                var attributes:      NamedNodeMap<Attribute> { NamedNodeMap<Attribute>() }
     public                var textContent:     String                  { get { "" } set {} }
     public                var nodeValue:       String?                 { get { nil } set {} }
     public                var localName:       String                  { "" }
     public                var prefix:          String?                 { nil }
     public                var namespaceURI:    String?                 { nil }
-    public  internal(set) var firstChildNode:  Node?                   { get { nil } set {} }
-    public  internal(set) var lastChildNode:   Node?                   { get { nil } set {} }
+    public                var firstChildNode:  Node?                   { nil }
+    public                var lastChildNode:   Node?                   { nil }
 
     public  internal(set) var baseURL:         String?                 = nil
     public  internal(set) var parentNode:      Node?                   = nil
@@ -118,13 +113,9 @@ public class Node {
         }
     }
 
-    public func addChildNodeListener(listener: ChildNodeListener) {
-        // Only parents can have children.
-    }
+    public func addChildNodeListener(listener: ChildNodeListener) { /* Only parents can have children. */ }
 
-    public func removeChildNodeListener(listener: ChildNodeListener) {
-        // Only parents can have children.
-    }
+    public func removeChildNodeListener(listener: ChildNodeListener) { /* Only parents can have children. */ }
 
     func sendEvent(event: DocumentNodeEvent, source: Node, destination: Node?) {
         for ud in userData {

@@ -51,4 +51,20 @@ extension CharacterSet {
     public static let xmlNameChars: CharacterSet = { () -> CharacterSet in xmlPrefixChars.union(CharacterSet(charactersIn: ":")) }()
 
     public static let xmlWSChars: CharacterSet = { () -> CharacterSet in [ UnicodeScalar(UInt8(0x20)), UnicodeScalar(UInt8(0x09)), UnicodeScalar(UInt8(0x0D)), UnicodeScalar(UInt8(0x0A)) ] }()
+
+    public static let xmlBadChars: CharacterSet = { () -> CharacterSet in
+        var cs = CharacterSet(charactersIn: UnicodeScalar(UInt8(0x7F)) ... UnicodeScalar(UInt8(0x84)))
+        //@f:0
+        cs.insert(charactersIn: UnicodeScalar(UInt8(0x86))     ... UnicodeScalar(UInt8(0x9F)))
+        cs.insert(charactersIn: UnicodeScalar(UInt32(0xFDD0))! ... UnicodeScalar(UInt32(0xFDEF))!)
+        cs.formUnion([ UnicodeScalar(UInt32(0x1FFFE))!, UnicodeScalar(UInt32(0x1FFFF))!, UnicodeScalar(UInt32(0x2FFFE))!, UnicodeScalar(UInt32(0x2FFFF))!, UnicodeScalar(UInt32(0x3FFFE))!,
+                       UnicodeScalar(UInt32(0x3FFFF))!, UnicodeScalar(UInt32(0x4FFFE))!, UnicodeScalar(UInt32(0x4FFFF))!, UnicodeScalar(UInt32(0x5FFFE))!, UnicodeScalar(UInt32(0x5FFFF))!,
+                       UnicodeScalar(UInt32(0x6FFFE))!, UnicodeScalar(UInt32(0x6FFFF))!, UnicodeScalar(UInt32(0x7FFFE))!, UnicodeScalar(UInt32(0x7FFFF))!, UnicodeScalar(UInt32(0x8FFFE))!,
+                       UnicodeScalar(UInt32(0x8FFFF))!, UnicodeScalar(UInt32(0x9FFFE))!, UnicodeScalar(UInt32(0x9FFFF))!, UnicodeScalar(UInt32(0xAFFFE))!, UnicodeScalar(UInt32(0xAFFFF))!,
+                       UnicodeScalar(UInt32(0xBFFFE))!, UnicodeScalar(UInt32(0xBFFFF))!, UnicodeScalar(UInt32(0xCFFFE))!, UnicodeScalar(UInt32(0xCFFFF))!, UnicodeScalar(UInt32(0xDFFFE))!,
+                       UnicodeScalar(UInt32(0xDFFFF))!, UnicodeScalar(UInt32(0xEFFFE))!, UnicodeScalar(UInt32(0xEFFFF))!, UnicodeScalar(UInt32(0xFFFFE))!, UnicodeScalar(UInt32(0xFFFFF))!,
+                       UnicodeScalar(UInt32(0x10FFFE))!, UnicodeScalar(UInt32(0x10FFFF))! ])
+        //@f:1
+        return cs
+    }()
 }

@@ -20,36 +20,130 @@ import CoreFoundation
 import Rubicon
 import RedBlackTree
 
-public class NamedNodeMap<T: Node>: BidirectionalCollection, ChildNodeListener {
+public class NamedNodeMap<T>: BidirectionalCollection, ChildNodeListener where T: Node {
     public typealias Index = Int
-    public typealias Element = (String, T)
+    public typealias Element = T
 
-    public let startIndex: Int = 0
-    public var endIndex:   Int { tree.count }
-
-    private var tree: BinaryTreeDictionary<String, T> = BinaryTreeDictionary<String, T>()
+    public private(set) var startIndex: Int = 0
+    public private(set) var endIndex:   Int = 0
 
     init() {}
 
-    public func index(after i: Int) -> Int {
-        guard i < endIndex else { fatalError("Index out of bounds.") }
-        return i + 1
-    }
+    public subscript(position: Int) -> T { fatalError("Index out of bounds.") }
 
     public func index(before i: Int) -> Int {
-        guard i > startIndex else { fatalError("Index out of bounds.") }
-        return i - 1
+        guard (i == 1) else { fatalError("Index out of bounds.") }
+        return 0
     }
 
-    public subscript(position: Int) -> (String, T) {
-        guard position >= startIndex && position < endIndex else { fatalError("Index out of bounds.") }
-        return tree[tree.startIndex.advanced(by: position - startIndex)]
+    public func index(after i: Int) -> Int {
+        guard (i == -1) else { fatalError("Index out of bounds.") }
+        return 0
     }
 
-    public subscript(key: String) -> T? { nil }
+    public subscript(nodeName: String) -> T? { nil }
 
-    public subscript(key: String, uri: String) -> T? { nil }
+    public subscript(localName: String, namespaceURI: String) -> T? { nil }
 
-    public func handleChildNodeEvent(event: Node.ChildNodeEvent, parent: Node, child: Node) {
+    @discardableResult public func removeNodeWith(nodeName: String) -> T? { nil }
+
+    @discardableResult public func removeNodeWith(localName: String, namespaceURI: String) -> T? { nil }
+
+    public func handleChildNodeEvent(event: ParentNode.ChildNodeEvent, parent: Node?, child: Node?) {}
+}
+
+class MasterNamedNodeMap<T: Node>: NamedNodeMap<T> {
+    override var startIndex: Int { _nodes.startIndex }
+    override var endIndex:   Int { _nodes.endIndex }
+
+    private var _nodes:   [T]         = []
+    private var _nnCache: [String: T] = [:]
+    private var _nsCache: [NSKey: T]  = [:]
+
+    override init() { super.init() }
+
+    override func index(after i: Int) -> Int { _nodes.index(after: i) }
+
+    override func index(before i: Int) -> Int { _nodes.index(before: i) }
+
+    override subscript(position: Int) -> T { _nodes[position] }
+
+    override subscript(nodeName: String) -> T? {
+        if let node = _nnCache[nodeName] { return node }
+        guard let node = _nodes.first(where: { $0.nodeName == nodeName && $0.namespaceURI == nil }) else { return nil }
+        _nnCache[nodeName] = node
+        return node
     }
+
+    override subscript(localName: String, namespaceURI: String) -> T? {
+        let key = NSKey(localName: localName, namespaceURI: namespaceURI)
+        if let node = _nsCache[key] { return node }
+        guard let node = _nodes.first(where: { ($0.localName == localName && $0.namespaceURI == namespaceURI) }) else { return nil }
+        _nsCache[key] = node
+        return node
+    }
+
+    @discardableResult override func removeNodeWith(nodeName: String) -> T? {
+        _nnCache.removeValue(forKey: nodeName)
+        guard let idx = _nodes.firstIndex(where: { $0.namespaceURI == nil && $0.nodeName == nodeName }) else { return nil }
+        return _nodes.remove(at: idx)
+    }
+
+    @discardableResult override func removeNodeWith(localName: String, namespaceURI: String) -> T? {
+        _nsCache.removeValue(forKey: NSKey(localName: localName, namespaceURI: namespaceURI))
+        guard let idx = _nodes.firstIndex(where: { $0.namespaceURI == namespaceURI && $0.localName == localName }) else { return nil }
+        return _nodes.remove(at: idx)
+    }
+
+    override func handleChildNodeEvent(event: ParentNode.ChildNodeEvent, parent: Node?, child: Node?) {
+        switch event {
+            case .ChildAdded:
+                guard let c = child as? T else { return }
+                guard _nodes.first(where: { $0 === c }) == nil else { return }
+                remove(node: c)
+                _nodes.append(c)
+            case .ChildRemoved:
+                guard let c = child as? T else { return }
+                _nodes.removeAll { $0 === c }
+                remove(node: c)
+            case .AllChildrenRemoved:
+                _nodes.removeAll()
+                _nsCache.removeAll()
+                _nnCache.removeAll()
+        }
+    }
+
+    func remove(node: T) {
+        if let uri = node.namespaceURI { removeNodeWith(localName: node.localName, namespaceURI: uri) }
+        else { removeNodeWith(nodeName: node.nodeName) }
+    }
+
+    struct NSKey: Hashable, Comparable {
+        let localName:    String
+        let namespaceURI: String
+
+        static func < (lhs: NSKey, rhs: NSKey) -> Bool { ((lhs.localName < rhs.localName) || ((lhs.localName == rhs.localName) && (lhs.namespaceURI < rhs.namespaceURI))) }
+    }
+}
+
+class SlaveNamedNodeMap<T: Node>: NamedNodeMap<T> {
+    private let master: NamedNodeMap<T>
+
+    init(master: NamedNodeMap<T>) { self.master = master }
+
+    override func index(before i: Int) -> Int { master.index(before: i) }
+
+    override func index(after i: Int) -> Int { master.index(after: i) }
+
+    override subscript(position: Int) -> T { master[position] }
+
+    override subscript(nodeName: String) -> T? { master[nodeName] }
+
+    override subscript(localName: String, namespaceURI: String) -> T? { master[localName, namespaceURI] }
+
+    override func removeNodeWith(nodeName: String) -> T? { nil }
+
+    override func removeNodeWith(localName: String, namespaceURI: String) -> T? { nil }
+
+    override func handleChildNodeEvent(event: ParentNode.ChildNodeEvent, parent: Node?, child: Node?) {}
 }
