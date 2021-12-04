@@ -21,20 +21,22 @@ import Rubicon
 
 public class Document: ParentNode {
     //@f:0
-    public  override var nodeType:       NodeType { .Document }
-    public  override var nodeName:       String   { "#document" }
-    public  override var ownerDocument:  Document { self }
+    public  override     var nodeType:            NodeType { .Document }
+    public  override     var nodeName:            String   { "#document" }
+    public  override     var ownerDocument:       Document { self }
+
+    public               var documentURI:         String?  = nil
+    public internal(set) var inputEncoding:       String   = "UTF-8"
+    public               var xmlEncoding:         String   = "UTF-8"
+    public               var xmlStandalone:       Bool     = true
+    public               var xmlVersion:          String   = "1.0"
+    public               var strictErrorChecking: Bool     = false
     //@f:1
 
     public override init() {
         super.init()
     }
 
-    public func renameNode(node: Node, nodeName: String) throws {
-        try node.set(qualifiedName: nodeName, namespaceURI: nil)
-    }
-
-    public func renameNode(node: Node, prefix: String?, localName: String, namespaceURI: String) throws {
-        try node.set(prefix: prefix, localName: localName, namespaceURI: namespaceURI)
+    public func renameNode(node: Node, qualifiedName: String, namespaceURI: String?) throws {
     }
 }

@@ -47,27 +47,12 @@ public class Attribute: Node {
         super.init(ownerDocument: ownerDocument)
     }
 
-    init(ownerDocument: Document, ownerElement: Element? = nil, prefix: String?, localName: String, namespaceURI: String, value: String, isSpecified: Bool, isID: Bool) throws {
-        self.nsName = try NSName(prefix: prefix, localName: localName, namespaceURI: namespaceURI)
-        self.value = value
-        self.isSpecified = isSpecified
-        self.isID = isID
-        self.ownerElement = ownerElement
-        super.init(ownerDocument: ownerDocument)
-    }
-
     override func set(qualifiedName: String, namespaceURI: String?) throws { try nsName.set(qualifiedName: qualifiedName, namespaceURI: namespaceURI) }
-
-    override func set(prefix: String?, localName: String, namespaceURI: String) throws { try nsName.set(prefix: prefix, localName: localName, namespaceURI: namespaceURI) }
 
     override func set(prefix: String?) throws { try nsName.set(prefix: prefix) }
 }
 
 extension Document {
-
-    public func createAttribute(ownerElement: Element? = nil, prefix: String?, localName: String, namespaceURI: String, value: String, isSpecified: Bool = false, isID: Bool = false) throws -> Attribute {
-        try Attribute(ownerDocument: self, ownerElement: ownerElement, prefix: prefix, localName: localName, namespaceURI: namespaceURI, value: value, isSpecified: isSpecified, isID: isID)
-    }
 
     public func createAttribute(ownerElement: Element? = nil, qualifiedName: String, namespaceURI: String? = nil, value: String, isSpecified: Bool = false, isID: Bool = false) throws -> Attribute {
         try Attribute(ownerDocument: self, qualifiedName: qualifiedName, namespaceURI: namespaceURI, value: value, isSpecified: isSpecified, isID: isID)

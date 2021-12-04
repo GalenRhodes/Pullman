@@ -1,0 +1,1391 @@
+{
+  "warnings": [
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/Attribute.swift",
+      "line": 22,
+      "symbol": "Attribute",
+      "symbol_kind": "source.lang.swift.decl.class",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/Attribute.swift",
+      "line": 24,
+      "symbol": "Attribute.nodeType",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/Attribute.swift",
+      "line": 25,
+      "symbol": "Attribute.nodeValue",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/Attribute.swift",
+      "line": 26,
+      "symbol": "Attribute.textContent",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/Attribute.swift",
+      "line": 27,
+      "symbol": "Attribute.nodeName",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/Attribute.swift",
+      "line": 28,
+      "symbol": "Attribute.localName",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/Attribute.swift",
+      "line": 29,
+      "symbol": "Attribute.prefix",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/Attribute.swift",
+      "line": 30,
+      "symbol": "Attribute.namespaceURI",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/Attribute.swift",
+      "line": 32,
+      "symbol": "Attribute.name",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/Attribute.swift",
+      "line": 33,
+      "symbol": "Attribute.value",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/Attribute.swift",
+      "line": 34,
+      "symbol": "Attribute.isSpecified",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/Attribute.swift",
+      "line": 35,
+      "symbol": "Attribute.isID",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/Attribute.swift",
+      "line": 36,
+      "symbol": "Attribute.ownerElement",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/Attribute.swift",
+      "line": 57,
+      "symbol": "Document.createAttribute(ownerElement:qualifiedName:namespaceURI:value:isSpecified:isID:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/CharacterContent.swift",
+      "line": 22,
+      "symbol": "CharacterContent",
+      "symbol_kind": "source.lang.swift.decl.class",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/CharacterContent.swift",
+      "line": 24,
+      "symbol": "CharacterContent.textContent",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/CharacterContent.swift",
+      "line": 25,
+      "symbol": "CharacterContent.nodeValue",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/CharacterContent.swift",
+      "line": 26,
+      "symbol": "CharacterContent.content",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/CharacterContent.swift",
+      "line": 35,
+      "symbol": "TextNode",
+      "symbol_kind": "source.lang.swift.decl.class",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/CharacterContent.swift",
+      "line": 36,
+      "symbol": "TextNode.nodeType",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/CharacterContent.swift",
+      "line": 37,
+      "symbol": "TextNode.nodeName",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/CharacterContent.swift",
+      "line": 42,
+      "symbol": "Comment",
+      "symbol_kind": "source.lang.swift.decl.class",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/CharacterContent.swift",
+      "line": 43,
+      "symbol": "Comment.nodeType",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/CharacterContent.swift",
+      "line": 44,
+      "symbol": "Comment.nodeName",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/CharacterContent.swift",
+      "line": 49,
+      "symbol": "CDataSection",
+      "symbol_kind": "source.lang.swift.decl.class",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/CharacterContent.swift",
+      "line": 50,
+      "symbol": "CDataSection.nodeType",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/CharacterContent.swift",
+      "line": 51,
+      "symbol": "CDataSection.nodeName",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/CharacterContent.swift",
+      "line": 58,
+      "symbol": "Document.createTextNode(content:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/CharacterContent.swift",
+      "line": 60,
+      "symbol": "Document.createCDataSection(content:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/CharacterContent.swift",
+      "line": 62,
+      "symbol": "Document.createComment(content:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/DTD/ElementDecl.swift",
+      "line": 22,
+      "symbol": "ElementDecl",
+      "symbol_kind": "source.lang.swift.decl.class",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/DTD/EntityDecl.swift",
+      "line": 22,
+      "symbol": "EntityDecl",
+      "symbol_kind": "source.lang.swift.decl.class",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/DTD/EntityDecl.swift",
+      "line": 24,
+      "symbol": "EntityDecl.predefinedEntities",
+      "symbol_kind": "source.lang.swift.decl.var.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/DTD/EntityDecl.swift",
+      "line": 26,
+      "symbol": "EntityDecl.nodeType",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/DTD/EntityDecl.swift",
+      "line": 27,
+      "symbol": "EntityDecl.nodeName",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/DTD/EntityDecl.swift",
+      "line": 28,
+      "symbol": "EntityDecl.localName",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/DTD/EntityDecl.swift",
+      "line": 29,
+      "symbol": "EntityDecl.prefix",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/DTD/EntityDecl.swift",
+      "line": 30,
+      "symbol": "EntityDecl.namespaceURI",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/DTD/EntityDecl.swift",
+      "line": 32,
+      "symbol": "EntityDecl.name",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/DTD/EntityDecl.swift",
+      "line": 44,
+      "symbol": "EntityDecl.characterEntities",
+      "symbol_kind": "source.lang.swift.decl.var.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/DTD/NotationDecl.swift",
+      "line": 22,
+      "symbol": "NotationDecl",
+      "symbol_kind": "source.lang.swift.decl.class",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/DTD/NotationDecl.swift",
+      "line": 23,
+      "symbol": "NotationDecl.nodeType",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/DTD/NotationDecl.swift",
+      "line": 25,
+      "symbol": "NotationDecl.init(ownerDocument:qualifiedName:namespaceURI:location:publicID:systemID:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/DTD/Support/DTDLocated.swift",
+      "line": 22,
+      "symbol": "DTDLocated",
+      "symbol_kind": "source.lang.swift.decl.class",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/DTD/Support/DTDLocated.swift",
+      "line": 23,
+      "symbol": "DTDLocated.Location",
+      "symbol_kind": "source.lang.swift.decl.enum",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/DTD/Support/DTDLocated.swift",
+      "line": 23,
+      "symbol": "DTDLocated.Location.PUBLIC",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/DTD/Support/DTDLocated.swift",
+      "line": 23,
+      "symbol": "DTDLocated.Location.SYSTEM",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/DTD/Support/DTDLocated.swift",
+      "line": 25,
+      "symbol": "DTDLocated.location",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/DTD/Support/DTDLocated.swift",
+      "line": 26,
+      "symbol": "DTDLocated.publicID",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/DTD/Support/DTDLocated.swift",
+      "line": 27,
+      "symbol": "DTDLocated.systemID",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/DTD/Support/DTDLocated.swift",
+      "line": 29,
+      "symbol": "DTDLocated.init(ownerDocument:qualifiedName:namespaceURI:location:publicID:systemID:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/DTD/Support/DTDType.swift",
+      "line": 22,
+      "symbol": "DTDType",
+      "symbol_kind": "source.lang.swift.decl.class",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/DTD/Support/DTDType.swift",
+      "line": 23,
+      "symbol": "DTDType.nodeName",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/DTD/Support/DTDType.swift",
+      "line": 24,
+      "symbol": "DTDType.localName",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/DTD/Support/DTDType.swift",
+      "line": 25,
+      "symbol": "DTDType.prefix",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/DTD/Support/DTDType.swift",
+      "line": 26,
+      "symbol": "DTDType.namespaceURI",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/DTD/Support/DTDType.swift",
+      "line": 28,
+      "symbol": "DTDType.name",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/Document.swift",
+      "line": 22,
+      "symbol": "Document",
+      "symbol_kind": "source.lang.swift.decl.class",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/Document.swift",
+      "line": 24,
+      "symbol": "Document.nodeType",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/Document.swift",
+      "line": 25,
+      "symbol": "Document.nodeName",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/Document.swift",
+      "line": 26,
+      "symbol": "Document.ownerDocument",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/Document.swift",
+      "line": 28,
+      "symbol": "Document.documentURI",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/Document.swift",
+      "line": 29,
+      "symbol": "Document.inputEncoding",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/Document.swift",
+      "line": 30,
+      "symbol": "Document.xmlEncoding",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/Document.swift",
+      "line": 31,
+      "symbol": "Document.xmlStandalone",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/Document.swift",
+      "line": 32,
+      "symbol": "Document.xmlVersion",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/Document.swift",
+      "line": 33,
+      "symbol": "Document.strictErrorChecking",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/Document.swift",
+      "line": 36,
+      "symbol": "Document.init()",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/Document.swift",
+      "line": 40,
+      "symbol": "Document.renameNode(node:qualifiedName:namespaceURI:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/Document.swift",
+      "line": 55,
+      "symbol": "Document",
+      "symbol_kind": "source.lang.swift.decl.extension",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/Document.swift",
+      "line": 56,
+      "symbol": "Document",
+      "symbol_kind": "source.lang.swift.decl.extension",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/DocumentFragment.swift",
+      "line": 22,
+      "symbol": "DocumentFragment",
+      "symbol_kind": "source.lang.swift.decl.class",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/DocumentFragment.swift",
+      "line": 23,
+      "symbol": "DocumentFragment.nodeType",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/DocumentFragment.swift",
+      "line": 24,
+      "symbol": "DocumentFragment.nodeName",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/Element.swift",
+      "line": 22,
+      "symbol": "Element",
+      "symbol_kind": "source.lang.swift.decl.class",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/Element.swift",
+      "line": 24,
+      "symbol": "Element.nodeType",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/Element.swift",
+      "line": 25,
+      "symbol": "Element.textContent",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/Element.swift",
+      "line": 26,
+      "symbol": "Element.localName",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/Element.swift",
+      "line": 27,
+      "symbol": "Element.nodeName",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/Element.swift",
+      "line": 28,
+      "symbol": "Element.prefix",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/Element.swift",
+      "line": 29,
+      "symbol": "Element.namespaceURI",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/Element.swift",
+      "line": 30,
+      "symbol": "Element.attributes",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/Element.swift",
+      "line": 32,
+      "symbol": "Element.tagName",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/EntityRef.swift",
+      "line": 22,
+      "symbol": "EntityRef",
+      "symbol_kind": "source.lang.swift.decl.class",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/EntityRef.swift",
+      "line": 24,
+      "symbol": "EntityRef.nodeType",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/EntityRef.swift",
+      "line": 25,
+      "symbol": "EntityRef.nodeName",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/EntityRef.swift",
+      "line": 26,
+      "symbol": "EntityRef.localName",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/EntityRef.swift",
+      "line": 27,
+      "symbol": "EntityRef.prefix",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/EntityRef.swift",
+      "line": 28,
+      "symbol": "EntityRef.namespaceURI",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/EntityRef.swift",
+      "line": 30,
+      "symbol": "EntityRef.name",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/EntityRef.swift",
+      "line": 36,
+      "symbol": "EntityRef.init(ownerDocument:qualifiedName:namespaceURI:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/Node.swift",
+      "line": 22,
+      "symbol": "Node",
+      "symbol_kind": "source.lang.swift.decl.class",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/Node.swift",
+      "line": 24,
+      "symbol": "Node.UserDataHandler",
+      "symbol_kind": "source.lang.swift.decl.typealias",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/Node.swift",
+      "line": 26,
+      "symbol": "Node.NodeType",
+      "symbol_kind": "source.lang.swift.decl.enum",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/Node.swift",
+      "line": 27,
+      "symbol": "Node.NodeType.None",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/Node.swift",
+      "line": 28,
+      "symbol": "Node.NodeType.Attribute",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/Node.swift",
+      "line": 29,
+      "symbol": "Node.NodeType.Element",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/Node.swift",
+      "line": 30,
+      "symbol": "Node.NodeType.Document",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/Node.swift",
+      "line": 31,
+      "symbol": "Node.NodeType.DocumentFragment",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/Node.swift",
+      "line": 32,
+      "symbol": "Node.NodeType.Text",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/Node.swift",
+      "line": 33,
+      "symbol": "Node.NodeType.CDataSection",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/Node.swift",
+      "line": 34,
+      "symbol": "Node.NodeType.Comment",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/Node.swift",
+      "line": 35,
+      "symbol": "Node.NodeType.EntityRef",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/Node.swift",
+      "line": 36,
+      "symbol": "Node.NodeType.ProcessingInstruction",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/Node.swift",
+      "line": 37,
+      "symbol": "Node.NodeType.DocType",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/Node.swift",
+      "line": 38,
+      "symbol": "Node.NodeType.ElementDecl",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/Node.swift",
+      "line": 39,
+      "symbol": "Node.NodeType.AttributeDecl",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/Node.swift",
+      "line": 40,
+      "symbol": "Node.NodeType.Notation",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/Node.swift",
+      "line": 41,
+      "symbol": "Node.NodeType.Entity",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/Node.swift",
+      "line": 44,
+      "symbol": "Node.DocumentNodeEvent",
+      "symbol_kind": "source.lang.swift.decl.enum",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/Node.swift",
+      "line": 45,
+      "symbol": "Node.DocumentNodeEvent.Adopted",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/Node.swift",
+      "line": 46,
+      "symbol": "Node.DocumentNodeEvent.Cloned",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/Node.swift",
+      "line": 47,
+      "symbol": "Node.DocumentNodeEvent.Removed",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/Node.swift",
+      "line": 48,
+      "symbol": "Node.DocumentNodeEvent.Imported",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/Node.swift",
+      "line": 49,
+      "symbol": "Node.DocumentNodeEvent.Renamed",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/Node.swift",
+      "line": 53,
+      "symbol": "Node.nodeType",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/Node.swift",
+      "line": 54,
+      "symbol": "Node.nodeName",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/Node.swift",
+      "line": 55,
+      "symbol": "Node.ownerDocument",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/Node.swift",
+      "line": 56,
+      "symbol": "Node.childNodes",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/Node.swift",
+      "line": 57,
+      "symbol": "Node.attributes",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/Node.swift",
+      "line": 58,
+      "symbol": "Node.textContent",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/Node.swift",
+      "line": 59,
+      "symbol": "Node.nodeValue",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/Node.swift",
+      "line": 60,
+      "symbol": "Node.localName",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/Node.swift",
+      "line": 61,
+      "symbol": "Node.prefix",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/Node.swift",
+      "line": 62,
+      "symbol": "Node.namespaceURI",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/Node.swift",
+      "line": 63,
+      "symbol": "Node.firstChildNode",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/Node.swift",
+      "line": 64,
+      "symbol": "Node.lastChildNode",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/Node.swift",
+      "line": 66,
+      "symbol": "Node.baseURL",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/Node.swift",
+      "line": 67,
+      "symbol": "Node.parentNode",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/Node.swift",
+      "line": 68,
+      "symbol": "Node.nextSibling",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/Node.swift",
+      "line": 69,
+      "symbol": "Node.previousSibling",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/Node.swift",
+      "line": 80,
+      "symbol": "Node.insert(node:before:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/Node.swift",
+      "line": 82,
+      "symbol": "Node.removeNode(_:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/Node.swift",
+      "line": 84,
+      "symbol": "Node.appendNode(_:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/Node.swift",
+      "line": 86,
+      "symbol": "Node.replaceNode(old:new:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/Node.swift",
+      "line": 103,
+      "symbol": "Node.forEachInHierarchy(do:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/Node.swift",
+      "line": 109,
+      "symbol": "Node.forEachChildNode(shallow:do:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/Node.swift",
+      "line": 116,
+      "symbol": "Node.addChildNodeListener(listener:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/Node.swift",
+      "line": 118,
+      "symbol": "Node.removeChildNodeListener(listener:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/Node.swift",
+      "line": 128,
+      "symbol": "Node.getUserData(key:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/Node.swift",
+      "line": 132,
+      "symbol": "Node.setUserData(key:data:handler:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/ProcessingInstruction.swift",
+      "line": 22,
+      "symbol": "ProcessingInstruction",
+      "symbol_kind": "source.lang.swift.decl.class",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/ProcessingInstruction.swift",
+      "line": 24,
+      "symbol": "ProcessingInstruction.nodeType",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/ProcessingInstruction.swift",
+      "line": 25,
+      "symbol": "ProcessingInstruction.nodeName",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/ProcessingInstruction.swift",
+      "line": 26,
+      "symbol": "ProcessingInstruction.localName",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/ProcessingInstruction.swift",
+      "line": 27,
+      "symbol": "ProcessingInstruction.nodeValue",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/ProcessingInstruction.swift",
+      "line": 29,
+      "symbol": "ProcessingInstruction.target",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/ProcessingInstruction.swift",
+      "line": 30,
+      "symbol": "ProcessingInstruction.data",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/ProcessingInstruction.swift",
+      "line": 33,
+      "symbol": "ProcessingInstruction.init(ownerDocument:target:data:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/Support/ChildNodeListener.swift",
+      "line": 20,
+      "symbol": "ChildNodeListener",
+      "symbol_kind": "source.lang.swift.decl.protocol",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/Support/ChildNodeListener.swift",
+      "line": 22,
+      "symbol": "ChildNodeListener.handleChildNodeEvent(event:parent:child:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/Support/DOMError.swift",
+      "line": 22,
+      "symbol": "DOMError",
+      "symbol_kind": "source.lang.swift.decl.enum",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/Support/DOMError.swift",
+      "line": 23,
+      "symbol": "DOMError.WrongDocumentError(description:)",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/Support/DOMError.swift",
+      "line": 24,
+      "symbol": "DOMError.InvalidChildNodeError(description:)",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/Support/DOMError.swift",
+      "line": 25,
+      "symbol": "DOMError.HierarchyError(description:)",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/Support/DOMError.swift",
+      "line": 26,
+      "symbol": "DOMError.InternalInconsistencyError(description:)",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/Support/DOMError.swift",
+      "line": 27,
+      "symbol": "DOMError.NodeNotFound(description:)",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/Support/DOMError.swift",
+      "line": 28,
+      "symbol": "DOMError.NamespaceError(description:)",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/Support/DOMError.swift",
+      "line": 29,
+      "symbol": "DOMError.InvalidNameError(description:)",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/Support/DOMError.swift",
+      "line": 30,
+      "symbol": "DOMError.IllegalOperation(description:)",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/Support/DOMError.swift",
+      "line": 31,
+      "symbol": "DOMError.ReadOnlyError(description:)",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/Support/NSName.swift",
+      "line": 27,
+      "symbol": "NSName",
+      "symbol_kind": "source.lang.swift.decl.struct",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/Support/NSName.swift",
+      "line": 28,
+      "symbol": "NSName.prefix",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/Support/NSName.swift",
+      "line": 29,
+      "symbol": "NSName.localName",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/Support/NSName.swift",
+      "line": 30,
+      "symbol": "NSName.namespaceURI",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/Support/NSName.swift",
+      "line": 59,
+      "symbol": "NSName.set(prefix:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/Support/NSName.swift",
+      "line": 64,
+      "symbol": "NSName.set(qualifiedName:namespaceURI:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/Support/NamedNodeMap.swift",
+      "line": 23,
+      "symbol": "NamedNodeMap",
+      "symbol_kind": "source.lang.swift.decl.class",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/Support/NamedNodeMap.swift",
+      "line": 44,
+      "symbol": "NamedNodeMap.subscript(_:)",
+      "symbol_kind": "source.lang.swift.decl.function.subscript",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/Support/NamedNodeMap.swift",
+      "line": 46,
+      "symbol": "NamedNodeMap.subscript(_:_:)",
+      "symbol_kind": "source.lang.swift.decl.function.subscript",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/Support/NamedNodeMap.swift",
+      "line": 48,
+      "symbol": "NamedNodeMap.removeNodeWith(nodeName:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/Support/NamedNodeMap.swift",
+      "line": 50,
+      "symbol": "NamedNodeMap.removeNodeWith(localName:namespaceURI:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/Support/NamedNodeMap.swift",
+      "line": 52,
+      "symbol": "NamedNodeMap.handleChildNodeEvent(event:parent:child:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/Support/NodeList.swift",
+      "line": 22,
+      "symbol": "NodeList",
+      "symbol_kind": "source.lang.swift.decl.class",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/Support/ParentNode.swift",
+      "line": 22,
+      "symbol": "ParentNode",
+      "symbol_kind": "source.lang.swift.decl.class",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/Support/ParentNode.swift",
+      "line": 27,
+      "symbol": "ParentNode.childNodes",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/Support/ParentNode.swift",
+      "line": 28,
+      "symbol": "ParentNode.firstChildNode",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/Support/ParentNode.swift",
+      "line": 29,
+      "symbol": "ParentNode.lastChildNode",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/Support/ParentNode.swift",
+      "line": 32,
+      "symbol": "ParentNode.ChildNodeEvent",
+      "symbol_kind": "source.lang.swift.decl.enum",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/Support/ParentNode.swift",
+      "line": 33,
+      "symbol": "ParentNode.ChildNodeEvent.ChildAdded",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/Support/ParentNode.swift",
+      "line": 34,
+      "symbol": "ParentNode.ChildNodeEvent.ChildRemoved",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/Support/ParentNode.swift",
+      "line": 35,
+      "symbol": "ParentNode.ChildNodeEvent.AllChildrenRemoved",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/Support/ParentNode.swift",
+      "line": 42,
+      "symbol": "ParentNode.addChildNodeListener(listener:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/Support/ParentNode.swift",
+      "line": 47,
+      "symbol": "ParentNode.removeChildNodeListener(listener:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/Support/ParentNode.swift",
+      "line": 51,
+      "symbol": "ParentNode.textContent",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/Support/ParentNode.swift",
+      "line": 72,
+      "symbol": "ParentNode.insert(node:before:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/DOM/Support/ParentNode.swift",
+      "line": 86,
+      "symbol": "ParentNode.removeNode(_:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/Utils/CharacterSets.swift",
+      "line": 24,
+      "symbol": "CharacterSet.xmlPrefixStartChar",
+      "symbol_kind": "source.lang.swift.decl.var.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/Utils/CharacterSets.swift",
+      "line": 41,
+      "symbol": "CharacterSet.xmlPrefixChars",
+      "symbol_kind": "source.lang.swift.decl.var.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/Utils/CharacterSets.swift",
+      "line": 49,
+      "symbol": "CharacterSet.xmlNameStartChar",
+      "symbol_kind": "source.lang.swift.decl.var.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/Utils/CharacterSets.swift",
+      "line": 51,
+      "symbol": "CharacterSet.xmlNameChars",
+      "symbol_kind": "source.lang.swift.decl.var.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/Utils/CharacterSets.swift",
+      "line": 53,
+      "symbol": "CharacterSet.xmlWSChars",
+      "symbol_kind": "source.lang.swift.decl.var.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/Utils/CharacterSets.swift",
+      "line": 55,
+      "symbol": "CharacterSet.xmlBadChars",
+      "symbol_kind": "source.lang.swift.decl.var.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/Utils/RegexPatterns.swift",
+      "line": 30,
+      "symbol": "RX_WS",
+      "symbol_kind": "source.lang.swift.decl.var.global",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/Utils/RegexPatterns.swift",
+      "line": 31,
+      "symbol": "RX_Name",
+      "symbol_kind": "source.lang.swift.decl.var.global",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/Utils/RegexPatterns.swift",
+      "line": 32,
+      "symbol": "RX_Prefix",
+      "symbol_kind": "source.lang.swift.decl.var.global",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/Utils/Utilities.swift",
+      "line": 22,
+      "symbol": "testString(pattern:string:)",
+      "symbol_kind": "source.lang.swift.decl.function.free",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/grhodes/Projects/2022/Pullman/Sources/Pullman/Utils/Utilities.swift",
+      "line": 27,
+      "symbol": "getRX(pattern:)",
+      "symbol_kind": "source.lang.swift.decl.function.free",
+      "warning": "undocumented"
+    }
+  ],
+  "source_directory": "/Users/grhodes/Projects/2022/Pullman"
+}

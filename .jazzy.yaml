@@ -11,6 +11,6 @@
   "undocumented_text": "",
   "title": "Pullman©",
   "swift_build_tool": "xcodebuild",
-  "build_tool_arguments": [ "-scheme", "Pullman", "-jobs", "8", ],
+  "build_tool_arguments": [ "-scheme", "Pullman", "-jobs", "12", ],
   "separate_global_declarations": true,
 },

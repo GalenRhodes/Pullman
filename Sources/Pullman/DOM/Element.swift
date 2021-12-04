@@ -40,19 +40,12 @@ public class Element: ParentNode {
         super.init(ownerDocument: ownerDocument)
     }
 
-    init(ownerDocument: Document, prefix: String?, localName: String, namespaceURI: String) throws {
-        nsName = try NSName(prefix: prefix, localName: localName, namespaceURI: namespaceURI)
-        super.init(ownerDocument: ownerDocument)
-    }
-
     private func setTextContent(content: String) {
         removeAllNodes()
         _ = try? appendNode(TextNode(ownerDocument: ownerDocument, content: content))
     }
 
     override func set(qualifiedName: String, namespaceURI: String?) throws { try nsName.set(qualifiedName: qualifiedName, namespaceURI: namespaceURI) }
-
-    override func set(prefix: String?, localName: String, namespaceURI: String) throws { try nsName.set(prefix: prefix, localName: localName, namespaceURI: namespaceURI) }
 
     override func set(prefix: String?) throws { try nsName.set(prefix: prefix) }
 }
