@@ -29,11 +29,13 @@ public struct NSName: Hashable, Comparable {
     public private(set) var localName:    String
     public private(set) var namespaceURI: String?
 
+    /*===========================================================================================================================================================================*/
     /// The qualified name. If the name represents a `namespace aware` name then this is a concatenation of the prefix and
     /// the localName separated by a colon ":".
     ///
     public var qualifiedName: String { (((namespaceURI == nil) || (prefix == nil)) ? localName : "\(prefix!):\(localName)") }
 
+    /*===========================================================================================================================================================================*/
     /// Creates a new NSName structure with the given qualifiedName and namespaceURI. If the namespaceURI is not `nil` and
     /// not an empty string ("") then this will be a `namespace aware` name and the qualifiedName is assumed to be a concatenation
     ///  of the prefix and the localName separated by a colon ":".
@@ -56,6 +58,7 @@ public struct NSName: Hashable, Comparable {
         }
     }
 
+    /*===========================================================================================================================================================================*/
     /// Set the prefix for this name.
     ///
     /// - Parameter prefix: The new prefix.
@@ -69,6 +72,7 @@ public struct NSName: Hashable, Comparable {
         self.prefix = prefix
     }
 
+    /*===========================================================================================================================================================================*/
     /// Change the name.
     ///
     /// - Parameters:
@@ -88,6 +92,7 @@ public struct NSName: Hashable, Comparable {
         }
     }
 
+    /*===========================================================================================================================================================================*/
     /// Calculate the hash of this structure.
     ///
     /// - Parameter hasher: The hasher.
@@ -98,6 +103,7 @@ public struct NSName: Hashable, Comparable {
         hasher.combine(namespaceURI ?? "")
     }
 
+    /*===========================================================================================================================================================================*/
     /// Test to see if one NSName is the same as another NSName.
     ///
     /// - Parameters:
@@ -109,6 +115,7 @@ public struct NSName: Hashable, Comparable {
         ((lhs.prefix == rhs.prefix) && (lhs ~= rhs))
     }
 
+    /*===========================================================================================================================================================================*/
     /// Test to see if one NSName is the same as another NSName. This comparison only looks at the localName and the
     /// namespaceURI because in terms of XML that is what makes two names the same. The prefix is simply cosmetic.
     ///
@@ -121,6 +128,7 @@ public struct NSName: Hashable, Comparable {
         ((lhs.localName == rhs.localName) && (lhs.namespaceURI == rhs.namespaceURI))
     }
 
+    /*===========================================================================================================================================================================*/
     /// Test to see if this NSName comes before another NSName in ordering.
     ///
     /// - Parameters:
@@ -134,8 +142,24 @@ public struct NSName: Hashable, Comparable {
          ((lhs.namespaceURI == rhs.namespaceURI) && (lhs.localName == rhs.localName) && (lhs.prefix < rhs.prefix)))
     }
 
+    /*===========================================================================================================================================================================*/
+    /// The signature of the closure that sets the fields.
+    ///
     typealias Setter = (String?, String, String?) throws -> Void
 
+    /*===========================================================================================================================================================================*/
+    /// Validate and then set the prefix, localName, and namespaceURI.
+    ///
+    /// - Parameters:
+    ///   - qualifiedName: The qualified name.
+    ///   - namespaceURI: The namespaceURI or nil if this name is not`"namespace aware"`.
+    ///   - setter: The closure that actually sets the fields.
+    /// - Throws: If the qualifiedName is a malformed qualifiedName, or if the qualifiedName has a prefix and the namespaceURI
+    ///           is `nil`, or if the qualifiedName has a prefix that is "xml" and the namespaceURI is different from
+    ///           "http://www.w3.org/XML/1998/namespace", or if the qualifiedName or its prefix is "xmlns" and the namespaceURI
+    ///           is different from "http://www.w3.org/2000/xmlns/", or if the namespaceURI is "http://www.w3.org/2000/xmlns/"
+    ///           and neither the qualifiedName nor its prefix is "xmlns".
+    ///
     private static func doSet(qualifiedName: String, namespaceURI: String?, _ setter: Setter) throws -> Void {
         if let uri = namespaceURI?.trimmed, uri.isNotEmpty {
             if let i = qualifiedName.firstIndex(of: ":"), i > qualifiedName.startIndex {
@@ -153,6 +177,7 @@ public struct NSName: Hashable, Comparable {
         }
     }
 
+    /*===========================================================================================================================================================================*/
     /// Validate the prefix, localName, and namespaceURI.
     ///
     /// - Parameters:
@@ -187,6 +212,15 @@ public struct NSName: Hashable, Comparable {
         }
     }
 
+    /*===========================================================================================================================================================================*/
+    /// Create the namespace error.
+    ///
+    /// - Parameters:
+    ///   - desc: The name of the field in error.
+    ///   - name: The value of the field.
+    ///   - uri: The namespaceURI.
+    /// - Returns: The error to be thrown.
+    ///
     private static func domError(_ desc: String, _ name: String, _ uri: String) -> DOMError {
         DOMError.NamespaceError(description: "Invalid \(desc), namespace URI combination: \(desc)=\"\(name)\"; namespace URI=\"\(uri)\"")
     }
