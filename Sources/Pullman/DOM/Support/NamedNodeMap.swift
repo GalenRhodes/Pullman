@@ -45,11 +45,24 @@ public class NamedNodeMap<T>: BidirectionalCollection, ChildNodeListener where T
 
     public subscript(localName: String, namespaceURI: String) -> T? { nil }
 
+    @discardableResult public func add(node: T) -> T? { fatalError("Named Node Map is read-only.") }
+
+    @discardableResult public func remove(node: T) -> T? { nil }
+
     @discardableResult public func removeNodeWith(nodeName: String) -> T? { nil }
 
     @discardableResult public func removeNodeWith(localName: String, namespaceURI: String) -> T? { nil }
 
+    public func removeAll() {}
+
     public func handleChildNodeEvent(event: ParentNode.ChildNodeEvent, parent: Node?, child: Node?) {}
+}
+
+extension NamedNodeMap {
+    @inlinable public func nodeWith(qualifiedName qName: String, namespaceURI uri: String?) -> T? {
+        guard let _uri = uri else { return self[qName] }
+        return self[NSName.split(qualifiedName: qName).localName, _uri]
+    }
 }
 
 class MasterNamedNodeMap<T: Node>: NamedNodeMap<T> {
@@ -83,6 +96,11 @@ class MasterNamedNodeMap<T: Node>: NamedNodeMap<T> {
         return node
     }
 
+    @discardableResult override func remove(node: T) -> T? {
+        if let uri = node.namespaceURI { return removeNodeWith(localName: node.localName, namespaceURI: uri) }
+        else { return removeNodeWith(nodeName: node.nodeName) }
+    }
+
     @discardableResult override func removeNodeWith(nodeName: String) -> T? {
         _nnCache.removeValue(forKey: nodeName)
         guard let idx = _nodes.firstIndex(where: { $0.namespaceURI == nil && $0.nodeName == nodeName }) else { return nil }
@@ -97,25 +115,23 @@ class MasterNamedNodeMap<T: Node>: NamedNodeMap<T> {
 
     override func handleChildNodeEvent(event: ParentNode.ChildNodeEvent, parent: Node?, child: Node?) {
         switch event {
-            case .ChildAdded:
-                guard let c = child as? T else { return }
-                guard _nodes.first(where: { $0 === c }) == nil else { return }
-                remove(node: c)
-                _nodes.append(c)
-            case .ChildRemoved:
-                guard let c = child as? T else { return }
-                _nodes.removeAll { $0 === c }
-                remove(node: c)
-            case .AllChildrenRemoved:
-                _nodes.removeAll()
-                _nsCache.removeAll()
-                _nnCache.removeAll()
+            case .ChildAdded:         if let c = (child as? T) { add(node: c) }
+            case .ChildRemoved:       if let c = (child as? T) { remove(node: c) }
+            case .AllChildrenRemoved: removeAll()
         }
     }
 
-    func remove(node: T) {
-        if let uri = node.namespaceURI { removeNodeWith(localName: node.localName, namespaceURI: uri) }
-        else { removeNodeWith(nodeName: node.nodeName) }
+    override func removeAll() {
+        _nodes.removeAll()
+        _nsCache.removeAll()
+        _nnCache.removeAll()
+    }
+
+    @discardableResult override func add(node c: T) -> T? {
+        guard _nodes.first(where: { $0 === c }) == nil else { return nil }
+        let other = remove(node: c)
+        _nodes.append(c)
+        return other
     }
 
     struct NSKey: Hashable, Comparable {
@@ -140,10 +156,6 @@ class SlaveNamedNodeMap<T: Node>: NamedNodeMap<T> {
     override subscript(nodeName: String) -> T? { master[nodeName] }
 
     override subscript(localName: String, namespaceURI: String) -> T? { master[localName, namespaceURI] }
-
-    override func removeNodeWith(nodeName: String) -> T? { nil }
-
-    override func removeNodeWith(localName: String, namespaceURI: String) -> T? { nil }
 
     override func handleChildNodeEvent(event: ParentNode.ChildNodeEvent, parent: Node?, child: Node?) {}
 }

@@ -117,17 +117,13 @@ public class Node {
 
     public func removeChildNodeListener(listener: ChildNodeListener) { /* Only parents can have children. */ }
 
-    func sendEvent(event: DocumentNodeEvent, source: Node, destination: Node?) {
-        for ud in userData {
-            if let h = ud.value.handler {
-                h(event, ud.key, ud.value.data, source, destination)
-            }
-        }
-    }
+    public func lookupPrefix(namespaceURI: String) -> String? { parentNode?.lookupPrefix(namespaceURI: namespaceURI) }
 
-    public func getUserData(key: String) -> Any? {
-        userData[key]?.data
-    }
+    public func lookupNamespaceURI(prefix: String) -> String? { parentNode?.lookupNamespaceURI(prefix: prefix) }
+
+    func sendEvent(event: DocumentNodeEvent, source: Node, destination: Node?) { for ud in userData { if let h = ud.value.handler { h(event, ud.key, ud.value.data, source, destination) } } }
+
+    public func getUserData(key: String) -> Any? { userData[key]?.data }
 
     @discardableResult public func setUserData(key: String, data: Any?, handler: UserDataHandler? = nil) -> Any? {
         if let data = data {
@@ -149,5 +145,4 @@ public class Node {
             self.handler = handler
         }
     }
-
 }

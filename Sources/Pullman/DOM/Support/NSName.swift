@@ -224,4 +224,10 @@ public struct NSName: Hashable, Comparable {
     private static func domError(_ desc: String, _ name: String, _ uri: String) -> DOMError {
         DOMError.NamespaceError(description: "Invalid \(desc), namespace URI combination: \(desc)=\"\(name)\"; namespace URI=\"\(uri)\"")
     }
+
+    public static func split(qualifiedName qName: String) -> (prefix: String?, localName: String) {
+        guard let idx = qName.firstIndex(of: ":") else { return (nil, qName) }
+        guard idx > qName.startIndex else { return (nil, String(qName[qName.index(after: idx)...])) }
+        return (String(qName[..<idx]), String(qName[qName.index(after: idx)...]))
+    }
 }
