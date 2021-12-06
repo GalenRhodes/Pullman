@@ -19,17 +19,7 @@ import Foundation
 import CoreFoundation
 import Rubicon
 
-@inlinable public func testString(pattern: String, string: String) -> Bool {
-    let rx = getRX(pattern: pattern)
-    return (rx.firstMatch(in: string) != nil)
-}
-
-@inlinable public func getRX(pattern: String) -> RegularExpression {
-    var error: Error? = nil
-    guard let rx = RegularExpression(pattern: pattern, error: &error) else { fatalError(error!.localizedDescription) }
-    return rx
-}
-
+/*===========================================================================================================================================================================*/
 /// Compare two optional types to see if the left-hand type should be ordered before the right-hand optional type.
 /// The generic type of both must be the same and also implement the Comparable protocol.
 ///
