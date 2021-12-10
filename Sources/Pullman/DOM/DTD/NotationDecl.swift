@@ -22,7 +22,13 @@ import Rubicon
 public class NotationDecl: DTDLocated {
     public override var nodeType: NodeType { .Notation }
 
-    public override init(ownerDocument: Document, qualifiedName: String, namespaceURI: String?, location: Location, publicID: String, systemID: String) throws {
-        try super.init(ownerDocument: ownerDocument, qualifiedName: qualifiedName, namespaceURI: namespaceURI, location: location, publicID: publicID, systemID: systemID)
+    public override init(ownerDocument doc: Document, qualifiedName qName: String, namespaceURI uri: String?, location loc: Location?, publicID pid: String?, systemID sid: String?) throws {
+        try super.init(ownerDocument: doc, qualifiedName: qName, namespaceURI: uri, location: loc, publicID: pid, systemID: sid)
     }
+
+    public override func insert(node newNode: Node, before refNode: Node?) throws -> Node { newNode }
+
+    public override func addChildNodeListener(listener: ChildNodeListener) {}
+
+    public override func removeChildNodeListener(listener: ChildNodeListener) {}
 }

@@ -38,18 +38,17 @@ public class Attribute: Node {
     private              var nsName:       NSName
     //@f:1
 
-    init(ownerDocument: Document, ownerElement: Element?, qualifiedName: String, namespaceURI: String?, value: String, isSpecified: Bool, isID: Bool) throws {
+    init(ownerDocument: Document, qualifiedName: String, namespaceURI: String?, value: String, isSpecified: Bool, isID: Bool) throws {
         self.nsName = try NSName(qualifiedName: qualifiedName, namespaceURI: namespaceURI)
         self.value = value
         self.isSpecified = isSpecified
         self.isID = isID
-        self.ownerElement = ownerElement
         super.init(ownerDocument: ownerDocument)
     }
 
     override func set(qualifiedName: String, namespaceURI: String?) throws { try nsName.set(qualifiedName: qualifiedName, namespaceURI: namespaceURI) }
 
-    override func set(prefix: String?) throws { try nsName.set(prefix: prefix) }
+    override public func set(prefix: String?) throws { try nsName.set(prefix: prefix) }
 
     public override func lookupPrefix(namespaceURI: String) -> String? {
         if let p = prefix, self.namespaceURI == namespaceURI { return p }
@@ -65,6 +64,8 @@ public class Attribute: Node {
 extension Document {
 
     public func createAttribute(ownerElement: Element? = nil, qualifiedName: String, namespaceURI: String? = nil, value: String, isSpecified: Bool = false, isID: Bool = false) throws -> Attribute {
-        try Attribute(ownerDocument: self, ownerElement: ownerElement, qualifiedName: qualifiedName, namespaceURI: namespaceURI, value: value, isSpecified: isSpecified, isID: isID)
+        let attr = try Attribute(ownerDocument: self, qualifiedName: qualifiedName, namespaceURI: namespaceURI, value: value, isSpecified: isSpecified, isID: isID)
+        if let elem = ownerElement { try elem.setAttribute(attr) }
+        return attr
     }
 }

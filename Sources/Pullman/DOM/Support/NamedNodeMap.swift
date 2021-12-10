@@ -47,11 +47,17 @@ public class NamedNodeMap<T>: BidirectionalCollection, ChildNodeListener where T
 
     @discardableResult public func add(node: T) -> T? { fatalError("Named Node Map is read-only.") }
 
-    @discardableResult public func remove(node: T) -> T? { nil }
+    @discardableResult public func remove(node: T) -> T? { fatalError("Named Node Map is read-only.") }
 
-    @discardableResult public func removeNodeWith(nodeName: String) -> T? { nil }
+    @discardableResult public func removeNodeWith(nodeName: String) -> T? {
+        guard let node = self[nodeName] else { return nil }
+        return remove(node: node)
+    }
 
-    @discardableResult public func removeNodeWith(localName: String, namespaceURI: String) -> T? { nil }
+    @discardableResult public func removeNodeWith(localName: String, namespaceURI: String) -> T? {
+        guard let node = self[localName, namespaceURI] else { return nil }
+        return remove(node: node)
+    }
 
     public func removeAll() {}
 
@@ -59,7 +65,7 @@ public class NamedNodeMap<T>: BidirectionalCollection, ChildNodeListener where T
 }
 
 extension NamedNodeMap {
-    @inlinable public func nodeWith(qualifiedName qName: String, namespaceURI uri: String?) -> T? {
+    @inlinable func nodeWith(qualifiedName qName: String, namespaceURI uri: String?) -> T? {
         guard let _uri = uri else { return self[qName] }
         return self[NSName.split(qualifiedName: qName).localName, _uri]
     }
@@ -97,20 +103,11 @@ class MasterNamedNodeMap<T: Node>: NamedNodeMap<T> {
     }
 
     @discardableResult override func remove(node: T) -> T? {
-        if let uri = node.namespaceURI { return removeNodeWith(localName: node.localName, namespaceURI: uri) }
-        else { return removeNodeWith(nodeName: node.nodeName) }
-    }
-
-    @discardableResult override func removeNodeWith(nodeName: String) -> T? {
-        _nnCache.removeValue(forKey: nodeName)
-        guard let idx = _nodes.firstIndex(where: { $0.namespaceURI == nil && $0.nodeName == nodeName }) else { return nil }
-        return _nodes.remove(at: idx)
-    }
-
-    @discardableResult override func removeNodeWith(localName: String, namespaceURI: String) -> T? {
-        _nsCache.removeValue(forKey: NSKey(localName: localName, namespaceURI: namespaceURI))
-        guard let idx = _nodes.firstIndex(where: { $0.namespaceURI == namespaceURI && $0.localName == localName }) else { return nil }
-        return _nodes.remove(at: idx)
+        guard let idx = _nodes.firstIndex(where: { $0 === node }) else { return nil }
+        _nodes.remove(at: idx)
+        if let uri = node.namespaceURI { _nsCache.removeValue(forKey: NSKey(localName: node.localName, namespaceURI: uri)) }
+        else { _nnCache.removeValue(forKey: node.nodeName) }
+        return node
     }
 
     override func handleChildNodeEvent(event: ParentNode.ChildNodeEvent, parent: Node?, child: Node?) {
@@ -129,7 +126,7 @@ class MasterNamedNodeMap<T: Node>: NamedNodeMap<T> {
 
     @discardableResult override func add(node c: T) -> T? {
         guard _nodes.first(where: { $0 === c }) == nil else { return nil }
-        let other = remove(node: c)
+        let other = (c.namespaceURI == nil ? removeNodeWith(nodeName: c.nodeName) : removeNodeWith(localName: c.localName, namespaceURI: c.namespaceURI!))
         _nodes.append(c)
         return other
     }

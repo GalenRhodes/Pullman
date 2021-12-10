@@ -19,2153 +19,2154 @@ import Foundation
 import CoreFoundation
 import Rubicon
 
-public class EntityDecl: ParentNode {
-    //@f:0
-    public static let predefinedEntities: [String: String] = [ "lt": "<", "gt": ">", "amp": "&", "apos": "'", "quot": "\"" ]
+public class EntityDecl: DTDLocated {
+    public override var nodeType: NodeType { .Entity }
 
-    public override var nodeType:     NodeType { .Entity }
-    public override var nodeName:     String   { nsName.qualifiedName }
-    public override var localName:    String   { nsName.localName }
-    public override var prefix:       String?  { nsName.prefix }
-    public override var namespaceURI: String?  { nsName.namespaceURI }
-
-    public          var name:         String   { nsName.qualifiedName }
-
-    private let nsName: NSName
-    //@f:1
-
-    init(ownerDocument: Document, qualifiedName: String, namespaceURI: String?, textContent: String? = nil) throws {
-        self.nsName = try NSName(qualifiedName: qualifiedName, namespaceURI: namespaceURI)
-        super.init(ownerDocument: ownerDocument)
-        if let content = textContent { try appendNode(ownerDocument.createTextNode(content: content)) }
+    init(ownerDocument doc: Document, qualifiedName qName: String, namespaceURI uri: String?, textContent s: String?, location loc: Location?, publicID pid: String?, systemID sid: String?) throws {
+        try super.init(ownerDocument: doc, qualifiedName: qName, namespaceURI: uri, location: loc, publicID: pid, systemID: sid)
+        if let content = s { try appendNode(doc.createTextNode(content: content)) }
     }
 
-    //@f:0
-    public static let characterEntities: [String: String] = [
-        "Aacute"                          : "\(UnicodeScalar(UInt32(0x000000C1))!)",
-        "aacute"                          : "\(UnicodeScalar(UInt32(0x000000E1))!)",
-        "Abreve"                          : "\(UnicodeScalar(UInt32(0x00000102))!)",
-        "abreve"                          : "\(UnicodeScalar(UInt32(0x00000103))!)",
-        "ac"                              : "\(UnicodeScalar(UInt32(0x0000223E))!)",
-        "acd"                             : "\(UnicodeScalar(UInt32(0x0000223F))!)",
-        "acE"                             : "\(UnicodeScalar(UInt32(0x0000223E))!)\(UnicodeScalar(UInt32(0x00000333))!)",
-        "Acirc"                           : "\(UnicodeScalar(UInt32(0x000000C2))!)",
-        "acirc"                           : "\(UnicodeScalar(UInt32(0x000000E2))!)",
-        "acute"                           : "\(UnicodeScalar(UInt32(0x000000B4))!)",
-        "Acy"                             : "\(UnicodeScalar(UInt32(0x00000410))!)",
-        "acy"                             : "\(UnicodeScalar(UInt32(0x00000430))!)",
-        "AElig"                           : "\(UnicodeScalar(UInt32(0x000000C6))!)",
-        "aelig"                           : "\(UnicodeScalar(UInt32(0x000000E6))!)",
-        "af"                              : "\(UnicodeScalar(UInt32(0x00002061))!)",
-        "Afr"                             : "\(UnicodeScalar(UInt32(0x0001D504))!)",
-        "afr"                             : "\(UnicodeScalar(UInt32(0x0001D51E))!)",
-        "Agrave"                          : "\(UnicodeScalar(UInt32(0x000000C0))!)",
-        "agrave"                          : "\(UnicodeScalar(UInt32(0x000000E0))!)",
-        "alefsym"                         : "\(UnicodeScalar(UInt32(0x00002135))!)",
-        "aleph"                           : "\(UnicodeScalar(UInt32(0x00002135))!)",
-        "Alpha"                           : "\(UnicodeScalar(UInt32(0x00000391))!)",
-        "alpha"                           : "\(UnicodeScalar(UInt32(0x000003B1))!)",
-        "Amacr"                           : "\(UnicodeScalar(UInt32(0x00000100))!)",
-        "amacr"                           : "\(UnicodeScalar(UInt32(0x00000101))!)",
-        "amalg"                           : "\(UnicodeScalar(UInt32(0x00002A3F))!)",
-        "amp"                             : "\(UnicodeScalar(UInt32(0x00000026))!)",
-        "AMP"                             : "\(UnicodeScalar(UInt32(0x00000026))!)",
-        "and"                             : "\(UnicodeScalar(UInt32(0x00002227))!)",
-        "And"                             : "\(UnicodeScalar(UInt32(0x00002A53))!)",
-        "andand"                          : "\(UnicodeScalar(UInt32(0x00002A55))!)",
-        "andd"                            : "\(UnicodeScalar(UInt32(0x00002A5C))!)",
-        "andslope"                        : "\(UnicodeScalar(UInt32(0x00002A58))!)",
-        "andv"                            : "\(UnicodeScalar(UInt32(0x00002A5A))!)",
-        "ang"                             : "\(UnicodeScalar(UInt32(0x00002220))!)",
-        "ange"                            : "\(UnicodeScalar(UInt32(0x000029A4))!)",
-        "angle"                           : "\(UnicodeScalar(UInt32(0x00002220))!)",
-        "angmsd"                          : "\(UnicodeScalar(UInt32(0x00002221))!)",
-        "angmsdaa"                        : "\(UnicodeScalar(UInt32(0x000029A8))!)",
-        "angmsdab"                        : "\(UnicodeScalar(UInt32(0x000029A9))!)",
-        "angmsdac"                        : "\(UnicodeScalar(UInt32(0x000029AA))!)",
-        "angmsdad"                        : "\(UnicodeScalar(UInt32(0x000029AB))!)",
-        "angmsdae"                        : "\(UnicodeScalar(UInt32(0x000029AC))!)",
-        "angmsdaf"                        : "\(UnicodeScalar(UInt32(0x000029AD))!)",
-        "angmsdag"                        : "\(UnicodeScalar(UInt32(0x000029AE))!)",
-        "angmsdah"                        : "\(UnicodeScalar(UInt32(0x000029AF))!)",
-        "angrt"                           : "\(UnicodeScalar(UInt32(0x0000221F))!)",
-        "angrtvb"                         : "\(UnicodeScalar(UInt32(0x000022BE))!)",
-        "angrtvbd"                        : "\(UnicodeScalar(UInt32(0x0000299D))!)",
-        "angsph"                          : "\(UnicodeScalar(UInt32(0x00002222))!)",
-        "angst"                           : "\(UnicodeScalar(UInt32(0x000000C5))!)",
-        "angzarr"                         : "\(UnicodeScalar(UInt32(0x0000237C))!)",
-        "Aogon"                           : "\(UnicodeScalar(UInt32(0x00000104))!)",
-        "aogon"                           : "\(UnicodeScalar(UInt32(0x00000105))!)",
-        "Aopf"                            : "\(UnicodeScalar(UInt32(0x0001D538))!)",
-        "aopf"                            : "\(UnicodeScalar(UInt32(0x0001D552))!)",
-        "ap"                              : "\(UnicodeScalar(UInt32(0x00002248))!)",
-        "apacir"                          : "\(UnicodeScalar(UInt32(0x00002A6F))!)",
-        "ape"                             : "\(UnicodeScalar(UInt32(0x0000224A))!)",
-        "apE"                             : "\(UnicodeScalar(UInt32(0x00002A70))!)",
-        "apid"                            : "\(UnicodeScalar(UInt32(0x0000224B))!)",
-        "apos"                            : "\(UnicodeScalar(UInt32(0x00000027))!)",
-        "ApplyFunction"                   : "\(UnicodeScalar(UInt32(0x00002061))!)",
-        "approx"                          : "\(UnicodeScalar(UInt32(0x00002248))!)",
-        "approxeq"                        : "\(UnicodeScalar(UInt32(0x0000224A))!)",
-        "Aring"                           : "\(UnicodeScalar(UInt32(0x000000C5))!)",
-        "aring"                           : "\(UnicodeScalar(UInt32(0x000000E5))!)",
-        "Ascr"                            : "\(UnicodeScalar(UInt32(0x0001D49C))!)",
-        "ascr"                            : "\(UnicodeScalar(UInt32(0x0001D4B6))!)",
-        "Assign"                          : "\(UnicodeScalar(UInt32(0x00002254))!)",
-        "ast"                             : "\(UnicodeScalar(UInt32(0x0000002A))!)",
-        "asymp"                           : "\(UnicodeScalar(UInt32(0x00002248))!)",
-        "asympeq"                         : "\(UnicodeScalar(UInt32(0x0000224D))!)",
-        "Atilde"                          : "\(UnicodeScalar(UInt32(0x000000C3))!)",
-        "atilde"                          : "\(UnicodeScalar(UInt32(0x000000E3))!)",
-        "Auml"                            : "\(UnicodeScalar(UInt32(0x000000C4))!)",
-        "auml"                            : "\(UnicodeScalar(UInt32(0x000000E4))!)",
-        "awconint"                        : "\(UnicodeScalar(UInt32(0x00002233))!)",
-        "awint"                           : "\(UnicodeScalar(UInt32(0x00002A11))!)",
-        "backcong"                        : "\(UnicodeScalar(UInt32(0x0000224C))!)",
-        "backepsilon"                     : "\(UnicodeScalar(UInt32(0x000003F6))!)",
-        "backprime"                       : "\(UnicodeScalar(UInt32(0x00002035))!)",
-        "backsim"                         : "\(UnicodeScalar(UInt32(0x0000223D))!)",
-        "backsimeq"                       : "\(UnicodeScalar(UInt32(0x000022CD))!)",
-        "Backslash"                       : "\(UnicodeScalar(UInt32(0x00002216))!)",
-        "Barv"                            : "\(UnicodeScalar(UInt32(0x00002AE7))!)",
-        "barvee"                          : "\(UnicodeScalar(UInt32(0x000022BD))!)",
-        "barwed"                          : "\(UnicodeScalar(UInt32(0x00002305))!)",
-        "Barwed"                          : "\(UnicodeScalar(UInt32(0x00002306))!)",
-        "barwedge"                        : "\(UnicodeScalar(UInt32(0x00002305))!)",
-        "bbrk"                            : "\(UnicodeScalar(UInt32(0x000023B5))!)",
-        "bbrktbrk"                        : "\(UnicodeScalar(UInt32(0x000023B6))!)",
-        "bcong"                           : "\(UnicodeScalar(UInt32(0x0000224C))!)",
-        "Bcy"                             : "\(UnicodeScalar(UInt32(0x00000411))!)",
-        "bcy"                             : "\(UnicodeScalar(UInt32(0x00000431))!)",
-        "bdquo"                           : "\(UnicodeScalar(UInt32(0x0000201E))!)",
-        "becaus"                          : "\(UnicodeScalar(UInt32(0x00002235))!)",
-        "because"                         : "\(UnicodeScalar(UInt32(0x00002235))!)",
-        "Because"                         : "\(UnicodeScalar(UInt32(0x00002235))!)",
-        "bemptyv"                         : "\(UnicodeScalar(UInt32(0x000029B0))!)",
-        "bepsi"                           : "\(UnicodeScalar(UInt32(0x000003F6))!)",
-        "bernou"                          : "\(UnicodeScalar(UInt32(0x0000212C))!)",
-        "Bernoullis"                      : "\(UnicodeScalar(UInt32(0x0000212C))!)",
-        "Beta"                            : "\(UnicodeScalar(UInt32(0x00000392))!)",
-        "beta"                            : "\(UnicodeScalar(UInt32(0x000003B2))!)",
-        "beth"                            : "\(UnicodeScalar(UInt32(0x00002136))!)",
-        "between"                         : "\(UnicodeScalar(UInt32(0x0000226C))!)",
-        "Bfr"                             : "\(UnicodeScalar(UInt32(0x0001D505))!)",
-        "bfr"                             : "\(UnicodeScalar(UInt32(0x0001D51F))!)",
-        "bigcap"                          : "\(UnicodeScalar(UInt32(0x000022C2))!)",
-        "bigcirc"                         : "\(UnicodeScalar(UInt32(0x000025EF))!)",
-        "bigcup"                          : "\(UnicodeScalar(UInt32(0x000022C3))!)",
-        "bigodot"                         : "\(UnicodeScalar(UInt32(0x00002A00))!)",
-        "bigoplus"                        : "\(UnicodeScalar(UInt32(0x00002A01))!)",
-        "bigotimes"                       : "\(UnicodeScalar(UInt32(0x00002A02))!)",
-        "bigsqcup"                        : "\(UnicodeScalar(UInt32(0x00002A06))!)",
-        "bigstar"                         : "\(UnicodeScalar(UInt32(0x00002605))!)",
-        "bigtriangledown"                 : "\(UnicodeScalar(UInt32(0x000025BD))!)",
-        "bigtriangleup"                   : "\(UnicodeScalar(UInt32(0x000025B3))!)",
-        "biguplus"                        : "\(UnicodeScalar(UInt32(0x00002A04))!)",
-        "bigvee"                          : "\(UnicodeScalar(UInt32(0x000022C1))!)",
-        "bigwedge"                        : "\(UnicodeScalar(UInt32(0x000022C0))!)",
-        "bkarow"                          : "\(UnicodeScalar(UInt32(0x0000290D))!)",
-        "blacklozenge"                    : "\(UnicodeScalar(UInt32(0x000029EB))!)",
-        "blacksquare"                     : "\(UnicodeScalar(UInt32(0x000025AA))!)",
-        "blacktriangle"                   : "\(UnicodeScalar(UInt32(0x000025B4))!)",
-        "blacktriangledown"               : "\(UnicodeScalar(UInt32(0x000025BE))!)",
-        "blacktriangleleft"               : "\(UnicodeScalar(UInt32(0x000025C2))!)",
-        "blacktriangleright"              : "\(UnicodeScalar(UInt32(0x000025B8))!)",
-        "blank"                           : "\(UnicodeScalar(UInt32(0x00002423))!)",
-        "blk12"                           : "\(UnicodeScalar(UInt32(0x00002592))!)",
-        "blk14"                           : "\(UnicodeScalar(UInt32(0x00002591))!)",
-        "blk34"                           : "\(UnicodeScalar(UInt32(0x00002593))!)",
-        "block"                           : "\(UnicodeScalar(UInt32(0x00002588))!)",
-        "bne"                             : "\(UnicodeScalar(UInt32(0x0000003D))!)\(UnicodeScalar(UInt32(0x000020E5))!)",
-        "bnequiv"                         : "\(UnicodeScalar(UInt32(0x00002261))!)\(UnicodeScalar(UInt32(0x000020E5))!)",
-        "bnot"                            : "\(UnicodeScalar(UInt32(0x00002310))!)",
-        "bNot"                            : "\(UnicodeScalar(UInt32(0x00002AED))!)",
-        "Bopf"                            : "\(UnicodeScalar(UInt32(0x0001D539))!)",
-        "bopf"                            : "\(UnicodeScalar(UInt32(0x0001D553))!)",
-        "bot"                             : "\(UnicodeScalar(UInt32(0x000022A5))!)",
-        "bottom"                          : "\(UnicodeScalar(UInt32(0x000022A5))!)",
-        "bowtie"                          : "\(UnicodeScalar(UInt32(0x000022C8))!)",
-        "boxbox"                          : "\(UnicodeScalar(UInt32(0x000029C9))!)",
-        "boxdl"                           : "\(UnicodeScalar(UInt32(0x00002510))!)",
-        "boxdL"                           : "\(UnicodeScalar(UInt32(0x00002555))!)",
-        "boxDl"                           : "\(UnicodeScalar(UInt32(0x00002556))!)",
-        "boxDL"                           : "\(UnicodeScalar(UInt32(0x00002557))!)",
-        "boxdr"                           : "\(UnicodeScalar(UInt32(0x0000250C))!)",
-        "boxdR"                           : "\(UnicodeScalar(UInt32(0x00002552))!)",
-        "boxDr"                           : "\(UnicodeScalar(UInt32(0x00002553))!)",
-        "boxDR"                           : "\(UnicodeScalar(UInt32(0x00002554))!)",
-        "boxh"                            : "\(UnicodeScalar(UInt32(0x00002500))!)",
-        "boxH"                            : "\(UnicodeScalar(UInt32(0x00002550))!)",
-        "boxhd"                           : "\(UnicodeScalar(UInt32(0x0000252C))!)",
-        "boxHd"                           : "\(UnicodeScalar(UInt32(0x00002564))!)",
-        "boxhD"                           : "\(UnicodeScalar(UInt32(0x00002565))!)",
-        "boxHD"                           : "\(UnicodeScalar(UInt32(0x00002566))!)",
-        "boxhu"                           : "\(UnicodeScalar(UInt32(0x00002534))!)",
-        "boxHu"                           : "\(UnicodeScalar(UInt32(0x00002567))!)",
-        "boxhU"                           : "\(UnicodeScalar(UInt32(0x00002568))!)",
-        "boxHU"                           : "\(UnicodeScalar(UInt32(0x00002569))!)",
-        "boxminus"                        : "\(UnicodeScalar(UInt32(0x0000229F))!)",
-        "boxplus"                         : "\(UnicodeScalar(UInt32(0x0000229E))!)",
-        "boxtimes"                        : "\(UnicodeScalar(UInt32(0x000022A0))!)",
-        "boxul"                           : "\(UnicodeScalar(UInt32(0x00002518))!)",
-        "boxuL"                           : "\(UnicodeScalar(UInt32(0x0000255B))!)",
-        "boxUl"                           : "\(UnicodeScalar(UInt32(0x0000255C))!)",
-        "boxUL"                           : "\(UnicodeScalar(UInt32(0x0000255D))!)",
-        "boxur"                           : "\(UnicodeScalar(UInt32(0x00002514))!)",
-        "boxuR"                           : "\(UnicodeScalar(UInt32(0x00002558))!)",
-        "boxUr"                           : "\(UnicodeScalar(UInt32(0x00002559))!)",
-        "boxUR"                           : "\(UnicodeScalar(UInt32(0x0000255A))!)",
-        "boxv"                            : "\(UnicodeScalar(UInt32(0x00002502))!)",
-        "boxV"                            : "\(UnicodeScalar(UInt32(0x00002551))!)",
-        "boxvh"                           : "\(UnicodeScalar(UInt32(0x0000253C))!)",
-        "boxvH"                           : "\(UnicodeScalar(UInt32(0x0000256A))!)",
-        "boxVh"                           : "\(UnicodeScalar(UInt32(0x0000256B))!)",
-        "boxVH"                           : "\(UnicodeScalar(UInt32(0x0000256C))!)",
-        "boxvl"                           : "\(UnicodeScalar(UInt32(0x00002524))!)",
-        "boxvL"                           : "\(UnicodeScalar(UInt32(0x00002561))!)",
-        "boxVl"                           : "\(UnicodeScalar(UInt32(0x00002562))!)",
-        "boxVL"                           : "\(UnicodeScalar(UInt32(0x00002563))!)",
-        "boxvr"                           : "\(UnicodeScalar(UInt32(0x0000251C))!)",
-        "boxvR"                           : "\(UnicodeScalar(UInt32(0x0000255E))!)",
-        "boxVr"                           : "\(UnicodeScalar(UInt32(0x0000255F))!)",
-        "boxVR"                           : "\(UnicodeScalar(UInt32(0x00002560))!)",
-        "bprime"                          : "\(UnicodeScalar(UInt32(0x00002035))!)",
-        "breve"                           : "\(UnicodeScalar(UInt32(0x000002D8))!)",
-        "Breve"                           : "\(UnicodeScalar(UInt32(0x000002D8))!)",
-        "brvbar"                          : "\(UnicodeScalar(UInt32(0x000000A6))!)",
-        "Bscr"                            : "\(UnicodeScalar(UInt32(0x0000212C))!)",
-        "bscr"                            : "\(UnicodeScalar(UInt32(0x0001D4B7))!)",
-        "bsemi"                           : "\(UnicodeScalar(UInt32(0x0000204F))!)",
-        "bsim"                            : "\(UnicodeScalar(UInt32(0x0000223D))!)",
-        "bsime"                           : "\(UnicodeScalar(UInt32(0x000022CD))!)",
-        "bsol"                            : "\(UnicodeScalar(UInt32(0x0000005C))!)",
-        "bsolb"                           : "\(UnicodeScalar(UInt32(0x000029C5))!)",
-        "bsolhsub"                        : "\(UnicodeScalar(UInt32(0x000027C8))!)",
-        "bull"                            : "\(UnicodeScalar(UInt32(0x00002022))!)",
-        "bullet"                          : "\(UnicodeScalar(UInt32(0x00002022))!)",
-        "bump"                            : "\(UnicodeScalar(UInt32(0x0000224E))!)",
-        "bumpe"                           : "\(UnicodeScalar(UInt32(0x0000224F))!)",
-        "bumpE"                           : "\(UnicodeScalar(UInt32(0x00002AAE))!)",
-        "Bumpeq"                          : "\(UnicodeScalar(UInt32(0x0000224E))!)",
-        "bumpeq"                          : "\(UnicodeScalar(UInt32(0x0000224F))!)",
-        "Cacute"                          : "\(UnicodeScalar(UInt32(0x00000106))!)",
-        "cacute"                          : "\(UnicodeScalar(UInt32(0x00000107))!)",
-        "cap"                             : "\(UnicodeScalar(UInt32(0x00002229))!)",
-        "Cap"                             : "\(UnicodeScalar(UInt32(0x000022D2))!)",
-        "capand"                          : "\(UnicodeScalar(UInt32(0x00002A44))!)",
-        "capbrcup"                        : "\(UnicodeScalar(UInt32(0x00002A49))!)",
-        "capcap"                          : "\(UnicodeScalar(UInt32(0x00002A4B))!)",
-        "capcup"                          : "\(UnicodeScalar(UInt32(0x00002A47))!)",
-        "capdot"                          : "\(UnicodeScalar(UInt32(0x00002A40))!)",
-        "CapitalDifferentialD"            : "\(UnicodeScalar(UInt32(0x00002145))!)",
-        "caps"                            : "\(UnicodeScalar(UInt32(0x00002229))!)\(UnicodeScalar(UInt32(0x0000FE00))!)",
-        "caret"                           : "\(UnicodeScalar(UInt32(0x00002041))!)",
-        "caron"                           : "\(UnicodeScalar(UInt32(0x000002C7))!)",
-        "Cayleys"                         : "\(UnicodeScalar(UInt32(0x0000212D))!)",
-        "ccaps"                           : "\(UnicodeScalar(UInt32(0x00002A4D))!)",
-        "Ccaron"                          : "\(UnicodeScalar(UInt32(0x0000010C))!)",
-        "ccaron"                          : "\(UnicodeScalar(UInt32(0x0000010D))!)",
-        "Ccedil"                          : "\(UnicodeScalar(UInt32(0x000000C7))!)",
-        "ccedil"                          : "\(UnicodeScalar(UInt32(0x000000E7))!)",
-        "Ccirc"                           : "\(UnicodeScalar(UInt32(0x00000108))!)",
-        "ccirc"                           : "\(UnicodeScalar(UInt32(0x00000109))!)",
-        "Cconint"                         : "\(UnicodeScalar(UInt32(0x00002230))!)",
-        "ccups"                           : "\(UnicodeScalar(UInt32(0x00002A4C))!)",
-        "ccupssm"                         : "\(UnicodeScalar(UInt32(0x00002A50))!)",
-        "Cdot"                            : "\(UnicodeScalar(UInt32(0x0000010A))!)",
-        "cdot"                            : "\(UnicodeScalar(UInt32(0x0000010B))!)",
-        "cedil"                           : "\(UnicodeScalar(UInt32(0x000000B8))!)",
-        "Cedilla"                         : "\(UnicodeScalar(UInt32(0x000000B8))!)",
-        "cemptyv"                         : "\(UnicodeScalar(UInt32(0x000029B2))!)",
-        "cent"                            : "\(UnicodeScalar(UInt32(0x000000A2))!)",
-        "centerdot"                       : "\(UnicodeScalar(UInt32(0x000000B7))!)",
-        "CenterDot"                       : "\(UnicodeScalar(UInt32(0x000000B7))!)",
-        "Cfr"                             : "\(UnicodeScalar(UInt32(0x0000212D))!)",
-        "cfr"                             : "\(UnicodeScalar(UInt32(0x0001D520))!)",
-        "CHcy"                            : "\(UnicodeScalar(UInt32(0x00000427))!)",
-        "chcy"                            : "\(UnicodeScalar(UInt32(0x00000447))!)",
-        "check"                           : "\(UnicodeScalar(UInt32(0x00002713))!)",
-        "checkmark"                       : "\(UnicodeScalar(UInt32(0x00002713))!)",
-        "Chi"                             : "\(UnicodeScalar(UInt32(0x000003A7))!)",
-        "chi"                             : "\(UnicodeScalar(UInt32(0x000003C7))!)",
-        "cir"                             : "\(UnicodeScalar(UInt32(0x000025CB))!)",
-        "circ"                            : "\(UnicodeScalar(UInt32(0x000002C6))!)",
-        "circeq"                          : "\(UnicodeScalar(UInt32(0x00002257))!)",
-        "circlearrowleft"                 : "\(UnicodeScalar(UInt32(0x000021BA))!)",
-        "circlearrowright"                : "\(UnicodeScalar(UInt32(0x000021BB))!)",
-        "circledast"                      : "\(UnicodeScalar(UInt32(0x0000229B))!)",
-        "circledcirc"                     : "\(UnicodeScalar(UInt32(0x0000229A))!)",
-        "circleddash"                     : "\(UnicodeScalar(UInt32(0x0000229D))!)",
-        "CircleDot"                       : "\(UnicodeScalar(UInt32(0x00002299))!)",
-        "circledR"                        : "\(UnicodeScalar(UInt32(0x000000AE))!)",
-        "circledS"                        : "\(UnicodeScalar(UInt32(0x000024C8))!)",
-        "CircleMinus"                     : "\(UnicodeScalar(UInt32(0x00002296))!)",
-        "CirclePlus"                      : "\(UnicodeScalar(UInt32(0x00002295))!)",
-        "CircleTimes"                     : "\(UnicodeScalar(UInt32(0x00002297))!)",
-        "cire"                            : "\(UnicodeScalar(UInt32(0x00002257))!)",
-        "cirE"                            : "\(UnicodeScalar(UInt32(0x000029C3))!)",
-        "cirfnint"                        : "\(UnicodeScalar(UInt32(0x00002A10))!)",
-        "cirmid"                          : "\(UnicodeScalar(UInt32(0x00002AEF))!)",
-        "cirscir"                         : "\(UnicodeScalar(UInt32(0x000029C2))!)",
-        "ClockwiseContourIntegral"        : "\(UnicodeScalar(UInt32(0x00002232))!)",
-        "CloseCurlyDoubleQuote"           : "\(UnicodeScalar(UInt32(0x0000201D))!)",
-        "CloseCurlyQuote"                 : "\(UnicodeScalar(UInt32(0x00002019))!)",
-        "clubs"                           : "\(UnicodeScalar(UInt32(0x00002663))!)",
-        "clubsuit"                        : "\(UnicodeScalar(UInt32(0x00002663))!)",
-        "colon"                           : "\(UnicodeScalar(UInt32(0x0000003A))!)",
-        "Colon"                           : "\(UnicodeScalar(UInt32(0x00002237))!)",
-        "colone"                          : "\(UnicodeScalar(UInt32(0x00002254))!)",
-        "Colone"                          : "\(UnicodeScalar(UInt32(0x00002A74))!)",
-        "coloneq"                         : "\(UnicodeScalar(UInt32(0x00002254))!)",
-        "comma"                           : "\(UnicodeScalar(UInt32(0x0000002C))!)",
-        "commat"                          : "\(UnicodeScalar(UInt32(0x00000040))!)",
-        "comp"                            : "\(UnicodeScalar(UInt32(0x00002201))!)",
-        "compfn"                          : "\(UnicodeScalar(UInt32(0x00002218))!)",
-        "complement"                      : "\(UnicodeScalar(UInt32(0x00002201))!)",
-        "complexes"                       : "\(UnicodeScalar(UInt32(0x00002102))!)",
-        "cong"                            : "\(UnicodeScalar(UInt32(0x00002245))!)",
-        "congdot"                         : "\(UnicodeScalar(UInt32(0x00002A6D))!)",
-        "Congruent"                       : "\(UnicodeScalar(UInt32(0x00002261))!)",
-        "conint"                          : "\(UnicodeScalar(UInt32(0x0000222E))!)",
-        "Conint"                          : "\(UnicodeScalar(UInt32(0x0000222F))!)",
-        "ContourIntegral"                 : "\(UnicodeScalar(UInt32(0x0000222E))!)",
-        "Copf"                            : "\(UnicodeScalar(UInt32(0x00002102))!)",
-        "copf"                            : "\(UnicodeScalar(UInt32(0x0001D554))!)",
-        "coprod"                          : "\(UnicodeScalar(UInt32(0x00002210))!)",
-        "Coproduct"                       : "\(UnicodeScalar(UInt32(0x00002210))!)",
-        "copy"                            : "\(UnicodeScalar(UInt32(0x000000A9))!)",
-        "COPY"                            : "\(UnicodeScalar(UInt32(0x000000A9))!)",
-        "copysr"                          : "\(UnicodeScalar(UInt32(0x00002117))!)",
-        "CounterClockwiseContourIntegral" : "\(UnicodeScalar(UInt32(0x00002233))!)",
-        "crarr"                           : "\(UnicodeScalar(UInt32(0x000021B5))!)",
-        "cross"                           : "\(UnicodeScalar(UInt32(0x00002717))!)",
-        "Cross"                           : "\(UnicodeScalar(UInt32(0x00002A2F))!)",
-        "Cscr"                            : "\(UnicodeScalar(UInt32(0x0001D49E))!)",
-        "cscr"                            : "\(UnicodeScalar(UInt32(0x0001D4B8))!)",
-        "csub"                            : "\(UnicodeScalar(UInt32(0x00002ACF))!)",
-        "csube"                           : "\(UnicodeScalar(UInt32(0x00002AD1))!)",
-        "csup"                            : "\(UnicodeScalar(UInt32(0x00002AD0))!)",
-        "csupe"                           : "\(UnicodeScalar(UInt32(0x00002AD2))!)",
-        "ctdot"                           : "\(UnicodeScalar(UInt32(0x000022EF))!)",
-        "cudarrl"                         : "\(UnicodeScalar(UInt32(0x00002938))!)",
-        "cudarrr"                         : "\(UnicodeScalar(UInt32(0x00002935))!)",
-        "cuepr"                           : "\(UnicodeScalar(UInt32(0x000022DE))!)",
-        "cuesc"                           : "\(UnicodeScalar(UInt32(0x000022DF))!)",
-        "cularr"                          : "\(UnicodeScalar(UInt32(0x000021B6))!)",
-        "cularrp"                         : "\(UnicodeScalar(UInt32(0x0000293D))!)",
-        "cup"                             : "\(UnicodeScalar(UInt32(0x0000222A))!)",
-        "Cup"                             : "\(UnicodeScalar(UInt32(0x000022D3))!)",
-        "cupbrcap"                        : "\(UnicodeScalar(UInt32(0x00002A48))!)",
-        "CupCap"                          : "\(UnicodeScalar(UInt32(0x0000224D))!)",
-        "cupcap"                          : "\(UnicodeScalar(UInt32(0x00002A46))!)",
-        "cupcup"                          : "\(UnicodeScalar(UInt32(0x00002A4A))!)",
-        "cupdot"                          : "\(UnicodeScalar(UInt32(0x0000228D))!)",
-        "cupor"                           : "\(UnicodeScalar(UInt32(0x00002A45))!)",
-        "cups"                            : "\(UnicodeScalar(UInt32(0x0000222A))!)\(UnicodeScalar(UInt32(0x0000FE00))!)",
-        "curarr"                          : "\(UnicodeScalar(UInt32(0x000021B7))!)",
-        "curarrm"                         : "\(UnicodeScalar(UInt32(0x0000293C))!)",
-        "curlyeqprec"                     : "\(UnicodeScalar(UInt32(0x000022DE))!)",
-        "curlyeqsucc"                     : "\(UnicodeScalar(UInt32(0x000022DF))!)",
-        "curlyvee"                        : "\(UnicodeScalar(UInt32(0x000022CE))!)",
-        "curlywedge"                      : "\(UnicodeScalar(UInt32(0x000022CF))!)",
-        "curren"                          : "\(UnicodeScalar(UInt32(0x000000A4))!)",
-        "curvearrowleft"                  : "\(UnicodeScalar(UInt32(0x000021B6))!)",
-        "curvearrowright"                 : "\(UnicodeScalar(UInt32(0x000021B7))!)",
-        "cuvee"                           : "\(UnicodeScalar(UInt32(0x000022CE))!)",
-        "cuwed"                           : "\(UnicodeScalar(UInt32(0x000022CF))!)",
-        "cwconint"                        : "\(UnicodeScalar(UInt32(0x00002232))!)",
-        "cwint"                           : "\(UnicodeScalar(UInt32(0x00002231))!)",
-        "cylcty"                          : "\(UnicodeScalar(UInt32(0x0000232D))!)",
-        "dagger"                          : "\(UnicodeScalar(UInt32(0x00002020))!)",
-        "Dagger"                          : "\(UnicodeScalar(UInt32(0x00002021))!)",
-        "daleth"                          : "\(UnicodeScalar(UInt32(0x00002138))!)",
-        "darr"                            : "\(UnicodeScalar(UInt32(0x00002193))!)",
-        "Darr"                            : "\(UnicodeScalar(UInt32(0x000021A1))!)",
-        "dArr"                            : "\(UnicodeScalar(UInt32(0x000021D3))!)",
-        "dash"                            : "\(UnicodeScalar(UInt32(0x00002010))!)",
-        "dashv"                           : "\(UnicodeScalar(UInt32(0x000022A3))!)",
-        "Dashv"                           : "\(UnicodeScalar(UInt32(0x00002AE4))!)",
-        "dbkarow"                         : "\(UnicodeScalar(UInt32(0x0000290F))!)",
-        "dblac"                           : "\(UnicodeScalar(UInt32(0x000002DD))!)",
-        "Dcaron"                          : "\(UnicodeScalar(UInt32(0x0000010E))!)",
-        "dcaron"                          : "\(UnicodeScalar(UInt32(0x0000010F))!)",
-        "Dcy"                             : "\(UnicodeScalar(UInt32(0x00000414))!)",
-        "dcy"                             : "\(UnicodeScalar(UInt32(0x00000434))!)",
-        "DD"                              : "\(UnicodeScalar(UInt32(0x00002145))!)",
-        "dd"                              : "\(UnicodeScalar(UInt32(0x00002146))!)",
-        "ddagger"                         : "\(UnicodeScalar(UInt32(0x00002021))!)",
-        "ddarr"                           : "\(UnicodeScalar(UInt32(0x000021CA))!)",
-        "DDotrahd"                        : "\(UnicodeScalar(UInt32(0x00002911))!)",
-        "ddotseq"                         : "\(UnicodeScalar(UInt32(0x00002A77))!)",
-        "deg"                             : "\(UnicodeScalar(UInt32(0x000000B0))!)",
-        "Del"                             : "\(UnicodeScalar(UInt32(0x00002207))!)",
-        "Delta"                           : "\(UnicodeScalar(UInt32(0x00000394))!)",
-        "delta"                           : "\(UnicodeScalar(UInt32(0x000003B4))!)",
-        "demptyv"                         : "\(UnicodeScalar(UInt32(0x000029B1))!)",
-        "dfisht"                          : "\(UnicodeScalar(UInt32(0x0000297F))!)",
-        "Dfr"                             : "\(UnicodeScalar(UInt32(0x0001D507))!)",
-        "dfr"                             : "\(UnicodeScalar(UInt32(0x0001D521))!)",
-        "dHar"                            : "\(UnicodeScalar(UInt32(0x00002965))!)",
-        "dharl"                           : "\(UnicodeScalar(UInt32(0x000021C3))!)",
-        "dharr"                           : "\(UnicodeScalar(UInt32(0x000021C2))!)",
-        "DiacriticalAcute"                : "\(UnicodeScalar(UInt32(0x000000B4))!)",
-        "DiacriticalDot"                  : "\(UnicodeScalar(UInt32(0x000002D9))!)",
-        "DiacriticalDoubleAcute"          : "\(UnicodeScalar(UInt32(0x000002DD))!)",
-        "DiacriticalGrave"                : "\(UnicodeScalar(UInt32(0x00000060))!)",
-        "DiacriticalTilde"                : "\(UnicodeScalar(UInt32(0x000002DC))!)",
-        "diam"                            : "\(UnicodeScalar(UInt32(0x000022C4))!)",
-        "diamond"                         : "\(UnicodeScalar(UInt32(0x000022C4))!)",
-        "Diamond"                         : "\(UnicodeScalar(UInt32(0x000022C4))!)",
-        "diamondsuit"                     : "\(UnicodeScalar(UInt32(0x00002666))!)",
-        "diams"                           : "\(UnicodeScalar(UInt32(0x00002666))!)",
-        "die"                             : "\(UnicodeScalar(UInt32(0x000000A8))!)",
-        "DifferentialD"                   : "\(UnicodeScalar(UInt32(0x00002146))!)",
-        "digamma"                         : "\(UnicodeScalar(UInt32(0x000003DD))!)",
-        "disin"                           : "\(UnicodeScalar(UInt32(0x000022F2))!)",
-        "div"                             : "\(UnicodeScalar(UInt32(0x000000F7))!)",
-        "divide"                          : "\(UnicodeScalar(UInt32(0x000000F7))!)",
-        "divideontimes"                   : "\(UnicodeScalar(UInt32(0x000022C7))!)",
-        "divonx"                          : "\(UnicodeScalar(UInt32(0x000022C7))!)",
-        "DJcy"                            : "\(UnicodeScalar(UInt32(0x00000402))!)",
-        "djcy"                            : "\(UnicodeScalar(UInt32(0x00000452))!)",
-        "dlcorn"                          : "\(UnicodeScalar(UInt32(0x0000231E))!)",
-        "dlcrop"                          : "\(UnicodeScalar(UInt32(0x0000230D))!)",
-        "dollar"                          : "\(UnicodeScalar(UInt32(0x00000024))!)",
-        "Dopf"                            : "\(UnicodeScalar(UInt32(0x0001D53B))!)",
-        "dopf"                            : "\(UnicodeScalar(UInt32(0x0001D555))!)",
-        "Dot"                             : "\(UnicodeScalar(UInt32(0x000000A8))!)",
-        "dot"                             : "\(UnicodeScalar(UInt32(0x000002D9))!)",
-        "DotDot"                          : "\(UnicodeScalar(UInt32(0x000020DC))!)",
-        "doteq"                           : "\(UnicodeScalar(UInt32(0x00002250))!)",
-        "doteqdot"                        : "\(UnicodeScalar(UInt32(0x00002251))!)",
-        "DotEqual"                        : "\(UnicodeScalar(UInt32(0x00002250))!)",
-        "dotminus"                        : "\(UnicodeScalar(UInt32(0x00002238))!)",
-        "dotplus"                         : "\(UnicodeScalar(UInt32(0x00002214))!)",
-        "dotsquare"                       : "\(UnicodeScalar(UInt32(0x000022A1))!)",
-        "doublebarwedge"                  : "\(UnicodeScalar(UInt32(0x00002306))!)",
-        "DoubleContourIntegral"           : "\(UnicodeScalar(UInt32(0x0000222F))!)",
-        "DoubleDot"                       : "\(UnicodeScalar(UInt32(0x000000A8))!)",
-        "DoubleDownArrow"                 : "\(UnicodeScalar(UInt32(0x000021D3))!)",
-        "DoubleLeftArrow"                 : "\(UnicodeScalar(UInt32(0x000021D0))!)",
-        "DoubleLeftRightArrow"            : "\(UnicodeScalar(UInt32(0x000021D4))!)",
-        "DoubleLeftTee"                   : "\(UnicodeScalar(UInt32(0x00002AE4))!)",
-        "DoubleLongLeftArrow"             : "\(UnicodeScalar(UInt32(0x000027F8))!)",
-        "DoubleLongLeftRightArrow"        : "\(UnicodeScalar(UInt32(0x000027FA))!)",
-        "DoubleLongRightArrow"            : "\(UnicodeScalar(UInt32(0x000027F9))!)",
-        "DoubleRightArrow"                : "\(UnicodeScalar(UInt32(0x000021D2))!)",
-        "DoubleRightTee"                  : "\(UnicodeScalar(UInt32(0x000022A8))!)",
-        "DoubleUpArrow"                   : "\(UnicodeScalar(UInt32(0x000021D1))!)",
-        "DoubleUpDownArrow"               : "\(UnicodeScalar(UInt32(0x000021D5))!)",
-        "DoubleVerticalBar"               : "\(UnicodeScalar(UInt32(0x00002225))!)",
-        "downarrow"                       : "\(UnicodeScalar(UInt32(0x00002193))!)",
-        "DownArrow"                       : "\(UnicodeScalar(UInt32(0x00002193))!)",
-        "Downarrow"                       : "\(UnicodeScalar(UInt32(0x000021D3))!)",
-        "DownArrowBar"                    : "\(UnicodeScalar(UInt32(0x00002913))!)",
-        "DownArrowUpArrow"                : "\(UnicodeScalar(UInt32(0x000021F5))!)",
-        "DownBreve"                       : "\(UnicodeScalar(UInt32(0x00000311))!)",
-        "downdownarrows"                  : "\(UnicodeScalar(UInt32(0x000021CA))!)",
-        "downharpoonleft"                 : "\(UnicodeScalar(UInt32(0x000021C3))!)",
-        "downharpoonright"                : "\(UnicodeScalar(UInt32(0x000021C2))!)",
-        "DownLeftRightVector"             : "\(UnicodeScalar(UInt32(0x00002950))!)",
-        "DownLeftTeeVector"               : "\(UnicodeScalar(UInt32(0x0000295E))!)",
-        "DownLeftVector"                  : "\(UnicodeScalar(UInt32(0x000021BD))!)",
-        "DownLeftVectorBar"               : "\(UnicodeScalar(UInt32(0x00002956))!)",
-        "DownRightTeeVector"              : "\(UnicodeScalar(UInt32(0x0000295F))!)",
-        "DownRightVector"                 : "\(UnicodeScalar(UInt32(0x000021C1))!)",
-        "DownRightVectorBar"              : "\(UnicodeScalar(UInt32(0x00002957))!)",
-        "DownTee"                         : "\(UnicodeScalar(UInt32(0x000022A4))!)",
-        "DownTeeArrow"                    : "\(UnicodeScalar(UInt32(0x000021A7))!)",
-        "drbkarow"                        : "\(UnicodeScalar(UInt32(0x00002910))!)",
-        "drcorn"                          : "\(UnicodeScalar(UInt32(0x0000231F))!)",
-        "drcrop"                          : "\(UnicodeScalar(UInt32(0x0000230C))!)",
-        "Dscr"                            : "\(UnicodeScalar(UInt32(0x0001D49F))!)",
-        "dscr"                            : "\(UnicodeScalar(UInt32(0x0001D4B9))!)",
-        "DScy"                            : "\(UnicodeScalar(UInt32(0x00000405))!)",
-        "dscy"                            : "\(UnicodeScalar(UInt32(0x00000455))!)",
-        "dsol"                            : "\(UnicodeScalar(UInt32(0x000029F6))!)",
-        "Dstrok"                          : "\(UnicodeScalar(UInt32(0x00000110))!)",
-        "dstrok"                          : "\(UnicodeScalar(UInt32(0x00000111))!)",
-        "dtdot"                           : "\(UnicodeScalar(UInt32(0x000022F1))!)",
-        "dtri"                            : "\(UnicodeScalar(UInt32(0x000025BF))!)",
-        "dtrif"                           : "\(UnicodeScalar(UInt32(0x000025BE))!)",
-        "duarr"                           : "\(UnicodeScalar(UInt32(0x000021F5))!)",
-        "duhar"                           : "\(UnicodeScalar(UInt32(0x0000296F))!)",
-        "dwangle"                         : "\(UnicodeScalar(UInt32(0x000029A6))!)",
-        "DZcy"                            : "\(UnicodeScalar(UInt32(0x0000040F))!)",
-        "dzcy"                            : "\(UnicodeScalar(UInt32(0x0000045F))!)",
-        "dzigrarr"                        : "\(UnicodeScalar(UInt32(0x000027FF))!)",
-        "Eacute"                          : "\(UnicodeScalar(UInt32(0x000000C9))!)",
-        "eacute"                          : "\(UnicodeScalar(UInt32(0x000000E9))!)",
-        "easter"                          : "\(UnicodeScalar(UInt32(0x00002A6E))!)",
-        "Ecaron"                          : "\(UnicodeScalar(UInt32(0x0000011A))!)",
-        "ecaron"                          : "\(UnicodeScalar(UInt32(0x0000011B))!)",
-        "ecir"                            : "\(UnicodeScalar(UInt32(0x00002256))!)",
-        "Ecirc"                           : "\(UnicodeScalar(UInt32(0x000000CA))!)",
-        "ecirc"                           : "\(UnicodeScalar(UInt32(0x000000EA))!)",
-        "ecolon"                          : "\(UnicodeScalar(UInt32(0x00002255))!)",
-        "Ecy"                             : "\(UnicodeScalar(UInt32(0x0000042D))!)",
-        "ecy"                             : "\(UnicodeScalar(UInt32(0x0000044D))!)",
-        "eDDot"                           : "\(UnicodeScalar(UInt32(0x00002A77))!)",
-        "Edot"                            : "\(UnicodeScalar(UInt32(0x00000116))!)",
-        "edot"                            : "\(UnicodeScalar(UInt32(0x00000117))!)",
-        "eDot"                            : "\(UnicodeScalar(UInt32(0x00002251))!)",
-        "ee"                              : "\(UnicodeScalar(UInt32(0x00002147))!)",
-        "efDot"                           : "\(UnicodeScalar(UInt32(0x00002252))!)",
-        "Efr"                             : "\(UnicodeScalar(UInt32(0x0001D508))!)",
-        "efr"                             : "\(UnicodeScalar(UInt32(0x0001D522))!)",
-        "eg"                              : "\(UnicodeScalar(UInt32(0x00002A9A))!)",
-        "Egrave"                          : "\(UnicodeScalar(UInt32(0x000000C8))!)",
-        "egrave"                          : "\(UnicodeScalar(UInt32(0x000000E8))!)",
-        "egs"                             : "\(UnicodeScalar(UInt32(0x00002A96))!)",
-        "egsdot"                          : "\(UnicodeScalar(UInt32(0x00002A98))!)",
-        "el"                              : "\(UnicodeScalar(UInt32(0x00002A99))!)",
-        "Element"                         : "\(UnicodeScalar(UInt32(0x00002208))!)",
-        "elinters"                        : "\(UnicodeScalar(UInt32(0x000023E7))!)",
-        "ell"                             : "\(UnicodeScalar(UInt32(0x00002113))!)",
-        "els"                             : "\(UnicodeScalar(UInt32(0x00002A95))!)",
-        "elsdot"                          : "\(UnicodeScalar(UInt32(0x00002A97))!)",
-        "Emacr"                           : "\(UnicodeScalar(UInt32(0x00000112))!)",
-        "emacr"                           : "\(UnicodeScalar(UInt32(0x00000113))!)",
-        "empty"                           : "\(UnicodeScalar(UInt32(0x00002205))!)",
-        "emptyset"                        : "\(UnicodeScalar(UInt32(0x00002205))!)",
-        "EmptySmallSquare"                : "\(UnicodeScalar(UInt32(0x000025FB))!)",
-        "emptyv"                          : "\(UnicodeScalar(UInt32(0x00002205))!)",
-        "EmptyVerySmallSquare"            : "\(UnicodeScalar(UInt32(0x000025AB))!)",
-        "emsp"                            : "\(UnicodeScalar(UInt32(0x00002003))!)",
-        "emsp13"                          : "\(UnicodeScalar(UInt32(0x00002004))!)",
-        "emsp14"                          : "\(UnicodeScalar(UInt32(0x00002005))!)",
-        "ENG"                             : "\(UnicodeScalar(UInt32(0x0000014A))!)",
-        "eng"                             : "\(UnicodeScalar(UInt32(0x0000014B))!)",
-        "ensp"                            : "\(UnicodeScalar(UInt32(0x00002002))!)",
-        "Eogon"                           : "\(UnicodeScalar(UInt32(0x00000118))!)",
-        "eogon"                           : "\(UnicodeScalar(UInt32(0x00000119))!)",
-        "Eopf"                            : "\(UnicodeScalar(UInt32(0x0001D53C))!)",
-        "eopf"                            : "\(UnicodeScalar(UInt32(0x0001D556))!)",
-        "epar"                            : "\(UnicodeScalar(UInt32(0x000022D5))!)",
-        "eparsl"                          : "\(UnicodeScalar(UInt32(0x000029E3))!)",
-        "eplus"                           : "\(UnicodeScalar(UInt32(0x00002A71))!)",
-        "epsi"                            : "\(UnicodeScalar(UInt32(0x000003B5))!)",
-        "Epsilon"                         : "\(UnicodeScalar(UInt32(0x00000395))!)",
-        "epsilon"                         : "\(UnicodeScalar(UInt32(0x000003B5))!)",
-        "epsiv"                           : "\(UnicodeScalar(UInt32(0x000003F5))!)",
-        "eqcirc"                          : "\(UnicodeScalar(UInt32(0x00002256))!)",
-        "eqcolon"                         : "\(UnicodeScalar(UInt32(0x00002255))!)",
-        "eqsim"                           : "\(UnicodeScalar(UInt32(0x00002242))!)",
-        "eqslantgtr"                      : "\(UnicodeScalar(UInt32(0x00002A96))!)",
-        "eqslantless"                     : "\(UnicodeScalar(UInt32(0x00002A95))!)",
-        "Equal"                           : "\(UnicodeScalar(UInt32(0x00002A75))!)",
-        "equals"                          : "\(UnicodeScalar(UInt32(0x0000003D))!)",
-        "EqualTilde"                      : "\(UnicodeScalar(UInt32(0x00002242))!)",
-        "equest"                          : "\(UnicodeScalar(UInt32(0x0000225F))!)",
-        "Equilibrium"                     : "\(UnicodeScalar(UInt32(0x000021CC))!)",
-        "equiv"                           : "\(UnicodeScalar(UInt32(0x00002261))!)",
-        "equivDD"                         : "\(UnicodeScalar(UInt32(0x00002A78))!)",
-        "eqvparsl"                        : "\(UnicodeScalar(UInt32(0x000029E5))!)",
-        "erarr"                           : "\(UnicodeScalar(UInt32(0x00002971))!)",
-        "erDot"                           : "\(UnicodeScalar(UInt32(0x00002253))!)",
-        "escr"                            : "\(UnicodeScalar(UInt32(0x0000212F))!)",
-        "Escr"                            : "\(UnicodeScalar(UInt32(0x00002130))!)",
-        "esdot"                           : "\(UnicodeScalar(UInt32(0x00002250))!)",
-        "esim"                            : "\(UnicodeScalar(UInt32(0x00002242))!)",
-        "Esim"                            : "\(UnicodeScalar(UInt32(0x00002A73))!)",
-        "Eta"                             : "\(UnicodeScalar(UInt32(0x00000397))!)",
-        "eta"                             : "\(UnicodeScalar(UInt32(0x000003B7))!)",
-        "ETH"                             : "\(UnicodeScalar(UInt32(0x000000D0))!)",
-        "eth"                             : "\(UnicodeScalar(UInt32(0x000000F0))!)",
-        "Euml"                            : "\(UnicodeScalar(UInt32(0x000000CB))!)",
-        "euml"                            : "\(UnicodeScalar(UInt32(0x000000EB))!)",
-        "euro"                            : "\(UnicodeScalar(UInt32(0x000020AC))!)",
-        "excl"                            : "\(UnicodeScalar(UInt32(0x00000021))!)",
-        "exist"                           : "\(UnicodeScalar(UInt32(0x00002203))!)",
-        "Exists"                          : "\(UnicodeScalar(UInt32(0x00002203))!)",
-        "expectation"                     : "\(UnicodeScalar(UInt32(0x00002130))!)",
-        "ExponentialE"                    : "\(UnicodeScalar(UInt32(0x00002147))!)",
-        "exponentiale"                    : "\(UnicodeScalar(UInt32(0x00002147))!)",
-        "fallingdotseq"                   : "\(UnicodeScalar(UInt32(0x00002252))!)",
-        "Fcy"                             : "\(UnicodeScalar(UInt32(0x00000424))!)",
-        "fcy"                             : "\(UnicodeScalar(UInt32(0x00000444))!)",
-        "female"                          : "\(UnicodeScalar(UInt32(0x00002640))!)",
-        "ffilig"                          : "\(UnicodeScalar(UInt32(0x0000FB03))!)",
-        "fflig"                           : "\(UnicodeScalar(UInt32(0x0000FB00))!)",
-        "ffllig"                          : "\(UnicodeScalar(UInt32(0x0000FB04))!)",
-        "Ffr"                             : "\(UnicodeScalar(UInt32(0x0001D509))!)",
-        "ffr"                             : "\(UnicodeScalar(UInt32(0x0001D523))!)",
-        "filig"                           : "\(UnicodeScalar(UInt32(0x0000FB01))!)",
-        "FilledSmallSquare"               : "\(UnicodeScalar(UInt32(0x000025FC))!)",
-        "FilledVerySmallSquare"           : "\(UnicodeScalar(UInt32(0x000025AA))!)",
-        "fjlig"                           : "\(UnicodeScalar(UInt32(0x00000066))!)\(UnicodeScalar(UInt32(0x0000006A))!)",
-        "flat"                            : "\(UnicodeScalar(UInt32(0x0000266D))!)",
-        "fllig"                           : "\(UnicodeScalar(UInt32(0x0000FB02))!)",
-        "fltns"                           : "\(UnicodeScalar(UInt32(0x000025B1))!)",
-        "fnof"                            : "\(UnicodeScalar(UInt32(0x00000192))!)",
-        "Fopf"                            : "\(UnicodeScalar(UInt32(0x0001D53D))!)",
-        "fopf"                            : "\(UnicodeScalar(UInt32(0x0001D557))!)",
-        "forall"                          : "\(UnicodeScalar(UInt32(0x00002200))!)",
-        "ForAll"                          : "\(UnicodeScalar(UInt32(0x00002200))!)",
-        "fork"                            : "\(UnicodeScalar(UInt32(0x000022D4))!)",
-        "forkv"                           : "\(UnicodeScalar(UInt32(0x00002AD9))!)",
-        "Fouriertrf"                      : "\(UnicodeScalar(UInt32(0x00002131))!)",
-        "fpartint"                        : "\(UnicodeScalar(UInt32(0x00002A0D))!)",
-        "frac12"                          : "\(UnicodeScalar(UInt32(0x000000BD))!)",
-        "frac13"                          : "\(UnicodeScalar(UInt32(0x00002153))!)",
-        "frac14"                          : "\(UnicodeScalar(UInt32(0x000000BC))!)",
-        "frac15"                          : "\(UnicodeScalar(UInt32(0x00002155))!)",
-        "frac16"                          : "\(UnicodeScalar(UInt32(0x00002159))!)",
-        "frac18"                          : "\(UnicodeScalar(UInt32(0x0000215B))!)",
-        "frac23"                          : "\(UnicodeScalar(UInt32(0x00002154))!)",
-        "frac25"                          : "\(UnicodeScalar(UInt32(0x00002156))!)",
-        "frac34"                          : "\(UnicodeScalar(UInt32(0x000000BE))!)",
-        "frac35"                          : "\(UnicodeScalar(UInt32(0x00002157))!)",
-        "frac38"                          : "\(UnicodeScalar(UInt32(0x0000215C))!)",
-        "frac45"                          : "\(UnicodeScalar(UInt32(0x00002158))!)",
-        "frac56"                          : "\(UnicodeScalar(UInt32(0x0000215A))!)",
-        "frac58"                          : "\(UnicodeScalar(UInt32(0x0000215D))!)",
-        "frac78"                          : "\(UnicodeScalar(UInt32(0x0000215E))!)",
-        "frasl"                           : "\(UnicodeScalar(UInt32(0x00002044))!)",
-        "frown"                           : "\(UnicodeScalar(UInt32(0x00002322))!)",
-        "Fscr"                            : "\(UnicodeScalar(UInt32(0x00002131))!)",
-        "fscr"                            : "\(UnicodeScalar(UInt32(0x0001D4BB))!)",
-        "gacute"                          : "\(UnicodeScalar(UInt32(0x000001F5))!)",
-        "Gamma"                           : "\(UnicodeScalar(UInt32(0x00000393))!)",
-        "gamma"                           : "\(UnicodeScalar(UInt32(0x000003B3))!)",
-        "Gammad"                          : "\(UnicodeScalar(UInt32(0x000003DC))!)",
-        "gammad"                          : "\(UnicodeScalar(UInt32(0x000003DD))!)",
-        "gap"                             : "\(UnicodeScalar(UInt32(0x00002A86))!)",
-        "Gbreve"                          : "\(UnicodeScalar(UInt32(0x0000011E))!)",
-        "gbreve"                          : "\(UnicodeScalar(UInt32(0x0000011F))!)",
-        "Gcedil"                          : "\(UnicodeScalar(UInt32(0x00000122))!)",
-        "Gcirc"                           : "\(UnicodeScalar(UInt32(0x0000011C))!)",
-        "gcirc"                           : "\(UnicodeScalar(UInt32(0x0000011D))!)",
-        "Gcy"                             : "\(UnicodeScalar(UInt32(0x00000413))!)",
-        "gcy"                             : "\(UnicodeScalar(UInt32(0x00000433))!)",
-        "Gdot"                            : "\(UnicodeScalar(UInt32(0x00000120))!)",
-        "gdot"                            : "\(UnicodeScalar(UInt32(0x00000121))!)",
-        "ge"                              : "\(UnicodeScalar(UInt32(0x00002265))!)",
-        "gE"                              : "\(UnicodeScalar(UInt32(0x00002267))!)",
-        "gel"                             : "\(UnicodeScalar(UInt32(0x000022DB))!)",
-        "gEl"                             : "\(UnicodeScalar(UInt32(0x00002A8C))!)",
-        "geq"                             : "\(UnicodeScalar(UInt32(0x00002265))!)",
-        "geqq"                            : "\(UnicodeScalar(UInt32(0x00002267))!)",
-        "geqslant"                        : "\(UnicodeScalar(UInt32(0x00002A7E))!)",
-        "ges"                             : "\(UnicodeScalar(UInt32(0x00002A7E))!)",
-        "gescc"                           : "\(UnicodeScalar(UInt32(0x00002AA9))!)",
-        "gesdot"                          : "\(UnicodeScalar(UInt32(0x00002A80))!)",
-        "gesdoto"                         : "\(UnicodeScalar(UInt32(0x00002A82))!)",
-        "gesdotol"                        : "\(UnicodeScalar(UInt32(0x00002A84))!)",
-        "gesl"                            : "\(UnicodeScalar(UInt32(0x000022DB))!)\(UnicodeScalar(UInt32(0x0000FE00))!)",
-        "gesles"                          : "\(UnicodeScalar(UInt32(0x00002A94))!)",
-        "Gfr"                             : "\(UnicodeScalar(UInt32(0x0001D50A))!)",
-        "gfr"                             : "\(UnicodeScalar(UInt32(0x0001D524))!)",
-        "gg"                              : "\(UnicodeScalar(UInt32(0x0000226B))!)",
-        "Gg"                              : "\(UnicodeScalar(UInt32(0x000022D9))!)",
-        "ggg"                             : "\(UnicodeScalar(UInt32(0x000022D9))!)",
-        "gimel"                           : "\(UnicodeScalar(UInt32(0x00002137))!)",
-        "GJcy"                            : "\(UnicodeScalar(UInt32(0x00000403))!)",
-        "gjcy"                            : "\(UnicodeScalar(UInt32(0x00000453))!)",
-        "gl"                              : "\(UnicodeScalar(UInt32(0x00002277))!)",
-        "gla"                             : "\(UnicodeScalar(UInt32(0x00002AA5))!)",
-        "glE"                             : "\(UnicodeScalar(UInt32(0x00002A92))!)",
-        "glj"                             : "\(UnicodeScalar(UInt32(0x00002AA4))!)",
-        "gnap"                            : "\(UnicodeScalar(UInt32(0x00002A8A))!)",
-        "gnapprox"                        : "\(UnicodeScalar(UInt32(0x00002A8A))!)",
-        "gnE"                             : "\(UnicodeScalar(UInt32(0x00002269))!)",
-        "gne"                             : "\(UnicodeScalar(UInt32(0x00002A88))!)",
-        "gneq"                            : "\(UnicodeScalar(UInt32(0x00002A88))!)",
-        "gneqq"                           : "\(UnicodeScalar(UInt32(0x00002269))!)",
-        "gnsim"                           : "\(UnicodeScalar(UInt32(0x000022E7))!)",
-        "Gopf"                            : "\(UnicodeScalar(UInt32(0x0001D53E))!)",
-        "gopf"                            : "\(UnicodeScalar(UInt32(0x0001D558))!)",
-        "grave"                           : "\(UnicodeScalar(UInt32(0x00000060))!)",
-        "GreaterEqual"                    : "\(UnicodeScalar(UInt32(0x00002265))!)",
-        "GreaterEqualLess"                : "\(UnicodeScalar(UInt32(0x000022DB))!)",
-        "GreaterFullEqual"                : "\(UnicodeScalar(UInt32(0x00002267))!)",
-        "GreaterGreater"                  : "\(UnicodeScalar(UInt32(0x00002AA2))!)",
-        "GreaterLess"                     : "\(UnicodeScalar(UInt32(0x00002277))!)",
-        "GreaterSlantEqual"               : "\(UnicodeScalar(UInt32(0x00002A7E))!)",
-        "GreaterTilde"                    : "\(UnicodeScalar(UInt32(0x00002273))!)",
-        "gscr"                            : "\(UnicodeScalar(UInt32(0x0000210A))!)",
-        "Gscr"                            : "\(UnicodeScalar(UInt32(0x0001D4A2))!)",
-        "gsim"                            : "\(UnicodeScalar(UInt32(0x00002273))!)",
-        "gsime"                           : "\(UnicodeScalar(UInt32(0x00002A8E))!)",
-        "gsiml"                           : "\(UnicodeScalar(UInt32(0x00002A90))!)",
-        "gt"                              : "\(UnicodeScalar(UInt32(0x0000003E))!)",
-        "GT"                              : "\(UnicodeScalar(UInt32(0x0000003E))!)",
-        "Gt"                              : "\(UnicodeScalar(UInt32(0x0000226B))!)",
-        "gtcc"                            : "\(UnicodeScalar(UInt32(0x00002AA7))!)",
-        "gtcir"                           : "\(UnicodeScalar(UInt32(0x00002A7A))!)",
-        "gtdot"                           : "\(UnicodeScalar(UInt32(0x000022D7))!)",
-        "gtlPar"                          : "\(UnicodeScalar(UInt32(0x00002995))!)",
-        "gtquest"                         : "\(UnicodeScalar(UInt32(0x00002A7C))!)",
-        "gtrapprox"                       : "\(UnicodeScalar(UInt32(0x00002A86))!)",
-        "gtrarr"                          : "\(UnicodeScalar(UInt32(0x00002978))!)",
-        "gtrdot"                          : "\(UnicodeScalar(UInt32(0x000022D7))!)",
-        "gtreqless"                       : "\(UnicodeScalar(UInt32(0x000022DB))!)",
-        "gtreqqless"                      : "\(UnicodeScalar(UInt32(0x00002A8C))!)",
-        "gtrless"                         : "\(UnicodeScalar(UInt32(0x00002277))!)",
-        "gtrsim"                          : "\(UnicodeScalar(UInt32(0x00002273))!)",
-        "gvertneqq"                       : "\(UnicodeScalar(UInt32(0x00002269))!)\(UnicodeScalar(UInt32(0x0000FE00))!)",
-        "gvnE"                            : "\(UnicodeScalar(UInt32(0x00002269))!)\(UnicodeScalar(UInt32(0x0000FE00))!)",
-        "Hacek"                           : "\(UnicodeScalar(UInt32(0x000002C7))!)",
-        "hairsp"                          : "\(UnicodeScalar(UInt32(0x0000200A))!)",
-        "half"                            : "\(UnicodeScalar(UInt32(0x000000BD))!)",
-        "hamilt"                          : "\(UnicodeScalar(UInt32(0x0000210B))!)",
-        "HARDcy"                          : "\(UnicodeScalar(UInt32(0x0000042A))!)",
-        "hardcy"                          : "\(UnicodeScalar(UInt32(0x0000044A))!)",
-        "harr"                            : "\(UnicodeScalar(UInt32(0x00002194))!)",
-        "hArr"                            : "\(UnicodeScalar(UInt32(0x000021D4))!)",
-        "harrcir"                         : "\(UnicodeScalar(UInt32(0x00002948))!)",
-        "harrw"                           : "\(UnicodeScalar(UInt32(0x000021AD))!)",
-        "Hat"                             : "\(UnicodeScalar(UInt32(0x0000005E))!)",
-        "hbar"                            : "\(UnicodeScalar(UInt32(0x0000210F))!)",
-        "Hcirc"                           : "\(UnicodeScalar(UInt32(0x00000124))!)",
-        "hcirc"                           : "\(UnicodeScalar(UInt32(0x00000125))!)",
-        "hearts"                          : "\(UnicodeScalar(UInt32(0x00002665))!)",
-        "heartsuit"                       : "\(UnicodeScalar(UInt32(0x00002665))!)",
-        "hellip"                          : "\(UnicodeScalar(UInt32(0x00002026))!)",
-        "hercon"                          : "\(UnicodeScalar(UInt32(0x000022B9))!)",
-        "Hfr"                             : "\(UnicodeScalar(UInt32(0x0000210C))!)",
-        "hfr"                             : "\(UnicodeScalar(UInt32(0x0001D525))!)",
-        "HilbertSpace"                    : "\(UnicodeScalar(UInt32(0x0000210B))!)",
-        "hksearow"                        : "\(UnicodeScalar(UInt32(0x00002925))!)",
-        "hkswarow"                        : "\(UnicodeScalar(UInt32(0x00002926))!)",
-        "hoarr"                           : "\(UnicodeScalar(UInt32(0x000021FF))!)",
-        "homtht"                          : "\(UnicodeScalar(UInt32(0x0000223B))!)",
-        "hookleftarrow"                   : "\(UnicodeScalar(UInt32(0x000021A9))!)",
-        "hookrightarrow"                  : "\(UnicodeScalar(UInt32(0x000021AA))!)",
-        "Hopf"                            : "\(UnicodeScalar(UInt32(0x0000210D))!)",
-        "hopf"                            : "\(UnicodeScalar(UInt32(0x0001D559))!)",
-        "horbar"                          : "\(UnicodeScalar(UInt32(0x00002015))!)",
-        "HorizontalLine"                  : "\(UnicodeScalar(UInt32(0x00002500))!)",
-        "Hscr"                            : "\(UnicodeScalar(UInt32(0x0000210B))!)",
-        "hscr"                            : "\(UnicodeScalar(UInt32(0x0001D4BD))!)",
-        "hslash"                          : "\(UnicodeScalar(UInt32(0x0000210F))!)",
-        "Hstrok"                          : "\(UnicodeScalar(UInt32(0x00000126))!)",
-        "hstrok"                          : "\(UnicodeScalar(UInt32(0x00000127))!)",
-        "HumpDownHump"                    : "\(UnicodeScalar(UInt32(0x0000224E))!)",
-        "HumpEqual"                       : "\(UnicodeScalar(UInt32(0x0000224F))!)",
-        "hybull"                          : "\(UnicodeScalar(UInt32(0x00002043))!)",
-        "hyphen"                          : "\(UnicodeScalar(UInt32(0x00002010))!)",
-        "Iacute"                          : "\(UnicodeScalar(UInt32(0x000000CD))!)",
-        "iacute"                          : "\(UnicodeScalar(UInt32(0x000000ED))!)",
-        "ic"                              : "\(UnicodeScalar(UInt32(0x00002063))!)",
-        "Icirc"                           : "\(UnicodeScalar(UInt32(0x000000CE))!)",
-        "icirc"                           : "\(UnicodeScalar(UInt32(0x000000EE))!)",
-        "Icy"                             : "\(UnicodeScalar(UInt32(0x00000418))!)",
-        "icy"                             : "\(UnicodeScalar(UInt32(0x00000438))!)",
-        "Idot"                            : "\(UnicodeScalar(UInt32(0x00000130))!)",
-        "IEcy"                            : "\(UnicodeScalar(UInt32(0x00000415))!)",
-        "iecy"                            : "\(UnicodeScalar(UInt32(0x00000435))!)",
-        "iexcl"                           : "\(UnicodeScalar(UInt32(0x000000A1))!)",
-        "iff"                             : "\(UnicodeScalar(UInt32(0x000021D4))!)",
-        "Ifr"                             : "\(UnicodeScalar(UInt32(0x00002111))!)",
-        "ifr"                             : "\(UnicodeScalar(UInt32(0x0001D526))!)",
-        "Igrave"                          : "\(UnicodeScalar(UInt32(0x000000CC))!)",
-        "igrave"                          : "\(UnicodeScalar(UInt32(0x000000EC))!)",
-        "ii"                              : "\(UnicodeScalar(UInt32(0x00002148))!)",
-        "iiiint"                          : "\(UnicodeScalar(UInt32(0x00002A0C))!)",
-        "iiint"                           : "\(UnicodeScalar(UInt32(0x0000222D))!)",
-        "iinfin"                          : "\(UnicodeScalar(UInt32(0x000029DC))!)",
-        "iiota"                           : "\(UnicodeScalar(UInt32(0x00002129))!)",
-        "IJlig"                           : "\(UnicodeScalar(UInt32(0x00000132))!)",
-        "ijlig"                           : "\(UnicodeScalar(UInt32(0x00000133))!)",
-        "Im"                              : "\(UnicodeScalar(UInt32(0x00002111))!)",
-        "Imacr"                           : "\(UnicodeScalar(UInt32(0x0000012A))!)",
-        "imacr"                           : "\(UnicodeScalar(UInt32(0x0000012B))!)",
-        "image"                           : "\(UnicodeScalar(UInt32(0x00002111))!)",
-        "ImaginaryI"                      : "\(UnicodeScalar(UInt32(0x00002148))!)",
-        "imagline"                        : "\(UnicodeScalar(UInt32(0x00002110))!)",
-        "imagpart"                        : "\(UnicodeScalar(UInt32(0x00002111))!)",
-        "imath"                           : "\(UnicodeScalar(UInt32(0x00000131))!)",
-        "imof"                            : "\(UnicodeScalar(UInt32(0x000022B7))!)",
-        "imped"                           : "\(UnicodeScalar(UInt32(0x000001B5))!)",
-        "Implies"                         : "\(UnicodeScalar(UInt32(0x000021D2))!)",
-        "in"                              : "\(UnicodeScalar(UInt32(0x00002208))!)",
-        "incare"                          : "\(UnicodeScalar(UInt32(0x00002105))!)",
-        "infin"                           : "\(UnicodeScalar(UInt32(0x0000221E))!)",
-        "infintie"                        : "\(UnicodeScalar(UInt32(0x000029DD))!)",
-        "inodot"                          : "\(UnicodeScalar(UInt32(0x00000131))!)",
-        "int"                             : "\(UnicodeScalar(UInt32(0x0000222B))!)",
-        "Int"                             : "\(UnicodeScalar(UInt32(0x0000222C))!)",
-        "intcal"                          : "\(UnicodeScalar(UInt32(0x000022BA))!)",
-        "integers"                        : "\(UnicodeScalar(UInt32(0x00002124))!)",
-        "Integral"                        : "\(UnicodeScalar(UInt32(0x0000222B))!)",
-        "intercal"                        : "\(UnicodeScalar(UInt32(0x000022BA))!)",
-        "Intersection"                    : "\(UnicodeScalar(UInt32(0x000022C2))!)",
-        "intlarhk"                        : "\(UnicodeScalar(UInt32(0x00002A17))!)",
-        "intprod"                         : "\(UnicodeScalar(UInt32(0x00002A3C))!)",
-        "InvisibleComma"                  : "\(UnicodeScalar(UInt32(0x00002063))!)",
-        "InvisibleTimes"                  : "\(UnicodeScalar(UInt32(0x00002062))!)",
-        "IOcy"                            : "\(UnicodeScalar(UInt32(0x00000401))!)",
-        "iocy"                            : "\(UnicodeScalar(UInt32(0x00000451))!)",
-        "Iogon"                           : "\(UnicodeScalar(UInt32(0x0000012E))!)",
-        "iogon"                           : "\(UnicodeScalar(UInt32(0x0000012F))!)",
-        "Iopf"                            : "\(UnicodeScalar(UInt32(0x0001D540))!)",
-        "iopf"                            : "\(UnicodeScalar(UInt32(0x0001D55A))!)",
-        "Iota"                            : "\(UnicodeScalar(UInt32(0x00000399))!)",
-        "iota"                            : "\(UnicodeScalar(UInt32(0x000003B9))!)",
-        "iprod"                           : "\(UnicodeScalar(UInt32(0x00002A3C))!)",
-        "iquest"                          : "\(UnicodeScalar(UInt32(0x000000BF))!)",
-        "Iscr"                            : "\(UnicodeScalar(UInt32(0x00002110))!)",
-        "iscr"                            : "\(UnicodeScalar(UInt32(0x0001D4BE))!)",
-        "isin"                            : "\(UnicodeScalar(UInt32(0x00002208))!)",
-        "isindot"                         : "\(UnicodeScalar(UInt32(0x000022F5))!)",
-        "isinE"                           : "\(UnicodeScalar(UInt32(0x000022F9))!)",
-        "isins"                           : "\(UnicodeScalar(UInt32(0x000022F4))!)",
-        "isinsv"                          : "\(UnicodeScalar(UInt32(0x000022F3))!)",
-        "isinv"                           : "\(UnicodeScalar(UInt32(0x00002208))!)",
-        "it"                              : "\(UnicodeScalar(UInt32(0x00002062))!)",
-        "Itilde"                          : "\(UnicodeScalar(UInt32(0x00000128))!)",
-        "itilde"                          : "\(UnicodeScalar(UInt32(0x00000129))!)",
-        "Iukcy"                           : "\(UnicodeScalar(UInt32(0x00000406))!)",
-        "iukcy"                           : "\(UnicodeScalar(UInt32(0x00000456))!)",
-        "Iuml"                            : "\(UnicodeScalar(UInt32(0x000000CF))!)",
-        "iuml"                            : "\(UnicodeScalar(UInt32(0x000000EF))!)",
-        "Jcirc"                           : "\(UnicodeScalar(UInt32(0x00000134))!)",
-        "jcirc"                           : "\(UnicodeScalar(UInt32(0x00000135))!)",
-        "Jcy"                             : "\(UnicodeScalar(UInt32(0x00000419))!)",
-        "jcy"                             : "\(UnicodeScalar(UInt32(0x00000439))!)",
-        "Jfr"                             : "\(UnicodeScalar(UInt32(0x0001D50D))!)",
-        "jfr"                             : "\(UnicodeScalar(UInt32(0x0001D527))!)",
-        "jmath"                           : "\(UnicodeScalar(UInt32(0x00000237))!)",
-        "Jopf"                            : "\(UnicodeScalar(UInt32(0x0001D541))!)",
-        "jopf"                            : "\(UnicodeScalar(UInt32(0x0001D55B))!)",
-        "Jscr"                            : "\(UnicodeScalar(UInt32(0x0001D4A5))!)",
-        "jscr"                            : "\(UnicodeScalar(UInt32(0x0001D4BF))!)",
-        "Jsercy"                          : "\(UnicodeScalar(UInt32(0x00000408))!)",
-        "jsercy"                          : "\(UnicodeScalar(UInt32(0x00000458))!)",
-        "Jukcy"                           : "\(UnicodeScalar(UInt32(0x00000404))!)",
-        "jukcy"                           : "\(UnicodeScalar(UInt32(0x00000454))!)",
-        "Kappa"                           : "\(UnicodeScalar(UInt32(0x0000039A))!)",
-        "kappa"                           : "\(UnicodeScalar(UInt32(0x000003BA))!)",
-        "kappav"                          : "\(UnicodeScalar(UInt32(0x000003F0))!)",
-        "Kcedil"                          : "\(UnicodeScalar(UInt32(0x00000136))!)",
-        "kcedil"                          : "\(UnicodeScalar(UInt32(0x00000137))!)",
-        "Kcy"                             : "\(UnicodeScalar(UInt32(0x0000041A))!)",
-        "kcy"                             : "\(UnicodeScalar(UInt32(0x0000043A))!)",
-        "Kfr"                             : "\(UnicodeScalar(UInt32(0x0001D50E))!)",
-        "kfr"                             : "\(UnicodeScalar(UInt32(0x0001D528))!)",
-        "kgreen"                          : "\(UnicodeScalar(UInt32(0x00000138))!)",
-        "KHcy"                            : "\(UnicodeScalar(UInt32(0x00000425))!)",
-        "khcy"                            : "\(UnicodeScalar(UInt32(0x00000445))!)",
-        "KJcy"                            : "\(UnicodeScalar(UInt32(0x0000040C))!)",
-        "kjcy"                            : "\(UnicodeScalar(UInt32(0x0000045C))!)",
-        "Kopf"                            : "\(UnicodeScalar(UInt32(0x0001D542))!)",
-        "kopf"                            : "\(UnicodeScalar(UInt32(0x0001D55C))!)",
-        "Kscr"                            : "\(UnicodeScalar(UInt32(0x0001D4A6))!)",
-        "kscr"                            : "\(UnicodeScalar(UInt32(0x0001D4C0))!)",
-        "lAarr"                           : "\(UnicodeScalar(UInt32(0x000021DA))!)",
-        "Lacute"                          : "\(UnicodeScalar(UInt32(0x00000139))!)",
-        "lacute"                          : "\(UnicodeScalar(UInt32(0x0000013A))!)",
-        "laemptyv"                        : "\(UnicodeScalar(UInt32(0x000029B4))!)",
-        "lagran"                          : "\(UnicodeScalar(UInt32(0x00002112))!)",
-        "Lambda"                          : "\(UnicodeScalar(UInt32(0x0000039B))!)",
-        "lambda"                          : "\(UnicodeScalar(UInt32(0x000003BB))!)",
-        "lang"                            : "\(UnicodeScalar(UInt32(0x000027E8))!)",
-        "Lang"                            : "\(UnicodeScalar(UInt32(0x000027EA))!)",
-        "langd"                           : "\(UnicodeScalar(UInt32(0x00002991))!)",
-        "langle"                          : "\(UnicodeScalar(UInt32(0x000027E8))!)",
-        "lap"                             : "\(UnicodeScalar(UInt32(0x00002A85))!)",
-        "Laplacetrf"                      : "\(UnicodeScalar(UInt32(0x00002112))!)",
-        "laquo"                           : "\(UnicodeScalar(UInt32(0x000000AB))!)",
-        "larr"                            : "\(UnicodeScalar(UInt32(0x00002190))!)",
-        "Larr"                            : "\(UnicodeScalar(UInt32(0x0000219E))!)",
-        "lArr"                            : "\(UnicodeScalar(UInt32(0x000021D0))!)",
-        "larrb"                           : "\(UnicodeScalar(UInt32(0x000021E4))!)",
-        "larrbfs"                         : "\(UnicodeScalar(UInt32(0x0000291F))!)",
-        "larrfs"                          : "\(UnicodeScalar(UInt32(0x0000291D))!)",
-        "larrhk"                          : "\(UnicodeScalar(UInt32(0x000021A9))!)",
-        "larrlp"                          : "\(UnicodeScalar(UInt32(0x000021AB))!)",
-        "larrpl"                          : "\(UnicodeScalar(UInt32(0x00002939))!)",
-        "larrsim"                         : "\(UnicodeScalar(UInt32(0x00002973))!)",
-        "larrtl"                          : "\(UnicodeScalar(UInt32(0x000021A2))!)",
-        "lat"                             : "\(UnicodeScalar(UInt32(0x00002AAB))!)",
-        "latail"                          : "\(UnicodeScalar(UInt32(0x00002919))!)",
-        "lAtail"                          : "\(UnicodeScalar(UInt32(0x0000291B))!)",
-        "late"                            : "\(UnicodeScalar(UInt32(0x00002AAD))!)",
-        "lates"                           : "\(UnicodeScalar(UInt32(0x00002AAD))!)\(UnicodeScalar(UInt32(0x0000FE00))!)",
-        "lbarr"                           : "\(UnicodeScalar(UInt32(0x0000290C))!)",
-        "lBarr"                           : "\(UnicodeScalar(UInt32(0x0000290E))!)",
-        "lbbrk"                           : "\(UnicodeScalar(UInt32(0x00002772))!)",
-        "lbrace"                          : "\(UnicodeScalar(UInt32(0x0000007B))!)",
-        "lbrack"                          : "\(UnicodeScalar(UInt32(0x0000005B))!)",
-        "lbrke"                           : "\(UnicodeScalar(UInt32(0x0000298B))!)",
-        "lbrksld"                         : "\(UnicodeScalar(UInt32(0x0000298F))!)",
-        "lbrkslu"                         : "\(UnicodeScalar(UInt32(0x0000298D))!)",
-        "Lcaron"                          : "\(UnicodeScalar(UInt32(0x0000013D))!)",
-        "lcaron"                          : "\(UnicodeScalar(UInt32(0x0000013E))!)",
-        "Lcedil"                          : "\(UnicodeScalar(UInt32(0x0000013B))!)",
-        "lcedil"                          : "\(UnicodeScalar(UInt32(0x0000013C))!)",
-        "lceil"                           : "\(UnicodeScalar(UInt32(0x00002308))!)",
-        "lcub"                            : "\(UnicodeScalar(UInt32(0x0000007B))!)",
-        "Lcy"                             : "\(UnicodeScalar(UInt32(0x0000041B))!)",
-        "lcy"                             : "\(UnicodeScalar(UInt32(0x0000043B))!)",
-        "ldca"                            : "\(UnicodeScalar(UInt32(0x00002936))!)",
-        "ldquo"                           : "\(UnicodeScalar(UInt32(0x0000201C))!)",
-        "ldquor"                          : "\(UnicodeScalar(UInt32(0x0000201E))!)",
-        "ldrdhar"                         : "\(UnicodeScalar(UInt32(0x00002967))!)",
-        "ldrushar"                        : "\(UnicodeScalar(UInt32(0x0000294B))!)",
-        "ldsh"                            : "\(UnicodeScalar(UInt32(0x000021B2))!)",
-        "le"                              : "\(UnicodeScalar(UInt32(0x00002264))!)",
-        "lE"                              : "\(UnicodeScalar(UInt32(0x00002266))!)",
-        "LeftAngleBracket"                : "\(UnicodeScalar(UInt32(0x000027E8))!)",
-        "leftarrow"                       : "\(UnicodeScalar(UInt32(0x00002190))!)",
-        "LeftArrow"                       : "\(UnicodeScalar(UInt32(0x00002190))!)",
-        "Leftarrow"                       : "\(UnicodeScalar(UInt32(0x000021D0))!)",
-        "LeftArrowBar"                    : "\(UnicodeScalar(UInt32(0x000021E4))!)",
-        "LeftArrowRightArrow"             : "\(UnicodeScalar(UInt32(0x000021C6))!)",
-        "leftarrowtail"                   : "\(UnicodeScalar(UInt32(0x000021A2))!)",
-        "LeftCeiling"                     : "\(UnicodeScalar(UInt32(0x00002308))!)",
-        "LeftDoubleBracket"               : "\(UnicodeScalar(UInt32(0x000027E6))!)",
-        "LeftDownTeeVector"               : "\(UnicodeScalar(UInt32(0x00002961))!)",
-        "LeftDownVector"                  : "\(UnicodeScalar(UInt32(0x000021C3))!)",
-        "LeftDownVectorBar"               : "\(UnicodeScalar(UInt32(0x00002959))!)",
-        "LeftFloor"                       : "\(UnicodeScalar(UInt32(0x0000230A))!)",
-        "leftharpoondown"                 : "\(UnicodeScalar(UInt32(0x000021BD))!)",
-        "leftharpoonup"                   : "\(UnicodeScalar(UInt32(0x000021BC))!)",
-        "leftleftarrows"                  : "\(UnicodeScalar(UInt32(0x000021C7))!)",
-        "leftrightarrow"                  : "\(UnicodeScalar(UInt32(0x00002194))!)",
-        "LeftRightArrow"                  : "\(UnicodeScalar(UInt32(0x00002194))!)",
-        "Leftrightarrow"                  : "\(UnicodeScalar(UInt32(0x000021D4))!)",
-        "leftrightarrows"                 : "\(UnicodeScalar(UInt32(0x000021C6))!)",
-        "leftrightharpoons"               : "\(UnicodeScalar(UInt32(0x000021CB))!)",
-        "leftrightsquigarrow"             : "\(UnicodeScalar(UInt32(0x000021AD))!)",
-        "LeftRightVector"                 : "\(UnicodeScalar(UInt32(0x0000294E))!)",
-        "LeftTee"                         : "\(UnicodeScalar(UInt32(0x000022A3))!)",
-        "LeftTeeArrow"                    : "\(UnicodeScalar(UInt32(0x000021A4))!)",
-        "LeftTeeVector"                   : "\(UnicodeScalar(UInt32(0x0000295A))!)",
-        "leftthreetimes"                  : "\(UnicodeScalar(UInt32(0x000022CB))!)",
-        "LeftTriangle"                    : "\(UnicodeScalar(UInt32(0x000022B2))!)",
-        "LeftTriangleBar"                 : "\(UnicodeScalar(UInt32(0x000029CF))!)",
-        "LeftTriangleEqual"               : "\(UnicodeScalar(UInt32(0x000022B4))!)",
-        "LeftUpDownVector"                : "\(UnicodeScalar(UInt32(0x00002951))!)",
-        "LeftUpTeeVector"                 : "\(UnicodeScalar(UInt32(0x00002960))!)",
-        "LeftUpVector"                    : "\(UnicodeScalar(UInt32(0x000021BF))!)",
-        "LeftUpVectorBar"                 : "\(UnicodeScalar(UInt32(0x00002958))!)",
-        "LeftVector"                      : "\(UnicodeScalar(UInt32(0x000021BC))!)",
-        "LeftVectorBar"                   : "\(UnicodeScalar(UInt32(0x00002952))!)",
-        "leg"                             : "\(UnicodeScalar(UInt32(0x000022DA))!)",
-        "lEg"                             : "\(UnicodeScalar(UInt32(0x00002A8B))!)",
-        "leq"                             : "\(UnicodeScalar(UInt32(0x00002264))!)",
-        "leqq"                            : "\(UnicodeScalar(UInt32(0x00002266))!)",
-        "leqslant"                        : "\(UnicodeScalar(UInt32(0x00002A7D))!)",
-        "les"                             : "\(UnicodeScalar(UInt32(0x00002A7D))!)",
-        "lescc"                           : "\(UnicodeScalar(UInt32(0x00002AA8))!)",
-        "lesdot"                          : "\(UnicodeScalar(UInt32(0x00002A7F))!)",
-        "lesdoto"                         : "\(UnicodeScalar(UInt32(0x00002A81))!)",
-        "lesdotor"                        : "\(UnicodeScalar(UInt32(0x00002A83))!)",
-        "lesg"                            : "\(UnicodeScalar(UInt32(0x000022DA))!)\(UnicodeScalar(UInt32(0x0000FE00))!)",
-        "lesges"                          : "\(UnicodeScalar(UInt32(0x00002A93))!)",
-        "lessapprox"                      : "\(UnicodeScalar(UInt32(0x00002A85))!)",
-        "lessdot"                         : "\(UnicodeScalar(UInt32(0x000022D6))!)",
-        "lesseqgtr"                       : "\(UnicodeScalar(UInt32(0x000022DA))!)",
-        "lesseqqgtr"                      : "\(UnicodeScalar(UInt32(0x00002A8B))!)",
-        "LessEqualGreater"                : "\(UnicodeScalar(UInt32(0x000022DA))!)",
-        "LessFullEqual"                   : "\(UnicodeScalar(UInt32(0x00002266))!)",
-        "LessGreater"                     : "\(UnicodeScalar(UInt32(0x00002276))!)",
-        "lessgtr"                         : "\(UnicodeScalar(UInt32(0x00002276))!)",
-        "LessLess"                        : "\(UnicodeScalar(UInt32(0x00002AA1))!)",
-        "lesssim"                         : "\(UnicodeScalar(UInt32(0x00002272))!)",
-        "LessSlantEqual"                  : "\(UnicodeScalar(UInt32(0x00002A7D))!)",
-        "LessTilde"                       : "\(UnicodeScalar(UInt32(0x00002272))!)",
-        "lfisht"                          : "\(UnicodeScalar(UInt32(0x0000297C))!)",
-        "lfloor"                          : "\(UnicodeScalar(UInt32(0x0000230A))!)",
-        "Lfr"                             : "\(UnicodeScalar(UInt32(0x0001D50F))!)",
-        "lfr"                             : "\(UnicodeScalar(UInt32(0x0001D529))!)",
-        "lg"                              : "\(UnicodeScalar(UInt32(0x00002276))!)",
-        "lgE"                             : "\(UnicodeScalar(UInt32(0x00002A91))!)",
-        "lHar"                            : "\(UnicodeScalar(UInt32(0x00002962))!)",
-        "lhard"                           : "\(UnicodeScalar(UInt32(0x000021BD))!)",
-        "lharu"                           : "\(UnicodeScalar(UInt32(0x000021BC))!)",
-        "lharul"                          : "\(UnicodeScalar(UInt32(0x0000296A))!)",
-        "lhblk"                           : "\(UnicodeScalar(UInt32(0x00002584))!)",
-        "LJcy"                            : "\(UnicodeScalar(UInt32(0x00000409))!)",
-        "ljcy"                            : "\(UnicodeScalar(UInt32(0x00000459))!)",
-        "ll"                              : "\(UnicodeScalar(UInt32(0x0000226A))!)",
-        "Ll"                              : "\(UnicodeScalar(UInt32(0x000022D8))!)",
-        "llarr"                           : "\(UnicodeScalar(UInt32(0x000021C7))!)",
-        "llcorner"                        : "\(UnicodeScalar(UInt32(0x0000231E))!)",
-        "Lleftarrow"                      : "\(UnicodeScalar(UInt32(0x000021DA))!)",
-        "llhard"                          : "\(UnicodeScalar(UInt32(0x0000296B))!)",
-        "lltri"                           : "\(UnicodeScalar(UInt32(0x000025FA))!)",
-        "Lmidot"                          : "\(UnicodeScalar(UInt32(0x0000013F))!)",
-        "lmidot"                          : "\(UnicodeScalar(UInt32(0x00000140))!)",
-        "lmoust"                          : "\(UnicodeScalar(UInt32(0x000023B0))!)",
-        "lmoustache"                      : "\(UnicodeScalar(UInt32(0x000023B0))!)",
-        "lnap"                            : "\(UnicodeScalar(UInt32(0x00002A89))!)",
-        "lnapprox"                        : "\(UnicodeScalar(UInt32(0x00002A89))!)",
-        "lnE"                             : "\(UnicodeScalar(UInt32(0x00002268))!)",
-        "lne"                             : "\(UnicodeScalar(UInt32(0x00002A87))!)",
-        "lneq"                            : "\(UnicodeScalar(UInt32(0x00002A87))!)",
-        "lneqq"                           : "\(UnicodeScalar(UInt32(0x00002268))!)",
-        "lnsim"                           : "\(UnicodeScalar(UInt32(0x000022E6))!)",
-        "loang"                           : "\(UnicodeScalar(UInt32(0x000027EC))!)",
-        "loarr"                           : "\(UnicodeScalar(UInt32(0x000021FD))!)",
-        "lobrk"                           : "\(UnicodeScalar(UInt32(0x000027E6))!)",
-        "longleftarrow"                   : "\(UnicodeScalar(UInt32(0x000027F5))!)",
-        "LongLeftArrow"                   : "\(UnicodeScalar(UInt32(0x000027F5))!)",
-        "Longleftarrow"                   : "\(UnicodeScalar(UInt32(0x000027F8))!)",
-        "longleftrightarrow"              : "\(UnicodeScalar(UInt32(0x000027F7))!)",
-        "LongLeftRightArrow"              : "\(UnicodeScalar(UInt32(0x000027F7))!)",
-        "Longleftrightarrow"              : "\(UnicodeScalar(UInt32(0x000027FA))!)",
-        "longmapsto"                      : "\(UnicodeScalar(UInt32(0x000027FC))!)",
-        "longrightarrow"                  : "\(UnicodeScalar(UInt32(0x000027F6))!)",
-        "LongRightArrow"                  : "\(UnicodeScalar(UInt32(0x000027F6))!)",
-        "Longrightarrow"                  : "\(UnicodeScalar(UInt32(0x000027F9))!)",
-        "looparrowleft"                   : "\(UnicodeScalar(UInt32(0x000021AB))!)",
-        "looparrowright"                  : "\(UnicodeScalar(UInt32(0x000021AC))!)",
-        "lopar"                           : "\(UnicodeScalar(UInt32(0x00002985))!)",
-        "Lopf"                            : "\(UnicodeScalar(UInt32(0x0001D543))!)",
-        "lopf"                            : "\(UnicodeScalar(UInt32(0x0001D55D))!)",
-        "loplus"                          : "\(UnicodeScalar(UInt32(0x00002A2D))!)",
-        "lotimes"                         : "\(UnicodeScalar(UInt32(0x00002A34))!)",
-        "lowast"                          : "\(UnicodeScalar(UInt32(0x00002217))!)",
-        "lowbar"                          : "\(UnicodeScalar(UInt32(0x0000005F))!)",
-        "LowerLeftArrow"                  : "\(UnicodeScalar(UInt32(0x00002199))!)",
-        "LowerRightArrow"                 : "\(UnicodeScalar(UInt32(0x00002198))!)",
-        "loz"                             : "\(UnicodeScalar(UInt32(0x000025CA))!)",
-        "lozenge"                         : "\(UnicodeScalar(UInt32(0x000025CA))!)",
-        "lozf"                            : "\(UnicodeScalar(UInt32(0x000029EB))!)",
-        "lpar"                            : "\(UnicodeScalar(UInt32(0x00000028))!)",
-        "lparlt"                          : "\(UnicodeScalar(UInt32(0x00002993))!)",
-        "lrarr"                           : "\(UnicodeScalar(UInt32(0x000021C6))!)",
-        "lrcorner"                        : "\(UnicodeScalar(UInt32(0x0000231F))!)",
-        "lrhar"                           : "\(UnicodeScalar(UInt32(0x000021CB))!)",
-        "lrhard"                          : "\(UnicodeScalar(UInt32(0x0000296D))!)",
-        "lrm"                             : "\(UnicodeScalar(UInt32(0x0000200E))!)",
-        "lrtri"                           : "\(UnicodeScalar(UInt32(0x000022BF))!)",
-        "lsaquo"                          : "\(UnicodeScalar(UInt32(0x00002039))!)",
-        "Lscr"                            : "\(UnicodeScalar(UInt32(0x00002112))!)",
-        "lscr"                            : "\(UnicodeScalar(UInt32(0x0001D4C1))!)",
-        "lsh"                             : "\(UnicodeScalar(UInt32(0x000021B0))!)",
-        "Lsh"                             : "\(UnicodeScalar(UInt32(0x000021B0))!)",
-        "lsim"                            : "\(UnicodeScalar(UInt32(0x00002272))!)",
-        "lsime"                           : "\(UnicodeScalar(UInt32(0x00002A8D))!)",
-        "lsimg"                           : "\(UnicodeScalar(UInt32(0x00002A8F))!)",
-        "lsqb"                            : "\(UnicodeScalar(UInt32(0x0000005B))!)",
-        "lsquo"                           : "\(UnicodeScalar(UInt32(0x00002018))!)",
-        "lsquor"                          : "\(UnicodeScalar(UInt32(0x0000201A))!)",
-        "Lstrok"                          : "\(UnicodeScalar(UInt32(0x00000141))!)",
-        "lstrok"                          : "\(UnicodeScalar(UInt32(0x00000142))!)",
-        "lt"                              : "\(UnicodeScalar(UInt32(0x0000003C))!)",
-        "LT"                              : "\(UnicodeScalar(UInt32(0x0000003C))!)",
-        "Lt"                              : "\(UnicodeScalar(UInt32(0x0000226A))!)",
-        "ltcc"                            : "\(UnicodeScalar(UInt32(0x00002AA6))!)",
-        "ltcir"                           : "\(UnicodeScalar(UInt32(0x00002A79))!)",
-        "ltdot"                           : "\(UnicodeScalar(UInt32(0x000022D6))!)",
-        "lthree"                          : "\(UnicodeScalar(UInt32(0x000022CB))!)",
-        "ltimes"                          : "\(UnicodeScalar(UInt32(0x000022C9))!)",
-        "ltlarr"                          : "\(UnicodeScalar(UInt32(0x00002976))!)",
-        "ltquest"                         : "\(UnicodeScalar(UInt32(0x00002A7B))!)",
-        "ltri"                            : "\(UnicodeScalar(UInt32(0x000025C3))!)",
-        "ltrie"                           : "\(UnicodeScalar(UInt32(0x000022B4))!)",
-        "ltrif"                           : "\(UnicodeScalar(UInt32(0x000025C2))!)",
-        "ltrPar"                          : "\(UnicodeScalar(UInt32(0x00002996))!)",
-        "lurdshar"                        : "\(UnicodeScalar(UInt32(0x0000294A))!)",
-        "luruhar"                         : "\(UnicodeScalar(UInt32(0x00002966))!)",
-        "lvertneqq"                       : "\(UnicodeScalar(UInt32(0x00002268))!)\(UnicodeScalar(UInt32(0x0000FE00))!)",
-        "lvnE"                            : "\(UnicodeScalar(UInt32(0x00002268))!)\(UnicodeScalar(UInt32(0x0000FE00))!)",
-        "macr"                            : "\(UnicodeScalar(UInt32(0x000000AF))!)",
-        "male"                            : "\(UnicodeScalar(UInt32(0x00002642))!)",
-        "malt"                            : "\(UnicodeScalar(UInt32(0x00002720))!)",
-        "maltese"                         : "\(UnicodeScalar(UInt32(0x00002720))!)",
-        "map"                             : "\(UnicodeScalar(UInt32(0x000021A6))!)",
-        "Map"                             : "\(UnicodeScalar(UInt32(0x00002905))!)",
-        "mapsto"                          : "\(UnicodeScalar(UInt32(0x000021A6))!)",
-        "mapstodown"                      : "\(UnicodeScalar(UInt32(0x000021A7))!)",
-        "mapstoleft"                      : "\(UnicodeScalar(UInt32(0x000021A4))!)",
-        "mapstoup"                        : "\(UnicodeScalar(UInt32(0x000021A5))!)",
-        "marker"                          : "\(UnicodeScalar(UInt32(0x000025AE))!)",
-        "mcomma"                          : "\(UnicodeScalar(UInt32(0x00002A29))!)",
-        "Mcy"                             : "\(UnicodeScalar(UInt32(0x0000041C))!)",
-        "mcy"                             : "\(UnicodeScalar(UInt32(0x0000043C))!)",
-        "mdash"                           : "\(UnicodeScalar(UInt32(0x00002014))!)",
-        "mDDot"                           : "\(UnicodeScalar(UInt32(0x0000223A))!)",
-        "measuredangle"                   : "\(UnicodeScalar(UInt32(0x00002221))!)",
-        "MediumSpace"                     : "\(UnicodeScalar(UInt32(0x0000205F))!)",
-        "Mellintrf"                       : "\(UnicodeScalar(UInt32(0x00002133))!)",
-        "Mfr"                             : "\(UnicodeScalar(UInt32(0x0001D510))!)",
-        "mfr"                             : "\(UnicodeScalar(UInt32(0x0001D52A))!)",
-        "mho"                             : "\(UnicodeScalar(UInt32(0x00002127))!)",
-        "micro"                           : "\(UnicodeScalar(UInt32(0x000000B5))!)",
-        "mid"                             : "\(UnicodeScalar(UInt32(0x00002223))!)",
-        "midast"                          : "\(UnicodeScalar(UInt32(0x0000002A))!)",
-        "midcir"                          : "\(UnicodeScalar(UInt32(0x00002AF0))!)",
-        "middot"                          : "\(UnicodeScalar(UInt32(0x000000B7))!)",
-        "minus"                           : "\(UnicodeScalar(UInt32(0x00002212))!)",
-        "minusb"                          : "\(UnicodeScalar(UInt32(0x0000229F))!)",
-        "minusd"                          : "\(UnicodeScalar(UInt32(0x00002238))!)",
-        "minusdu"                         : "\(UnicodeScalar(UInt32(0x00002A2A))!)",
-        "MinusPlus"                       : "\(UnicodeScalar(UInt32(0x00002213))!)",
-        "mlcp"                            : "\(UnicodeScalar(UInt32(0x00002ADB))!)",
-        "mldr"                            : "\(UnicodeScalar(UInt32(0x00002026))!)",
-        "mnplus"                          : "\(UnicodeScalar(UInt32(0x00002213))!)",
-        "models"                          : "\(UnicodeScalar(UInt32(0x000022A7))!)",
-        "Mopf"                            : "\(UnicodeScalar(UInt32(0x0001D544))!)",
-        "mopf"                            : "\(UnicodeScalar(UInt32(0x0001D55E))!)",
-        "mp"                              : "\(UnicodeScalar(UInt32(0x00002213))!)",
-        "Mscr"                            : "\(UnicodeScalar(UInt32(0x00002133))!)",
-        "mscr"                            : "\(UnicodeScalar(UInt32(0x0001D4C2))!)",
-        "mstpos"                          : "\(UnicodeScalar(UInt32(0x0000223E))!)",
-        "Mu"                              : "\(UnicodeScalar(UInt32(0x0000039C))!)",
-        "mu"                              : "\(UnicodeScalar(UInt32(0x000003BC))!)",
-        "multimap"                        : "\(UnicodeScalar(UInt32(0x000022B8))!)",
-        "mumap"                           : "\(UnicodeScalar(UInt32(0x000022B8))!)",
-        "nabla"                           : "\(UnicodeScalar(UInt32(0x00002207))!)",
-        "Nacute"                          : "\(UnicodeScalar(UInt32(0x00000143))!)",
-        "nacute"                          : "\(UnicodeScalar(UInt32(0x00000144))!)",
-        "nang"                            : "\(UnicodeScalar(UInt32(0x00002220))!)\(UnicodeScalar(UInt32(0x000020D2))!)",
-        "nap"                             : "\(UnicodeScalar(UInt32(0x00002249))!)",
-        "napE"                            : "\(UnicodeScalar(UInt32(0x00002A70))!)\(UnicodeScalar(UInt32(0x00000338))!)",
-        "napid"                           : "\(UnicodeScalar(UInt32(0x0000224B))!)\(UnicodeScalar(UInt32(0x00000338))!)",
-        "napos"                           : "\(UnicodeScalar(UInt32(0x00000149))!)",
-        "napprox"                         : "\(UnicodeScalar(UInt32(0x00002249))!)",
-        "natur"                           : "\(UnicodeScalar(UInt32(0x0000266E))!)",
-        "natural"                         : "\(UnicodeScalar(UInt32(0x0000266E))!)",
-        "naturals"                        : "\(UnicodeScalar(UInt32(0x00002115))!)",
-        "nbsp"                            : "\(UnicodeScalar(UInt32(0x000000A0))!)",
-        "nbump"                           : "\(UnicodeScalar(UInt32(0x0000224E))!)\(UnicodeScalar(UInt32(0x00000338))!)",
-        "nbumpe"                          : "\(UnicodeScalar(UInt32(0x0000224F))!)\(UnicodeScalar(UInt32(0x00000338))!)",
-        "ncap"                            : "\(UnicodeScalar(UInt32(0x00002A43))!)",
-        "Ncaron"                          : "\(UnicodeScalar(UInt32(0x00000147))!)",
-        "ncaron"                          : "\(UnicodeScalar(UInt32(0x00000148))!)",
-        "Ncedil"                          : "\(UnicodeScalar(UInt32(0x00000145))!)",
-        "ncedil"                          : "\(UnicodeScalar(UInt32(0x00000146))!)",
-        "ncong"                           : "\(UnicodeScalar(UInt32(0x00002247))!)",
-        "ncongdot"                        : "\(UnicodeScalar(UInt32(0x00002A6D))!)\(UnicodeScalar(UInt32(0x00000338))!)",
-        "ncup"                            : "\(UnicodeScalar(UInt32(0x00002A42))!)",
-        "Ncy"                             : "\(UnicodeScalar(UInt32(0x0000041D))!)",
-        "ncy"                             : "\(UnicodeScalar(UInt32(0x0000043D))!)",
-        "ndash"                           : "\(UnicodeScalar(UInt32(0x00002013))!)",
-        "ne"                              : "\(UnicodeScalar(UInt32(0x00002260))!)",
-        "nearhk"                          : "\(UnicodeScalar(UInt32(0x00002924))!)",
-        "nearr"                           : "\(UnicodeScalar(UInt32(0x00002197))!)",
-        "neArr"                           : "\(UnicodeScalar(UInt32(0x000021D7))!)",
-        "nearrow"                         : "\(UnicodeScalar(UInt32(0x00002197))!)",
-        "nedot"                           : "\(UnicodeScalar(UInt32(0x00002250))!)\(UnicodeScalar(UInt32(0x00000338))!)",
-        "NegativeMediumSpace"             : "\(UnicodeScalar(UInt32(0x0000200B))!)",
-        "NegativeThickSpace"              : "\(UnicodeScalar(UInt32(0x0000200B))!)",
-        "NegativeThinSpace"               : "\(UnicodeScalar(UInt32(0x0000200B))!)",
-        "NegativeVeryThinSpace"           : "\(UnicodeScalar(UInt32(0x0000200B))!)",
-        "nequiv"                          : "\(UnicodeScalar(UInt32(0x00002262))!)",
-        "nesear"                          : "\(UnicodeScalar(UInt32(0x00002928))!)",
-        "nesim"                           : "\(UnicodeScalar(UInt32(0x00002242))!)\(UnicodeScalar(UInt32(0x00000338))!)",
-        "NestedGreaterGreater"            : "\(UnicodeScalar(UInt32(0x0000226B))!)",
-        "NestedLessLess"                  : "\(UnicodeScalar(UInt32(0x0000226A))!)",
-        "NewLine"                         : "\(UnicodeScalar(UInt32(0x0000000A))!)",
-        "nexist"                          : "\(UnicodeScalar(UInt32(0x00002204))!)",
-        "nexists"                         : "\(UnicodeScalar(UInt32(0x00002204))!)",
-        "Nfr"                             : "\(UnicodeScalar(UInt32(0x0001D511))!)",
-        "nfr"                             : "\(UnicodeScalar(UInt32(0x0001D52B))!)",
-        "nge"                             : "\(UnicodeScalar(UInt32(0x00002271))!)",
-        "ngE"                             : "\(UnicodeScalar(UInt32(0x00002267))!)\(UnicodeScalar(UInt32(0x00000338))!)",
-        "ngeq"                            : "\(UnicodeScalar(UInt32(0x00002271))!)",
-        "ngeqq"                           : "\(UnicodeScalar(UInt32(0x00002267))!)\(UnicodeScalar(UInt32(0x00000338))!)",
-        "ngeqslant"                       : "\(UnicodeScalar(UInt32(0x00002A7E))!)\(UnicodeScalar(UInt32(0x00000338))!)",
-        "nges"                            : "\(UnicodeScalar(UInt32(0x00002A7E))!)\(UnicodeScalar(UInt32(0x00000338))!)",
-        "nGg"                             : "\(UnicodeScalar(UInt32(0x000022D9))!)\(UnicodeScalar(UInt32(0x00000338))!)",
-        "ngsim"                           : "\(UnicodeScalar(UInt32(0x00002275))!)",
-        "ngt"                             : "\(UnicodeScalar(UInt32(0x0000226F))!)",
-        "nGt"                             : "\(UnicodeScalar(UInt32(0x0000226B))!)\(UnicodeScalar(UInt32(0x000020D2))!)",
-        "ngtr"                            : "\(UnicodeScalar(UInt32(0x0000226F))!)",
-        "nGtv"                            : "\(UnicodeScalar(UInt32(0x0000226B))!)\(UnicodeScalar(UInt32(0x00000338))!)",
-        "nharr"                           : "\(UnicodeScalar(UInt32(0x000021AE))!)",
-        "nhArr"                           : "\(UnicodeScalar(UInt32(0x000021CE))!)",
-        "nhpar"                           : "\(UnicodeScalar(UInt32(0x00002AF2))!)",
-        "ni"                              : "\(UnicodeScalar(UInt32(0x0000220B))!)",
-        "nis"                             : "\(UnicodeScalar(UInt32(0x000022FC))!)",
-        "nisd"                            : "\(UnicodeScalar(UInt32(0x000022FA))!)",
-        "niv"                             : "\(UnicodeScalar(UInt32(0x0000220B))!)",
-        "NJcy"                            : "\(UnicodeScalar(UInt32(0x0000040A))!)",
-        "njcy"                            : "\(UnicodeScalar(UInt32(0x0000045A))!)",
-        "nlarr"                           : "\(UnicodeScalar(UInt32(0x0000219A))!)",
-        "nlArr"                           : "\(UnicodeScalar(UInt32(0x000021CD))!)",
-        "nldr"                            : "\(UnicodeScalar(UInt32(0x00002025))!)",
-        "nle"                             : "\(UnicodeScalar(UInt32(0x00002270))!)",
-        "nlE"                             : "\(UnicodeScalar(UInt32(0x00002266))!)\(UnicodeScalar(UInt32(0x00000338))!)",
-        "nleftarrow"                      : "\(UnicodeScalar(UInt32(0x0000219A))!)",
-        "nLeftarrow"                      : "\(UnicodeScalar(UInt32(0x000021CD))!)",
-        "nleftrightarrow"                 : "\(UnicodeScalar(UInt32(0x000021AE))!)",
-        "nLeftrightarrow"                 : "\(UnicodeScalar(UInt32(0x000021CE))!)",
-        "nleq"                            : "\(UnicodeScalar(UInt32(0x00002270))!)",
-        "nleqq"                           : "\(UnicodeScalar(UInt32(0x00002266))!)\(UnicodeScalar(UInt32(0x00000338))!)",
-        "nleqslant"                       : "\(UnicodeScalar(UInt32(0x00002A7D))!)\(UnicodeScalar(UInt32(0x00000338))!)",
-        "nles"                            : "\(UnicodeScalar(UInt32(0x00002A7D))!)\(UnicodeScalar(UInt32(0x00000338))!)",
-        "nless"                           : "\(UnicodeScalar(UInt32(0x0000226E))!)",
-        "nLl"                             : "\(UnicodeScalar(UInt32(0x000022D8))!)\(UnicodeScalar(UInt32(0x00000338))!)",
-        "nlsim"                           : "\(UnicodeScalar(UInt32(0x00002274))!)",
-        "nlt"                             : "\(UnicodeScalar(UInt32(0x0000226E))!)",
-        "nLt"                             : "\(UnicodeScalar(UInt32(0x0000226A))!)\(UnicodeScalar(UInt32(0x000020D2))!)",
-        "nltri"                           : "\(UnicodeScalar(UInt32(0x000022EA))!)",
-        "nltrie"                          : "\(UnicodeScalar(UInt32(0x000022EC))!)",
-        "nLtv"                            : "\(UnicodeScalar(UInt32(0x0000226A))!)\(UnicodeScalar(UInt32(0x00000338))!)",
-        "nmid"                            : "\(UnicodeScalar(UInt32(0x00002224))!)",
-        "NoBreak"                         : "\(UnicodeScalar(UInt32(0x00002060))!)",
-        "NonBreakingSpace"                : "\(UnicodeScalar(UInt32(0x000000A0))!)",
-        "Nopf"                            : "\(UnicodeScalar(UInt32(0x00002115))!)",
-        "nopf"                            : "\(UnicodeScalar(UInt32(0x0001D55F))!)",
-        "not"                             : "\(UnicodeScalar(UInt32(0x000000AC))!)",
-        "Not"                             : "\(UnicodeScalar(UInt32(0x00002AEC))!)",
-        "NotCongruent"                    : "\(UnicodeScalar(UInt32(0x00002262))!)",
-        "NotCupCap"                       : "\(UnicodeScalar(UInt32(0x0000226D))!)",
-        "NotDoubleVerticalBar"            : "\(UnicodeScalar(UInt32(0x00002226))!)",
-        "NotElement"                      : "\(UnicodeScalar(UInt32(0x00002209))!)",
-        "NotEqual"                        : "\(UnicodeScalar(UInt32(0x00002260))!)",
-        "NotEqualTilde"                   : "\(UnicodeScalar(UInt32(0x00002242))!)\(UnicodeScalar(UInt32(0x00000338))!)",
-        "NotExists"                       : "\(UnicodeScalar(UInt32(0x00002204))!)",
-        "NotGreater"                      : "\(UnicodeScalar(UInt32(0x0000226F))!)",
-        "NotGreaterEqual"                 : "\(UnicodeScalar(UInt32(0x00002271))!)",
-        "NotGreaterFullEqual"             : "\(UnicodeScalar(UInt32(0x00002267))!)\(UnicodeScalar(UInt32(0x00000338))!)",
-        "NotGreaterGreater"               : "\(UnicodeScalar(UInt32(0x0000226B))!)\(UnicodeScalar(UInt32(0x00000338))!)",
-        "NotGreaterLess"                  : "\(UnicodeScalar(UInt32(0x00002279))!)",
-        "NotGreaterSlantEqual"            : "\(UnicodeScalar(UInt32(0x00002A7E))!)\(UnicodeScalar(UInt32(0x00000338))!)",
-        "NotGreaterTilde"                 : "\(UnicodeScalar(UInt32(0x00002275))!)",
-        "NotHumpDownHump"                 : "\(UnicodeScalar(UInt32(0x0000224E))!)\(UnicodeScalar(UInt32(0x00000338))!)",
-        "NotHumpEqual"                    : "\(UnicodeScalar(UInt32(0x0000224F))!)\(UnicodeScalar(UInt32(0x00000338))!)",
-        "notin"                           : "\(UnicodeScalar(UInt32(0x00002209))!)",
-        "notindot"                        : "\(UnicodeScalar(UInt32(0x000022F5))!)\(UnicodeScalar(UInt32(0x00000338))!)",
-        "notinE"                          : "\(UnicodeScalar(UInt32(0x000022F9))!)\(UnicodeScalar(UInt32(0x00000338))!)",
-        "notinva"                         : "\(UnicodeScalar(UInt32(0x00002209))!)",
-        "notinvb"                         : "\(UnicodeScalar(UInt32(0x000022F7))!)",
-        "notinvc"                         : "\(UnicodeScalar(UInt32(0x000022F6))!)",
-        "NotLeftTriangle"                 : "\(UnicodeScalar(UInt32(0x000022EA))!)",
-        "NotLeftTriangleBar"              : "\(UnicodeScalar(UInt32(0x000029CF))!)\(UnicodeScalar(UInt32(0x00000338))!)",
-        "NotLeftTriangleEqual"            : "\(UnicodeScalar(UInt32(0x000022EC))!)",
-        "NotLess"                         : "\(UnicodeScalar(UInt32(0x0000226E))!)",
-        "NotLessEqual"                    : "\(UnicodeScalar(UInt32(0x00002270))!)",
-        "NotLessGreater"                  : "\(UnicodeScalar(UInt32(0x00002278))!)",
-        "NotLessLess"                     : "\(UnicodeScalar(UInt32(0x0000226A))!)\(UnicodeScalar(UInt32(0x00000338))!)",
-        "NotLessSlantEqual"               : "\(UnicodeScalar(UInt32(0x00002A7D))!)\(UnicodeScalar(UInt32(0x00000338))!)",
-        "NotLessTilde"                    : "\(UnicodeScalar(UInt32(0x00002274))!)",
-        "NotNestedGreaterGreater"         : "\(UnicodeScalar(UInt32(0x00002AA2))!)\(UnicodeScalar(UInt32(0x00000338))!)",
-        "NotNestedLessLess"               : "\(UnicodeScalar(UInt32(0x00002AA1))!)\(UnicodeScalar(UInt32(0x00000338))!)",
-        "notni"                           : "\(UnicodeScalar(UInt32(0x0000220C))!)",
-        "notniva"                         : "\(UnicodeScalar(UInt32(0x0000220C))!)",
-        "notnivb"                         : "\(UnicodeScalar(UInt32(0x000022FE))!)",
-        "notnivc"                         : "\(UnicodeScalar(UInt32(0x000022FD))!)",
-        "NotPrecedes"                     : "\(UnicodeScalar(UInt32(0x00002280))!)",
-        "NotPrecedesEqual"                : "\(UnicodeScalar(UInt32(0x00002AAF))!)\(UnicodeScalar(UInt32(0x00000338))!)",
-        "NotPrecedesSlantEqual"           : "\(UnicodeScalar(UInt32(0x000022E0))!)",
-        "NotReverseElement"               : "\(UnicodeScalar(UInt32(0x0000220C))!)",
-        "NotRightTriangle"                : "\(UnicodeScalar(UInt32(0x000022EB))!)",
-        "NotRightTriangleBar"             : "\(UnicodeScalar(UInt32(0x000029D0))!)\(UnicodeScalar(UInt32(0x00000338))!)",
-        "NotRightTriangleEqual"           : "\(UnicodeScalar(UInt32(0x000022ED))!)",
-        "NotSquareSubset"                 : "\(UnicodeScalar(UInt32(0x0000228F))!)\(UnicodeScalar(UInt32(0x00000338))!)",
-        "NotSquareSubsetEqual"            : "\(UnicodeScalar(UInt32(0x000022E2))!)",
-        "NotSquareSuperset"               : "\(UnicodeScalar(UInt32(0x00002290))!)\(UnicodeScalar(UInt32(0x00000338))!)",
-        "NotSquareSupersetEqual"          : "\(UnicodeScalar(UInt32(0x000022E3))!)",
-        "NotSubset"                       : "\(UnicodeScalar(UInt32(0x00002282))!)\(UnicodeScalar(UInt32(0x000020D2))!)",
-        "NotSubsetEqual"                  : "\(UnicodeScalar(UInt32(0x00002288))!)",
-        "NotSucceeds"                     : "\(UnicodeScalar(UInt32(0x00002281))!)",
-        "NotSucceedsEqual"                : "\(UnicodeScalar(UInt32(0x00002AB0))!)\(UnicodeScalar(UInt32(0x00000338))!)",
-        "NotSucceedsSlantEqual"           : "\(UnicodeScalar(UInt32(0x000022E1))!)",
-        "NotSucceedsTilde"                : "\(UnicodeScalar(UInt32(0x0000227F))!)\(UnicodeScalar(UInt32(0x00000338))!)",
-        "NotSuperset"                     : "\(UnicodeScalar(UInt32(0x00002283))!)\(UnicodeScalar(UInt32(0x000020D2))!)",
-        "NotSupersetEqual"                : "\(UnicodeScalar(UInt32(0x00002289))!)",
-        "NotTilde"                        : "\(UnicodeScalar(UInt32(0x00002241))!)",
-        "NotTildeEqual"                   : "\(UnicodeScalar(UInt32(0x00002244))!)",
-        "NotTildeFullEqual"               : "\(UnicodeScalar(UInt32(0x00002247))!)",
-        "NotTildeTilde"                   : "\(UnicodeScalar(UInt32(0x00002249))!)",
-        "NotVerticalBar"                  : "\(UnicodeScalar(UInt32(0x00002224))!)",
-        "npar"                            : "\(UnicodeScalar(UInt32(0x00002226))!)",
-        "nparallel"                       : "\(UnicodeScalar(UInt32(0x00002226))!)",
-        "nparsl"                          : "\(UnicodeScalar(UInt32(0x00002AFD))!)\(UnicodeScalar(UInt32(0x000020E5))!)",
-        "npart"                           : "\(UnicodeScalar(UInt32(0x00002202))!)\(UnicodeScalar(UInt32(0x00000338))!)",
-        "npolint"                         : "\(UnicodeScalar(UInt32(0x00002A14))!)",
-        "npr"                             : "\(UnicodeScalar(UInt32(0x00002280))!)",
-        "nprcue"                          : "\(UnicodeScalar(UInt32(0x000022E0))!)",
-        "npre"                            : "\(UnicodeScalar(UInt32(0x00002AAF))!)\(UnicodeScalar(UInt32(0x00000338))!)",
-        "nprec"                           : "\(UnicodeScalar(UInt32(0x00002280))!)",
-        "npreceq"                         : "\(UnicodeScalar(UInt32(0x00002AAF))!)\(UnicodeScalar(UInt32(0x00000338))!)",
-        "nrarr"                           : "\(UnicodeScalar(UInt32(0x0000219B))!)",
-        "nrArr"                           : "\(UnicodeScalar(UInt32(0x000021CF))!)",
-        "nrarrc"                          : "\(UnicodeScalar(UInt32(0x00002933))!)\(UnicodeScalar(UInt32(0x00000338))!)",
-        "nrarrw"                          : "\(UnicodeScalar(UInt32(0x0000219D))!)\(UnicodeScalar(UInt32(0x00000338))!)",
-        "nrightarrow"                     : "\(UnicodeScalar(UInt32(0x0000219B))!)",
-        "nRightarrow"                     : "\(UnicodeScalar(UInt32(0x000021CF))!)",
-        "nrtri"                           : "\(UnicodeScalar(UInt32(0x000022EB))!)",
-        "nrtrie"                          : "\(UnicodeScalar(UInt32(0x000022ED))!)",
-        "nsc"                             : "\(UnicodeScalar(UInt32(0x00002281))!)",
-        "nsccue"                          : "\(UnicodeScalar(UInt32(0x000022E1))!)",
-        "nsce"                            : "\(UnicodeScalar(UInt32(0x00002AB0))!)\(UnicodeScalar(UInt32(0x00000338))!)",
-        "Nscr"                            : "\(UnicodeScalar(UInt32(0x0001D4A9))!)",
-        "nscr"                            : "\(UnicodeScalar(UInt32(0x0001D4C3))!)",
-        "nshortmid"                       : "\(UnicodeScalar(UInt32(0x00002224))!)",
-        "nshortparallel"                  : "\(UnicodeScalar(UInt32(0x00002226))!)",
-        "nsim"                            : "\(UnicodeScalar(UInt32(0x00002241))!)",
-        "nsime"                           : "\(UnicodeScalar(UInt32(0x00002244))!)",
-        "nsimeq"                          : "\(UnicodeScalar(UInt32(0x00002244))!)",
-        "nsmid"                           : "\(UnicodeScalar(UInt32(0x00002224))!)",
-        "nspar"                           : "\(UnicodeScalar(UInt32(0x00002226))!)",
-        "nsqsube"                         : "\(UnicodeScalar(UInt32(0x000022E2))!)",
-        "nsqsupe"                         : "\(UnicodeScalar(UInt32(0x000022E3))!)",
-        "nsub"                            : "\(UnicodeScalar(UInt32(0x00002284))!)",
-        "nsube"                           : "\(UnicodeScalar(UInt32(0x00002288))!)",
-        "nsubE"                           : "\(UnicodeScalar(UInt32(0x00002AC5))!)\(UnicodeScalar(UInt32(0x00000338))!)",
-        "nsubset"                         : "\(UnicodeScalar(UInt32(0x00002282))!)\(UnicodeScalar(UInt32(0x000020D2))!)",
-        "nsubseteq"                       : "\(UnicodeScalar(UInt32(0x00002288))!)",
-        "nsubseteqq"                      : "\(UnicodeScalar(UInt32(0x00002AC5))!)\(UnicodeScalar(UInt32(0x00000338))!)",
-        "nsucc"                           : "\(UnicodeScalar(UInt32(0x00002281))!)",
-        "nsucceq"                         : "\(UnicodeScalar(UInt32(0x00002AB0))!)\(UnicodeScalar(UInt32(0x00000338))!)",
-        "nsup"                            : "\(UnicodeScalar(UInt32(0x00002285))!)",
-        "nsupe"                           : "\(UnicodeScalar(UInt32(0x00002289))!)",
-        "nsupE"                           : "\(UnicodeScalar(UInt32(0x00002AC6))!)\(UnicodeScalar(UInt32(0x00000338))!)",
-        "nsupset"                         : "\(UnicodeScalar(UInt32(0x00002283))!)\(UnicodeScalar(UInt32(0x000020D2))!)",
-        "nsupseteq"                       : "\(UnicodeScalar(UInt32(0x00002289))!)",
-        "nsupseteqq"                      : "\(UnicodeScalar(UInt32(0x00002AC6))!)\(UnicodeScalar(UInt32(0x00000338))!)",
-        "ntgl"                            : "\(UnicodeScalar(UInt32(0x00002279))!)",
-        "Ntilde"                          : "\(UnicodeScalar(UInt32(0x000000D1))!)",
-        "ntilde"                          : "\(UnicodeScalar(UInt32(0x000000F1))!)",
-        "ntlg"                            : "\(UnicodeScalar(UInt32(0x00002278))!)",
-        "ntriangleleft"                   : "\(UnicodeScalar(UInt32(0x000022EA))!)",
-        "ntrianglelefteq"                 : "\(UnicodeScalar(UInt32(0x000022EC))!)",
-        "ntriangleright"                  : "\(UnicodeScalar(UInt32(0x000022EB))!)",
-        "ntrianglerighteq"                : "\(UnicodeScalar(UInt32(0x000022ED))!)",
-        "Nu"                              : "\(UnicodeScalar(UInt32(0x0000039D))!)",
-        "nu"                              : "\(UnicodeScalar(UInt32(0x000003BD))!)",
-        "num"                             : "\(UnicodeScalar(UInt32(0x00000023))!)",
-        "numero"                          : "\(UnicodeScalar(UInt32(0x00002116))!)",
-        "numsp"                           : "\(UnicodeScalar(UInt32(0x00002007))!)",
-        "nvap"                            : "\(UnicodeScalar(UInt32(0x0000224D))!)\(UnicodeScalar(UInt32(0x000020D2))!)",
-        "nvdash"                          : "\(UnicodeScalar(UInt32(0x000022AC))!)",
-        "nvDash"                          : "\(UnicodeScalar(UInt32(0x000022AD))!)",
-        "nVdash"                          : "\(UnicodeScalar(UInt32(0x000022AE))!)",
-        "nVDash"                          : "\(UnicodeScalar(UInt32(0x000022AF))!)",
-        "nvge"                            : "\(UnicodeScalar(UInt32(0x00002265))!)\(UnicodeScalar(UInt32(0x000020D2))!)",
-        "nvgt"                            : "\(UnicodeScalar(UInt32(0x0000003E))!)\(UnicodeScalar(UInt32(0x000020D2))!)",
-        "nvHarr"                          : "\(UnicodeScalar(UInt32(0x00002904))!)",
-        "nvinfin"                         : "\(UnicodeScalar(UInt32(0x000029DE))!)",
-        "nvlArr"                          : "\(UnicodeScalar(UInt32(0x00002902))!)",
-        "nvle"                            : "\(UnicodeScalar(UInt32(0x00002264))!)\(UnicodeScalar(UInt32(0x000020D2))!)",
-        "nvlt"                            : "\(UnicodeScalar(UInt32(0x0000003C))!)\(UnicodeScalar(UInt32(0x000020D2))!)",
-        "nvltrie"                         : "\(UnicodeScalar(UInt32(0x000022B4))!)\(UnicodeScalar(UInt32(0x000020D2))!)",
-        "nvrArr"                          : "\(UnicodeScalar(UInt32(0x00002903))!)",
-        "nvrtrie"                         : "\(UnicodeScalar(UInt32(0x000022B5))!)\(UnicodeScalar(UInt32(0x000020D2))!)",
-        "nvsim"                           : "\(UnicodeScalar(UInt32(0x0000223C))!)\(UnicodeScalar(UInt32(0x000020D2))!)",
-        "nwarhk"                          : "\(UnicodeScalar(UInt32(0x00002923))!)",
-        "nwarr"                           : "\(UnicodeScalar(UInt32(0x00002196))!)",
-        "nwArr"                           : "\(UnicodeScalar(UInt32(0x000021D6))!)",
-        "nwarrow"                         : "\(UnicodeScalar(UInt32(0x00002196))!)",
-        "nwnear"                          : "\(UnicodeScalar(UInt32(0x00002927))!)",
-        "Oacute"                          : "\(UnicodeScalar(UInt32(0x000000D3))!)",
-        "oacute"                          : "\(UnicodeScalar(UInt32(0x000000F3))!)",
-        "oast"                            : "\(UnicodeScalar(UInt32(0x0000229B))!)",
-        "ocir"                            : "\(UnicodeScalar(UInt32(0x0000229A))!)",
-        "Ocirc"                           : "\(UnicodeScalar(UInt32(0x000000D4))!)",
-        "ocirc"                           : "\(UnicodeScalar(UInt32(0x000000F4))!)",
-        "Ocy"                             : "\(UnicodeScalar(UInt32(0x0000041E))!)",
-        "ocy"                             : "\(UnicodeScalar(UInt32(0x0000043E))!)",
-        "odash"                           : "\(UnicodeScalar(UInt32(0x0000229D))!)",
-        "Odblac"                          : "\(UnicodeScalar(UInt32(0x00000150))!)",
-        "odblac"                          : "\(UnicodeScalar(UInt32(0x00000151))!)",
-        "odiv"                            : "\(UnicodeScalar(UInt32(0x00002A38))!)",
-        "odot"                            : "\(UnicodeScalar(UInt32(0x00002299))!)",
-        "odsold"                          : "\(UnicodeScalar(UInt32(0x000029BC))!)",
-        "OElig"                           : "\(UnicodeScalar(UInt32(0x00000152))!)",
-        "oelig"                           : "\(UnicodeScalar(UInt32(0x00000153))!)",
-        "ofcir"                           : "\(UnicodeScalar(UInt32(0x000029BF))!)",
-        "Ofr"                             : "\(UnicodeScalar(UInt32(0x0001D512))!)",
-        "ofr"                             : "\(UnicodeScalar(UInt32(0x0001D52C))!)",
-        "ogon"                            : "\(UnicodeScalar(UInt32(0x000002DB))!)",
-        "Ograve"                          : "\(UnicodeScalar(UInt32(0x000000D2))!)",
-        "ograve"                          : "\(UnicodeScalar(UInt32(0x000000F2))!)",
-        "ogt"                             : "\(UnicodeScalar(UInt32(0x000029C1))!)",
-        "ohbar"                           : "\(UnicodeScalar(UInt32(0x000029B5))!)",
-        "ohm"                             : "\(UnicodeScalar(UInt32(0x000003A9))!)",
-        "oint"                            : "\(UnicodeScalar(UInt32(0x0000222E))!)",
-        "olarr"                           : "\(UnicodeScalar(UInt32(0x000021BA))!)",
-        "olcir"                           : "\(UnicodeScalar(UInt32(0x000029BE))!)",
-        "olcross"                         : "\(UnicodeScalar(UInt32(0x000029BB))!)",
-        "oline"                           : "\(UnicodeScalar(UInt32(0x0000203E))!)",
-        "olt"                             : "\(UnicodeScalar(UInt32(0x000029C0))!)",
-        "Omacr"                           : "\(UnicodeScalar(UInt32(0x0000014C))!)",
-        "omacr"                           : "\(UnicodeScalar(UInt32(0x0000014D))!)",
-        "Omega"                           : "\(UnicodeScalar(UInt32(0x000003A9))!)",
-        "omega"                           : "\(UnicodeScalar(UInt32(0x000003C9))!)",
-        "Omicron"                         : "\(UnicodeScalar(UInt32(0x0000039F))!)",
-        "omicron"                         : "\(UnicodeScalar(UInt32(0x000003BF))!)",
-        "omid"                            : "\(UnicodeScalar(UInt32(0x000029B6))!)",
-        "ominus"                          : "\(UnicodeScalar(UInt32(0x00002296))!)",
-        "Oopf"                            : "\(UnicodeScalar(UInt32(0x0001D546))!)",
-        "oopf"                            : "\(UnicodeScalar(UInt32(0x0001D560))!)",
-        "opar"                            : "\(UnicodeScalar(UInt32(0x000029B7))!)",
-        "OpenCurlyDoubleQuote"            : "\(UnicodeScalar(UInt32(0x0000201C))!)",
-        "OpenCurlyQuote"                  : "\(UnicodeScalar(UInt32(0x00002018))!)",
-        "operp"                           : "\(UnicodeScalar(UInt32(0x000029B9))!)",
-        "oplus"                           : "\(UnicodeScalar(UInt32(0x00002295))!)",
-        "or"                              : "\(UnicodeScalar(UInt32(0x00002228))!)",
-        "Or"                              : "\(UnicodeScalar(UInt32(0x00002A54))!)",
-        "orarr"                           : "\(UnicodeScalar(UInt32(0x000021BB))!)",
-        "ord"                             : "\(UnicodeScalar(UInt32(0x00002A5D))!)",
-        "order"                           : "\(UnicodeScalar(UInt32(0x00002134))!)",
-        "orderof"                         : "\(UnicodeScalar(UInt32(0x00002134))!)",
-        "ordf"                            : "\(UnicodeScalar(UInt32(0x000000AA))!)",
-        "ordm"                            : "\(UnicodeScalar(UInt32(0x000000BA))!)",
-        "origof"                          : "\(UnicodeScalar(UInt32(0x000022B6))!)",
-        "oror"                            : "\(UnicodeScalar(UInt32(0x00002A56))!)",
-        "orslope"                         : "\(UnicodeScalar(UInt32(0x00002A57))!)",
-        "orv"                             : "\(UnicodeScalar(UInt32(0x00002A5B))!)",
-        "oS"                              : "\(UnicodeScalar(UInt32(0x000024C8))!)",
-        "oscr"                            : "\(UnicodeScalar(UInt32(0x00002134))!)",
-        "Oscr"                            : "\(UnicodeScalar(UInt32(0x0001D4AA))!)",
-        "Oslash"                          : "\(UnicodeScalar(UInt32(0x000000D8))!)",
-        "oslash"                          : "\(UnicodeScalar(UInt32(0x000000F8))!)",
-        "osol"                            : "\(UnicodeScalar(UInt32(0x00002298))!)",
-        "Otilde"                          : "\(UnicodeScalar(UInt32(0x000000D5))!)",
-        "otilde"                          : "\(UnicodeScalar(UInt32(0x000000F5))!)",
-        "otimes"                          : "\(UnicodeScalar(UInt32(0x00002297))!)",
-        "Otimes"                          : "\(UnicodeScalar(UInt32(0x00002A37))!)",
-        "otimesas"                        : "\(UnicodeScalar(UInt32(0x00002A36))!)",
-        "Ouml"                            : "\(UnicodeScalar(UInt32(0x000000D6))!)",
-        "ouml"                            : "\(UnicodeScalar(UInt32(0x000000F6))!)",
-        "ovbar"                           : "\(UnicodeScalar(UInt32(0x0000233D))!)",
-        "OverBar"                         : "\(UnicodeScalar(UInt32(0x0000203E))!)",
-        "OverBrace"                       : "\(UnicodeScalar(UInt32(0x000023DE))!)",
-        "OverBracket"                     : "\(UnicodeScalar(UInt32(0x000023B4))!)",
-        "OverParenthesis"                 : "\(UnicodeScalar(UInt32(0x000023DC))!)",
-        "par"                             : "\(UnicodeScalar(UInt32(0x00002225))!)",
-        "para"                            : "\(UnicodeScalar(UInt32(0x000000B6))!)",
-        "parallel"                        : "\(UnicodeScalar(UInt32(0x00002225))!)",
-        "parsim"                          : "\(UnicodeScalar(UInt32(0x00002AF3))!)",
-        "parsl"                           : "\(UnicodeScalar(UInt32(0x00002AFD))!)",
-        "part"                            : "\(UnicodeScalar(UInt32(0x00002202))!)",
-        "PartialD"                        : "\(UnicodeScalar(UInt32(0x00002202))!)",
-        "Pcy"                             : "\(UnicodeScalar(UInt32(0x0000041F))!)",
-        "pcy"                             : "\(UnicodeScalar(UInt32(0x0000043F))!)",
-        "percnt"                          : "\(UnicodeScalar(UInt32(0x00000025))!)",
-        "period"                          : "\(UnicodeScalar(UInt32(0x0000002E))!)",
-        "permil"                          : "\(UnicodeScalar(UInt32(0x00002030))!)",
-        "perp"                            : "\(UnicodeScalar(UInt32(0x000022A5))!)",
-        "pertenk"                         : "\(UnicodeScalar(UInt32(0x00002031))!)",
-        "Pfr"                             : "\(UnicodeScalar(UInt32(0x0001D513))!)",
-        "pfr"                             : "\(UnicodeScalar(UInt32(0x0001D52D))!)",
-        "Phi"                             : "\(UnicodeScalar(UInt32(0x000003A6))!)",
-        "phi"                             : "\(UnicodeScalar(UInt32(0x000003C6))!)",
-        "phiv"                            : "\(UnicodeScalar(UInt32(0x000003D5))!)",
-        "phmmat"                          : "\(UnicodeScalar(UInt32(0x00002133))!)",
-        "phone"                           : "\(UnicodeScalar(UInt32(0x0000260E))!)",
-        "Pi"                              : "\(UnicodeScalar(UInt32(0x000003A0))!)",
-        "pi"                              : "\(UnicodeScalar(UInt32(0x000003C0))!)",
-        "pitchfork"                       : "\(UnicodeScalar(UInt32(0x000022D4))!)",
-        "piv"                             : "\(UnicodeScalar(UInt32(0x000003D6))!)",
-        "planck"                          : "\(UnicodeScalar(UInt32(0x0000210F))!)",
-        "planckh"                         : "\(UnicodeScalar(UInt32(0x0000210E))!)",
-        "plankv"                          : "\(UnicodeScalar(UInt32(0x0000210F))!)",
-        "plus"                            : "\(UnicodeScalar(UInt32(0x0000002B))!)",
-        "plusacir"                        : "\(UnicodeScalar(UInt32(0x00002A23))!)",
-        "plusb"                           : "\(UnicodeScalar(UInt32(0x0000229E))!)",
-        "pluscir"                         : "\(UnicodeScalar(UInt32(0x00002A22))!)",
-        "plusdo"                          : "\(UnicodeScalar(UInt32(0x00002214))!)",
-        "plusdu"                          : "\(UnicodeScalar(UInt32(0x00002A25))!)",
-        "pluse"                           : "\(UnicodeScalar(UInt32(0x00002A72))!)",
-        "PlusMinus"                       : "\(UnicodeScalar(UInt32(0x000000B1))!)",
-        "plusmn"                          : "\(UnicodeScalar(UInt32(0x000000B1))!)",
-        "plussim"                         : "\(UnicodeScalar(UInt32(0x00002A26))!)",
-        "plustwo"                         : "\(UnicodeScalar(UInt32(0x00002A27))!)",
-        "pm"                              : "\(UnicodeScalar(UInt32(0x000000B1))!)",
-        "Poincareplane"                   : "\(UnicodeScalar(UInt32(0x0000210C))!)",
-        "pointint"                        : "\(UnicodeScalar(UInt32(0x00002A15))!)",
-        "Popf"                            : "\(UnicodeScalar(UInt32(0x00002119))!)",
-        "popf"                            : "\(UnicodeScalar(UInt32(0x0001D561))!)",
-        "pound"                           : "\(UnicodeScalar(UInt32(0x000000A3))!)",
-        "pr"                              : "\(UnicodeScalar(UInt32(0x0000227A))!)",
-        "Pr"                              : "\(UnicodeScalar(UInt32(0x00002ABB))!)",
-        "prap"                            : "\(UnicodeScalar(UInt32(0x00002AB7))!)",
-        "prcue"                           : "\(UnicodeScalar(UInt32(0x0000227C))!)",
-        "pre"                             : "\(UnicodeScalar(UInt32(0x00002AAF))!)",
-        "prE"                             : "\(UnicodeScalar(UInt32(0x00002AB3))!)",
-        "prec"                            : "\(UnicodeScalar(UInt32(0x0000227A))!)",
-        "precapprox"                      : "\(UnicodeScalar(UInt32(0x00002AB7))!)",
-        "preccurlyeq"                     : "\(UnicodeScalar(UInt32(0x0000227C))!)",
-        "Precedes"                        : "\(UnicodeScalar(UInt32(0x0000227A))!)",
-        "PrecedesEqual"                   : "\(UnicodeScalar(UInt32(0x00002AAF))!)",
-        "PrecedesSlantEqual"              : "\(UnicodeScalar(UInt32(0x0000227C))!)",
-        "PrecedesTilde"                   : "\(UnicodeScalar(UInt32(0x0000227E))!)",
-        "preceq"                          : "\(UnicodeScalar(UInt32(0x00002AAF))!)",
-        "precnapprox"                     : "\(UnicodeScalar(UInt32(0x00002AB9))!)",
-        "precneqq"                        : "\(UnicodeScalar(UInt32(0x00002AB5))!)",
-        "precnsim"                        : "\(UnicodeScalar(UInt32(0x000022E8))!)",
-        "precsim"                         : "\(UnicodeScalar(UInt32(0x0000227E))!)",
-        "prime"                           : "\(UnicodeScalar(UInt32(0x00002032))!)",
-        "Prime"                           : "\(UnicodeScalar(UInt32(0x00002033))!)",
-        "primes"                          : "\(UnicodeScalar(UInt32(0x00002119))!)",
-        "prnap"                           : "\(UnicodeScalar(UInt32(0x00002AB9))!)",
-        "prnE"                            : "\(UnicodeScalar(UInt32(0x00002AB5))!)",
-        "prnsim"                          : "\(UnicodeScalar(UInt32(0x000022E8))!)",
-        "prod"                            : "\(UnicodeScalar(UInt32(0x0000220F))!)",
-        "Product"                         : "\(UnicodeScalar(UInt32(0x0000220F))!)",
-        "profalar"                        : "\(UnicodeScalar(UInt32(0x0000232E))!)",
-        "profline"                        : "\(UnicodeScalar(UInt32(0x00002312))!)",
-        "profsurf"                        : "\(UnicodeScalar(UInt32(0x00002313))!)",
-        "prop"                            : "\(UnicodeScalar(UInt32(0x0000221D))!)",
-        "Proportion"                      : "\(UnicodeScalar(UInt32(0x00002237))!)",
-        "Proportional"                    : "\(UnicodeScalar(UInt32(0x0000221D))!)",
-        "propto"                          : "\(UnicodeScalar(UInt32(0x0000221D))!)",
-        "prsim"                           : "\(UnicodeScalar(UInt32(0x0000227E))!)",
-        "prurel"                          : "\(UnicodeScalar(UInt32(0x000022B0))!)",
-        "Pscr"                            : "\(UnicodeScalar(UInt32(0x0001D4AB))!)",
-        "pscr"                            : "\(UnicodeScalar(UInt32(0x0001D4C5))!)",
-        "Psi"                             : "\(UnicodeScalar(UInt32(0x000003A8))!)",
-        "psi"                             : "\(UnicodeScalar(UInt32(0x000003C8))!)",
-        "puncsp"                          : "\(UnicodeScalar(UInt32(0x00002008))!)",
-        "Qfr"                             : "\(UnicodeScalar(UInt32(0x0001D514))!)",
-        "qfr"                             : "\(UnicodeScalar(UInt32(0x0001D52E))!)",
-        "qint"                            : "\(UnicodeScalar(UInt32(0x00002A0C))!)",
-        "Qopf"                            : "\(UnicodeScalar(UInt32(0x0000211A))!)",
-        "qopf"                            : "\(UnicodeScalar(UInt32(0x0001D562))!)",
-        "qprime"                          : "\(UnicodeScalar(UInt32(0x00002057))!)",
-        "Qscr"                            : "\(UnicodeScalar(UInt32(0x0001D4AC))!)",
-        "qscr"                            : "\(UnicodeScalar(UInt32(0x0001D4C6))!)",
-        "quaternions"                     : "\(UnicodeScalar(UInt32(0x0000210D))!)",
-        "quatint"                         : "\(UnicodeScalar(UInt32(0x00002A16))!)",
-        "quest"                           : "\(UnicodeScalar(UInt32(0x0000003F))!)",
-        "questeq"                         : "\(UnicodeScalar(UInt32(0x0000225F))!)",
-        "quot"                            : "\(UnicodeScalar(UInt32(0x00000022))!)",
-        "QUOT"                            : "\(UnicodeScalar(UInt32(0x00000022))!)",
-        "rAarr"                           : "\(UnicodeScalar(UInt32(0x000021DB))!)",
-        "race"                            : "\(UnicodeScalar(UInt32(0x0000223D))!)\(UnicodeScalar(UInt32(0x00000331))!)",
-        "Racute"                          : "\(UnicodeScalar(UInt32(0x00000154))!)",
-        "racute"                          : "\(UnicodeScalar(UInt32(0x00000155))!)",
-        "radic"                           : "\(UnicodeScalar(UInt32(0x0000221A))!)",
-        "raemptyv"                        : "\(UnicodeScalar(UInt32(0x000029B3))!)",
-        "rang"                            : "\(UnicodeScalar(UInt32(0x000027E9))!)",
-        "Rang"                            : "\(UnicodeScalar(UInt32(0x000027EB))!)",
-        "rangd"                           : "\(UnicodeScalar(UInt32(0x00002992))!)",
-        "range"                           : "\(UnicodeScalar(UInt32(0x000029A5))!)",
-        "rangle"                          : "\(UnicodeScalar(UInt32(0x000027E9))!)",
-        "raquo"                           : "\(UnicodeScalar(UInt32(0x000000BB))!)",
-        "rarr"                            : "\(UnicodeScalar(UInt32(0x00002192))!)",
-        "Rarr"                            : "\(UnicodeScalar(UInt32(0x000021A0))!)",
-        "rArr"                            : "\(UnicodeScalar(UInt32(0x000021D2))!)",
-        "rarrap"                          : "\(UnicodeScalar(UInt32(0x00002975))!)",
-        "rarrb"                           : "\(UnicodeScalar(UInt32(0x000021E5))!)",
-        "rarrbfs"                         : "\(UnicodeScalar(UInt32(0x00002920))!)",
-        "rarrc"                           : "\(UnicodeScalar(UInt32(0x00002933))!)",
-        "rarrfs"                          : "\(UnicodeScalar(UInt32(0x0000291E))!)",
-        "rarrhk"                          : "\(UnicodeScalar(UInt32(0x000021AA))!)",
-        "rarrlp"                          : "\(UnicodeScalar(UInt32(0x000021AC))!)",
-        "rarrpl"                          : "\(UnicodeScalar(UInt32(0x00002945))!)",
-        "rarrsim"                         : "\(UnicodeScalar(UInt32(0x00002974))!)",
-        "rarrtl"                          : "\(UnicodeScalar(UInt32(0x000021A3))!)",
-        "Rarrtl"                          : "\(UnicodeScalar(UInt32(0x00002916))!)",
-        "rarrw"                           : "\(UnicodeScalar(UInt32(0x0000219D))!)",
-        "ratail"                          : "\(UnicodeScalar(UInt32(0x0000291A))!)",
-        "rAtail"                          : "\(UnicodeScalar(UInt32(0x0000291C))!)",
-        "ratio"                           : "\(UnicodeScalar(UInt32(0x00002236))!)",
-        "rationals"                       : "\(UnicodeScalar(UInt32(0x0000211A))!)",
-        "rbarr"                           : "\(UnicodeScalar(UInt32(0x0000290D))!)",
-        "rBarr"                           : "\(UnicodeScalar(UInt32(0x0000290F))!)",
-        "RBarr"                           : "\(UnicodeScalar(UInt32(0x00002910))!)",
-        "rbbrk"                           : "\(UnicodeScalar(UInt32(0x00002773))!)",
-        "rbrace"                          : "\(UnicodeScalar(UInt32(0x0000007D))!)",
-        "rbrack"                          : "\(UnicodeScalar(UInt32(0x0000005D))!)",
-        "rbrke"                           : "\(UnicodeScalar(UInt32(0x0000298C))!)",
-        "rbrksld"                         : "\(UnicodeScalar(UInt32(0x0000298E))!)",
-        "rbrkslu"                         : "\(UnicodeScalar(UInt32(0x00002990))!)",
-        "Rcaron"                          : "\(UnicodeScalar(UInt32(0x00000158))!)",
-        "rcaron"                          : "\(UnicodeScalar(UInt32(0x00000159))!)",
-        "Rcedil"                          : "\(UnicodeScalar(UInt32(0x00000156))!)",
-        "rcedil"                          : "\(UnicodeScalar(UInt32(0x00000157))!)",
-        "rceil"                           : "\(UnicodeScalar(UInt32(0x00002309))!)",
-        "rcub"                            : "\(UnicodeScalar(UInt32(0x0000007D))!)",
-        "Rcy"                             : "\(UnicodeScalar(UInt32(0x00000420))!)",
-        "rcy"                             : "\(UnicodeScalar(UInt32(0x00000440))!)",
-        "rdca"                            : "\(UnicodeScalar(UInt32(0x00002937))!)",
-        "rdldhar"                         : "\(UnicodeScalar(UInt32(0x00002969))!)",
-        "rdquo"                           : "\(UnicodeScalar(UInt32(0x0000201D))!)",
-        "rdquor"                          : "\(UnicodeScalar(UInt32(0x0000201D))!)",
-        "rdsh"                            : "\(UnicodeScalar(UInt32(0x000021B3))!)",
-        "Re"                              : "\(UnicodeScalar(UInt32(0x0000211C))!)",
-        "real"                            : "\(UnicodeScalar(UInt32(0x0000211C))!)",
-        "realine"                         : "\(UnicodeScalar(UInt32(0x0000211B))!)",
-        "realpart"                        : "\(UnicodeScalar(UInt32(0x0000211C))!)",
-        "reals"                           : "\(UnicodeScalar(UInt32(0x0000211D))!)",
-        "rect"                            : "\(UnicodeScalar(UInt32(0x000025AD))!)",
-        "reg"                             : "\(UnicodeScalar(UInt32(0x000000AE))!)",
-        "REG"                             : "\(UnicodeScalar(UInt32(0x000000AE))!)",
-        "ReverseElement"                  : "\(UnicodeScalar(UInt32(0x0000220B))!)",
-        "ReverseEquilibrium"              : "\(UnicodeScalar(UInt32(0x000021CB))!)",
-        "ReverseUpEquilibrium"            : "\(UnicodeScalar(UInt32(0x0000296F))!)",
-        "rfisht"                          : "\(UnicodeScalar(UInt32(0x0000297D))!)",
-        "rfloor"                          : "\(UnicodeScalar(UInt32(0x0000230B))!)",
-        "Rfr"                             : "\(UnicodeScalar(UInt32(0x0000211C))!)",
-        "rfr"                             : "\(UnicodeScalar(UInt32(0x0001D52F))!)",
-        "rHar"                            : "\(UnicodeScalar(UInt32(0x00002964))!)",
-        "rhard"                           : "\(UnicodeScalar(UInt32(0x000021C1))!)",
-        "rharu"                           : "\(UnicodeScalar(UInt32(0x000021C0))!)",
-        "rharul"                          : "\(UnicodeScalar(UInt32(0x0000296C))!)",
-        "Rho"                             : "\(UnicodeScalar(UInt32(0x000003A1))!)",
-        "rho"                             : "\(UnicodeScalar(UInt32(0x000003C1))!)",
-        "rhov"                            : "\(UnicodeScalar(UInt32(0x000003F1))!)",
-        "RightAngleBracket"               : "\(UnicodeScalar(UInt32(0x000027E9))!)",
-        "rightarrow"                      : "\(UnicodeScalar(UInt32(0x00002192))!)",
-        "RightArrow"                      : "\(UnicodeScalar(UInt32(0x00002192))!)",
-        "Rightarrow"                      : "\(UnicodeScalar(UInt32(0x000021D2))!)",
-        "RightArrowBar"                   : "\(UnicodeScalar(UInt32(0x000021E5))!)",
-        "RightArrowLeftArrow"             : "\(UnicodeScalar(UInt32(0x000021C4))!)",
-        "rightarrowtail"                  : "\(UnicodeScalar(UInt32(0x000021A3))!)",
-        "RightCeiling"                    : "\(UnicodeScalar(UInt32(0x00002309))!)",
-        "RightDoubleBracket"              : "\(UnicodeScalar(UInt32(0x000027E7))!)",
-        "RightDownTeeVector"              : "\(UnicodeScalar(UInt32(0x0000295D))!)",
-        "RightDownVector"                 : "\(UnicodeScalar(UInt32(0x000021C2))!)",
-        "RightDownVectorBar"              : "\(UnicodeScalar(UInt32(0x00002955))!)",
-        "RightFloor"                      : "\(UnicodeScalar(UInt32(0x0000230B))!)",
-        "rightharpoondown"                : "\(UnicodeScalar(UInt32(0x000021C1))!)",
-        "rightharpoonup"                  : "\(UnicodeScalar(UInt32(0x000021C0))!)",
-        "rightleftarrows"                 : "\(UnicodeScalar(UInt32(0x000021C4))!)",
-        "rightleftharpoons"               : "\(UnicodeScalar(UInt32(0x000021CC))!)",
-        "rightrightarrows"                : "\(UnicodeScalar(UInt32(0x000021C9))!)",
-        "rightsquigarrow"                 : "\(UnicodeScalar(UInt32(0x0000219D))!)",
-        "RightTee"                        : "\(UnicodeScalar(UInt32(0x000022A2))!)",
-        "RightTeeArrow"                   : "\(UnicodeScalar(UInt32(0x000021A6))!)",
-        "RightTeeVector"                  : "\(UnicodeScalar(UInt32(0x0000295B))!)",
-        "rightthreetimes"                 : "\(UnicodeScalar(UInt32(0x000022CC))!)",
-        "RightTriangle"                   : "\(UnicodeScalar(UInt32(0x000022B3))!)",
-        "RightTriangleBar"                : "\(UnicodeScalar(UInt32(0x000029D0))!)",
-        "RightTriangleEqual"              : "\(UnicodeScalar(UInt32(0x000022B5))!)",
-        "RightUpDownVector"               : "\(UnicodeScalar(UInt32(0x0000294F))!)",
-        "RightUpTeeVector"                : "\(UnicodeScalar(UInt32(0x0000295C))!)",
-        "RightUpVector"                   : "\(UnicodeScalar(UInt32(0x000021BE))!)",
-        "RightUpVectorBar"                : "\(UnicodeScalar(UInt32(0x00002954))!)",
-        "RightVector"                     : "\(UnicodeScalar(UInt32(0x000021C0))!)",
-        "RightVectorBar"                  : "\(UnicodeScalar(UInt32(0x00002953))!)",
-        "ring"                            : "\(UnicodeScalar(UInt32(0x000002DA))!)",
-        "risingdotseq"                    : "\(UnicodeScalar(UInt32(0x00002253))!)",
-        "rlarr"                           : "\(UnicodeScalar(UInt32(0x000021C4))!)",
-        "rlhar"                           : "\(UnicodeScalar(UInt32(0x000021CC))!)",
-        "rlm"                             : "\(UnicodeScalar(UInt32(0x0000200F))!)",
-        "rmoust"                          : "\(UnicodeScalar(UInt32(0x000023B1))!)",
-        "rmoustache"                      : "\(UnicodeScalar(UInt32(0x000023B1))!)",
-        "rnmid"                           : "\(UnicodeScalar(UInt32(0x00002AEE))!)",
-        "roang"                           : "\(UnicodeScalar(UInt32(0x000027ED))!)",
-        "roarr"                           : "\(UnicodeScalar(UInt32(0x000021FE))!)",
-        "robrk"                           : "\(UnicodeScalar(UInt32(0x000027E7))!)",
-        "ropar"                           : "\(UnicodeScalar(UInt32(0x00002986))!)",
-        "Ropf"                            : "\(UnicodeScalar(UInt32(0x0000211D))!)",
-        "ropf"                            : "\(UnicodeScalar(UInt32(0x0001D563))!)",
-        "roplus"                          : "\(UnicodeScalar(UInt32(0x00002A2E))!)",
-        "rotimes"                         : "\(UnicodeScalar(UInt32(0x00002A35))!)",
-        "RoundImplies"                    : "\(UnicodeScalar(UInt32(0x00002970))!)",
-        "rpar"                            : "\(UnicodeScalar(UInt32(0x00000029))!)",
-        "rpargt"                          : "\(UnicodeScalar(UInt32(0x00002994))!)",
-        "rppolint"                        : "\(UnicodeScalar(UInt32(0x00002A12))!)",
-        "rrarr"                           : "\(UnicodeScalar(UInt32(0x000021C9))!)",
-        "Rrightarrow"                     : "\(UnicodeScalar(UInt32(0x000021DB))!)",
-        "rsaquo"                          : "\(UnicodeScalar(UInt32(0x0000203A))!)",
-        "Rscr"                            : "\(UnicodeScalar(UInt32(0x0000211B))!)",
-        "rscr"                            : "\(UnicodeScalar(UInt32(0x0001D4C7))!)",
-        "rsh"                             : "\(UnicodeScalar(UInt32(0x000021B1))!)",
-        "Rsh"                             : "\(UnicodeScalar(UInt32(0x000021B1))!)",
-        "rsqb"                            : "\(UnicodeScalar(UInt32(0x0000005D))!)",
-        "rsquo"                           : "\(UnicodeScalar(UInt32(0x00002019))!)",
-        "rsquor"                          : "\(UnicodeScalar(UInt32(0x00002019))!)",
-        "rthree"                          : "\(UnicodeScalar(UInt32(0x000022CC))!)",
-        "rtimes"                          : "\(UnicodeScalar(UInt32(0x000022CA))!)",
-        "rtri"                            : "\(UnicodeScalar(UInt32(0x000025B9))!)",
-        "rtrie"                           : "\(UnicodeScalar(UInt32(0x000022B5))!)",
-        "rtrif"                           : "\(UnicodeScalar(UInt32(0x000025B8))!)",
-        "rtriltri"                        : "\(UnicodeScalar(UInt32(0x000029CE))!)",
-        "RuleDelayed"                     : "\(UnicodeScalar(UInt32(0x000029F4))!)",
-        "ruluhar"                         : "\(UnicodeScalar(UInt32(0x00002968))!)",
-        "rx"                              : "\(UnicodeScalar(UInt32(0x0000211E))!)",
-        "Sacute"                          : "\(UnicodeScalar(UInt32(0x0000015A))!)",
-        "sacute"                          : "\(UnicodeScalar(UInt32(0x0000015B))!)",
-        "sbquo"                           : "\(UnicodeScalar(UInt32(0x0000201A))!)",
-        "sc"                              : "\(UnicodeScalar(UInt32(0x0000227B))!)",
-        "Sc"                              : "\(UnicodeScalar(UInt32(0x00002ABC))!)",
-        "scap"                            : "\(UnicodeScalar(UInt32(0x00002AB8))!)",
-        "Scaron"                          : "\(UnicodeScalar(UInt32(0x00000160))!)",
-        "scaron"                          : "\(UnicodeScalar(UInt32(0x00000161))!)",
-        "sccue"                           : "\(UnicodeScalar(UInt32(0x0000227D))!)",
-        "sce"                             : "\(UnicodeScalar(UInt32(0x00002AB0))!)",
-        "scE"                             : "\(UnicodeScalar(UInt32(0x00002AB4))!)",
-        "Scedil"                          : "\(UnicodeScalar(UInt32(0x0000015E))!)",
-        "scedil"                          : "\(UnicodeScalar(UInt32(0x0000015F))!)",
-        "Scirc"                           : "\(UnicodeScalar(UInt32(0x0000015C))!)",
-        "scirc"                           : "\(UnicodeScalar(UInt32(0x0000015D))!)",
-        "scnap"                           : "\(UnicodeScalar(UInt32(0x00002ABA))!)",
-        "scnE"                            : "\(UnicodeScalar(UInt32(0x00002AB6))!)",
-        "scnsim"                          : "\(UnicodeScalar(UInt32(0x000022E9))!)",
-        "scpolint"                        : "\(UnicodeScalar(UInt32(0x00002A13))!)",
-        "scsim"                           : "\(UnicodeScalar(UInt32(0x0000227F))!)",
-        "Scy"                             : "\(UnicodeScalar(UInt32(0x00000421))!)",
-        "scy"                             : "\(UnicodeScalar(UInt32(0x00000441))!)",
-        "sdot"                            : "\(UnicodeScalar(UInt32(0x000022C5))!)",
-        "sdotb"                           : "\(UnicodeScalar(UInt32(0x000022A1))!)",
-        "sdote"                           : "\(UnicodeScalar(UInt32(0x00002A66))!)",
-        "searhk"                          : "\(UnicodeScalar(UInt32(0x00002925))!)",
-        "searr"                           : "\(UnicodeScalar(UInt32(0x00002198))!)",
-        "seArr"                           : "\(UnicodeScalar(UInt32(0x000021D8))!)",
-        "searrow"                         : "\(UnicodeScalar(UInt32(0x00002198))!)",
-        "sect"                            : "\(UnicodeScalar(UInt32(0x000000A7))!)",
-        "semi"                            : "\(UnicodeScalar(UInt32(0x0000003B))!)",
-        "seswar"                          : "\(UnicodeScalar(UInt32(0x00002929))!)",
-        "setminus"                        : "\(UnicodeScalar(UInt32(0x00002216))!)",
-        "setmn"                           : "\(UnicodeScalar(UInt32(0x00002216))!)",
-        "sext"                            : "\(UnicodeScalar(UInt32(0x00002736))!)",
-        "Sfr"                             : "\(UnicodeScalar(UInt32(0x0001D516))!)",
-        "sfr"                             : "\(UnicodeScalar(UInt32(0x0001D530))!)",
-        "sfrown"                          : "\(UnicodeScalar(UInt32(0x00002322))!)",
-        "sharp"                           : "\(UnicodeScalar(UInt32(0x0000266F))!)",
-        "SHCHcy"                          : "\(UnicodeScalar(UInt32(0x00000429))!)",
-        "shchcy"                          : "\(UnicodeScalar(UInt32(0x00000449))!)",
-        "SHcy"                            : "\(UnicodeScalar(UInt32(0x00000428))!)",
-        "shcy"                            : "\(UnicodeScalar(UInt32(0x00000448))!)",
-        "ShortDownArrow"                  : "\(UnicodeScalar(UInt32(0x00002193))!)",
-        "ShortLeftArrow"                  : "\(UnicodeScalar(UInt32(0x00002190))!)",
-        "shortmid"                        : "\(UnicodeScalar(UInt32(0x00002223))!)",
-        "shortparallel"                   : "\(UnicodeScalar(UInt32(0x00002225))!)",
-        "ShortRightArrow"                 : "\(UnicodeScalar(UInt32(0x00002192))!)",
-        "ShortUpArrow"                    : "\(UnicodeScalar(UInt32(0x00002191))!)",
-        "shy"                             : "\(UnicodeScalar(UInt32(0x000000AD))!)",
-        "Sigma"                           : "\(UnicodeScalar(UInt32(0x000003A3))!)",
-        "sigma"                           : "\(UnicodeScalar(UInt32(0x000003C3))!)",
-        "sigmaf"                          : "\(UnicodeScalar(UInt32(0x000003C2))!)",
-        "sigmav"                          : "\(UnicodeScalar(UInt32(0x000003C2))!)",
-        "sim"                             : "\(UnicodeScalar(UInt32(0x0000223C))!)",
-        "simdot"                          : "\(UnicodeScalar(UInt32(0x00002A6A))!)",
-        "sime"                            : "\(UnicodeScalar(UInt32(0x00002243))!)",
-        "simeq"                           : "\(UnicodeScalar(UInt32(0x00002243))!)",
-        "simg"                            : "\(UnicodeScalar(UInt32(0x00002A9E))!)",
-        "simgE"                           : "\(UnicodeScalar(UInt32(0x00002AA0))!)",
-        "siml"                            : "\(UnicodeScalar(UInt32(0x00002A9D))!)",
-        "simlE"                           : "\(UnicodeScalar(UInt32(0x00002A9F))!)",
-        "simne"                           : "\(UnicodeScalar(UInt32(0x00002246))!)",
-        "simplus"                         : "\(UnicodeScalar(UInt32(0x00002A24))!)",
-        "simrarr"                         : "\(UnicodeScalar(UInt32(0x00002972))!)",
-        "slarr"                           : "\(UnicodeScalar(UInt32(0x00002190))!)",
-        "SmallCircle"                     : "\(UnicodeScalar(UInt32(0x00002218))!)",
-        "smallsetminus"                   : "\(UnicodeScalar(UInt32(0x00002216))!)",
-        "smashp"                          : "\(UnicodeScalar(UInt32(0x00002A33))!)",
-        "smeparsl"                        : "\(UnicodeScalar(UInt32(0x000029E4))!)",
-        "smid"                            : "\(UnicodeScalar(UInt32(0x00002223))!)",
-        "smile"                           : "\(UnicodeScalar(UInt32(0x00002323))!)",
-        "smt"                             : "\(UnicodeScalar(UInt32(0x00002AAA))!)",
-        "smte"                            : "\(UnicodeScalar(UInt32(0x00002AAC))!)",
-        "smtes"                           : "\(UnicodeScalar(UInt32(0x00002AAC))!)\(UnicodeScalar(UInt32(0x0000FE00))!)",
-        "SOFTcy"                          : "\(UnicodeScalar(UInt32(0x0000042C))!)",
-        "softcy"                          : "\(UnicodeScalar(UInt32(0x0000044C))!)",
-        "sol"                             : "\(UnicodeScalar(UInt32(0x0000002F))!)",
-        "solb"                            : "\(UnicodeScalar(UInt32(0x000029C4))!)",
-        "solbar"                          : "\(UnicodeScalar(UInt32(0x0000233F))!)",
-        "Sopf"                            : "\(UnicodeScalar(UInt32(0x0001D54A))!)",
-        "sopf"                            : "\(UnicodeScalar(UInt32(0x0001D564))!)",
-        "spades"                          : "\(UnicodeScalar(UInt32(0x00002660))!)",
-        "spadesuit"                       : "\(UnicodeScalar(UInt32(0x00002660))!)",
-        "spar"                            : "\(UnicodeScalar(UInt32(0x00002225))!)",
-        "sqcap"                           : "\(UnicodeScalar(UInt32(0x00002293))!)",
-        "sqcaps"                          : "\(UnicodeScalar(UInt32(0x00002293))!)\(UnicodeScalar(UInt32(0x0000FE00))!)",
-        "sqcup"                           : "\(UnicodeScalar(UInt32(0x00002294))!)",
-        "sqcups"                          : "\(UnicodeScalar(UInt32(0x00002294))!)\(UnicodeScalar(UInt32(0x0000FE00))!)",
-        "Sqrt"                            : "\(UnicodeScalar(UInt32(0x0000221A))!)",
-        "sqsub"                           : "\(UnicodeScalar(UInt32(0x0000228F))!)",
-        "sqsube"                          : "\(UnicodeScalar(UInt32(0x00002291))!)",
-        "sqsubset"                        : "\(UnicodeScalar(UInt32(0x0000228F))!)",
-        "sqsubseteq"                      : "\(UnicodeScalar(UInt32(0x00002291))!)",
-        "sqsup"                           : "\(UnicodeScalar(UInt32(0x00002290))!)",
-        "sqsupe"                          : "\(UnicodeScalar(UInt32(0x00002292))!)",
-        "sqsupset"                        : "\(UnicodeScalar(UInt32(0x00002290))!)",
-        "sqsupseteq"                      : "\(UnicodeScalar(UInt32(0x00002292))!)",
-        "squ"                             : "\(UnicodeScalar(UInt32(0x000025A1))!)",
-        "square"                          : "\(UnicodeScalar(UInt32(0x000025A1))!)",
-        "Square"                          : "\(UnicodeScalar(UInt32(0x000025A1))!)",
-        "SquareIntersection"              : "\(UnicodeScalar(UInt32(0x00002293))!)",
-        "SquareSubset"                    : "\(UnicodeScalar(UInt32(0x0000228F))!)",
-        "SquareSubsetEqual"               : "\(UnicodeScalar(UInt32(0x00002291))!)",
-        "SquareSuperset"                  : "\(UnicodeScalar(UInt32(0x00002290))!)",
-        "SquareSupersetEqual"             : "\(UnicodeScalar(UInt32(0x00002292))!)",
-        "SquareUnion"                     : "\(UnicodeScalar(UInt32(0x00002294))!)",
-        "squarf"                          : "\(UnicodeScalar(UInt32(0x000025AA))!)",
-        "squf"                            : "\(UnicodeScalar(UInt32(0x000025AA))!)",
-        "srarr"                           : "\(UnicodeScalar(UInt32(0x00002192))!)",
-        "Sscr"                            : "\(UnicodeScalar(UInt32(0x0001D4AE))!)",
-        "sscr"                            : "\(UnicodeScalar(UInt32(0x0001D4C8))!)",
-        "ssetmn"                          : "\(UnicodeScalar(UInt32(0x00002216))!)",
-        "ssmile"                          : "\(UnicodeScalar(UInt32(0x00002323))!)",
-        "sstarf"                          : "\(UnicodeScalar(UInt32(0x000022C6))!)",
-        "Star"                            : "\(UnicodeScalar(UInt32(0x000022C6))!)",
-        "star"                            : "\(UnicodeScalar(UInt32(0x00002606))!)",
-        "starf"                           : "\(UnicodeScalar(UInt32(0x00002605))!)",
-        "straightepsilon"                 : "\(UnicodeScalar(UInt32(0x000003F5))!)",
-        "straightphi"                     : "\(UnicodeScalar(UInt32(0x000003D5))!)",
-        "strns"                           : "\(UnicodeScalar(UInt32(0x000000AF))!)",
-        "sub"                             : "\(UnicodeScalar(UInt32(0x00002282))!)",
-        "Sub"                             : "\(UnicodeScalar(UInt32(0x000022D0))!)",
-        "subdot"                          : "\(UnicodeScalar(UInt32(0x00002ABD))!)",
-        "sube"                            : "\(UnicodeScalar(UInt32(0x00002286))!)",
-        "subE"                            : "\(UnicodeScalar(UInt32(0x00002AC5))!)",
-        "subedot"                         : "\(UnicodeScalar(UInt32(0x00002AC3))!)",
-        "submult"                         : "\(UnicodeScalar(UInt32(0x00002AC1))!)",
-        "subne"                           : "\(UnicodeScalar(UInt32(0x0000228A))!)",
-        "subnE"                           : "\(UnicodeScalar(UInt32(0x00002ACB))!)",
-        "subplus"                         : "\(UnicodeScalar(UInt32(0x00002ABF))!)",
-        "subrarr"                         : "\(UnicodeScalar(UInt32(0x00002979))!)",
-        "subset"                          : "\(UnicodeScalar(UInt32(0x00002282))!)",
-        "Subset"                          : "\(UnicodeScalar(UInt32(0x000022D0))!)",
-        "subseteq"                        : "\(UnicodeScalar(UInt32(0x00002286))!)",
-        "subseteqq"                       : "\(UnicodeScalar(UInt32(0x00002AC5))!)",
-        "SubsetEqual"                     : "\(UnicodeScalar(UInt32(0x00002286))!)",
-        "subsetneq"                       : "\(UnicodeScalar(UInt32(0x0000228A))!)",
-        "subsetneqq"                      : "\(UnicodeScalar(UInt32(0x00002ACB))!)",
-        "subsim"                          : "\(UnicodeScalar(UInt32(0x00002AC7))!)",
-        "subsub"                          : "\(UnicodeScalar(UInt32(0x00002AD5))!)",
-        "subsup"                          : "\(UnicodeScalar(UInt32(0x00002AD3))!)",
-        "succ"                            : "\(UnicodeScalar(UInt32(0x0000227B))!)",
-        "succapprox"                      : "\(UnicodeScalar(UInt32(0x00002AB8))!)",
-        "succcurlyeq"                     : "\(UnicodeScalar(UInt32(0x0000227D))!)",
-        "Succeeds"                        : "\(UnicodeScalar(UInt32(0x0000227B))!)",
-        "SucceedsEqual"                   : "\(UnicodeScalar(UInt32(0x00002AB0))!)",
-        "SucceedsSlantEqual"              : "\(UnicodeScalar(UInt32(0x0000227D))!)",
-        "SucceedsTilde"                   : "\(UnicodeScalar(UInt32(0x0000227F))!)",
-        "succeq"                          : "\(UnicodeScalar(UInt32(0x00002AB0))!)",
-        "succnapprox"                     : "\(UnicodeScalar(UInt32(0x00002ABA))!)",
-        "succneqq"                        : "\(UnicodeScalar(UInt32(0x00002AB6))!)",
-        "succnsim"                        : "\(UnicodeScalar(UInt32(0x000022E9))!)",
-        "succsim"                         : "\(UnicodeScalar(UInt32(0x0000227F))!)",
-        "SuchThat"                        : "\(UnicodeScalar(UInt32(0x0000220B))!)",
-        "sum"                             : "\(UnicodeScalar(UInt32(0x00002211))!)",
-        "Sum"                             : "\(UnicodeScalar(UInt32(0x00002211))!)",
-        "sung"                            : "\(UnicodeScalar(UInt32(0x0000266A))!)",
-        "sup"                             : "\(UnicodeScalar(UInt32(0x00002283))!)",
-        "Sup"                             : "\(UnicodeScalar(UInt32(0x000022D1))!)",
-        "sup1"                            : "\(UnicodeScalar(UInt32(0x000000B9))!)",
-        "sup2"                            : "\(UnicodeScalar(UInt32(0x000000B2))!)",
-        "sup3"                            : "\(UnicodeScalar(UInt32(0x000000B3))!)",
-        "supdot"                          : "\(UnicodeScalar(UInt32(0x00002ABE))!)",
-        "supdsub"                         : "\(UnicodeScalar(UInt32(0x00002AD8))!)",
-        "supe"                            : "\(UnicodeScalar(UInt32(0x00002287))!)",
-        "supE"                            : "\(UnicodeScalar(UInt32(0x00002AC6))!)",
-        "supedot"                         : "\(UnicodeScalar(UInt32(0x00002AC4))!)",
-        "Superset"                        : "\(UnicodeScalar(UInt32(0x00002283))!)",
-        "SupersetEqual"                   : "\(UnicodeScalar(UInt32(0x00002287))!)",
-        "suphsol"                         : "\(UnicodeScalar(UInt32(0x000027C9))!)",
-        "suphsub"                         : "\(UnicodeScalar(UInt32(0x00002AD7))!)",
-        "suplarr"                         : "\(UnicodeScalar(UInt32(0x0000297B))!)",
-        "supmult"                         : "\(UnicodeScalar(UInt32(0x00002AC2))!)",
-        "supne"                           : "\(UnicodeScalar(UInt32(0x0000228B))!)",
-        "supnE"                           : "\(UnicodeScalar(UInt32(0x00002ACC))!)",
-        "supplus"                         : "\(UnicodeScalar(UInt32(0x00002AC0))!)",
-        "supset"                          : "\(UnicodeScalar(UInt32(0x00002283))!)",
-        "Supset"                          : "\(UnicodeScalar(UInt32(0x000022D1))!)",
-        "supseteq"                        : "\(UnicodeScalar(UInt32(0x00002287))!)",
-        "supseteqq"                       : "\(UnicodeScalar(UInt32(0x00002AC6))!)",
-        "supsetneq"                       : "\(UnicodeScalar(UInt32(0x0000228B))!)",
-        "supsetneqq"                      : "\(UnicodeScalar(UInt32(0x00002ACC))!)",
-        "supsim"                          : "\(UnicodeScalar(UInt32(0x00002AC8))!)",
-        "supsub"                          : "\(UnicodeScalar(UInt32(0x00002AD4))!)",
-        "supsup"                          : "\(UnicodeScalar(UInt32(0x00002AD6))!)",
-        "swarhk"                          : "\(UnicodeScalar(UInt32(0x00002926))!)",
-        "swarr"                           : "\(UnicodeScalar(UInt32(0x00002199))!)",
-        "swArr"                           : "\(UnicodeScalar(UInt32(0x000021D9))!)",
-        "swarrow"                         : "\(UnicodeScalar(UInt32(0x00002199))!)",
-        "swnwar"                          : "\(UnicodeScalar(UInt32(0x0000292A))!)",
-        "szlig"                           : "\(UnicodeScalar(UInt32(0x000000DF))!)",
-        "Tab"                             : "\(UnicodeScalar(UInt32(0x00000009))!)",
-        "target"                          : "\(UnicodeScalar(UInt32(0x00002316))!)",
-        "Tau"                             : "\(UnicodeScalar(UInt32(0x000003A4))!)",
-        "tau"                             : "\(UnicodeScalar(UInt32(0x000003C4))!)",
-        "tbrk"                            : "\(UnicodeScalar(UInt32(0x000023B4))!)",
-        "Tcaron"                          : "\(UnicodeScalar(UInt32(0x00000164))!)",
-        "tcaron"                          : "\(UnicodeScalar(UInt32(0x00000165))!)",
-        "Tcedil"                          : "\(UnicodeScalar(UInt32(0x00000162))!)",
-        "tcedil"                          : "\(UnicodeScalar(UInt32(0x00000163))!)",
-        "Tcy"                             : "\(UnicodeScalar(UInt32(0x00000422))!)",
-        "tcy"                             : "\(UnicodeScalar(UInt32(0x00000442))!)",
-        "tdot"                            : "\(UnicodeScalar(UInt32(0x000020DB))!)",
-        "telrec"                          : "\(UnicodeScalar(UInt32(0x00002315))!)",
-        "Tfr"                             : "\(UnicodeScalar(UInt32(0x0001D517))!)",
-        "tfr"                             : "\(UnicodeScalar(UInt32(0x0001D531))!)",
-        "there4"                          : "\(UnicodeScalar(UInt32(0x00002234))!)",
-        "therefore"                       : "\(UnicodeScalar(UInt32(0x00002234))!)",
-        "Therefore"                       : "\(UnicodeScalar(UInt32(0x00002234))!)",
-        "Theta"                           : "\(UnicodeScalar(UInt32(0x00000398))!)",
-        "theta"                           : "\(UnicodeScalar(UInt32(0x000003B8))!)",
-        "thetasym"                        : "\(UnicodeScalar(UInt32(0x000003D1))!)",
-        "thetav"                          : "\(UnicodeScalar(UInt32(0x000003D1))!)",
-        "thickapprox"                     : "\(UnicodeScalar(UInt32(0x00002248))!)",
-        "thicksim"                        : "\(UnicodeScalar(UInt32(0x0000223C))!)",
-        "ThickSpace"                      : "\(UnicodeScalar(UInt32(0x0000205F))!)\(UnicodeScalar(UInt32(0x0000200A))!)",
-        "thinsp"                          : "\(UnicodeScalar(UInt32(0x00002009))!)",
-        "ThinSpace"                       : "\(UnicodeScalar(UInt32(0x00002009))!)",
-        "thkap"                           : "\(UnicodeScalar(UInt32(0x00002248))!)",
-        "thksim"                          : "\(UnicodeScalar(UInt32(0x0000223C))!)",
-        "THORN"                           : "\(UnicodeScalar(UInt32(0x000000DE))!)",
-        "thorn"                           : "\(UnicodeScalar(UInt32(0x000000FE))!)",
-        "tilde"                           : "\(UnicodeScalar(UInt32(0x000002DC))!)",
-        "Tilde"                           : "\(UnicodeScalar(UInt32(0x0000223C))!)",
-        "TildeEqual"                      : "\(UnicodeScalar(UInt32(0x00002243))!)",
-        "TildeFullEqual"                  : "\(UnicodeScalar(UInt32(0x00002245))!)",
-        "TildeTilde"                      : "\(UnicodeScalar(UInt32(0x00002248))!)",
-        "times"                           : "\(UnicodeScalar(UInt32(0x000000D7))!)",
-        "timesb"                          : "\(UnicodeScalar(UInt32(0x000022A0))!)",
-        "timesbar"                        : "\(UnicodeScalar(UInt32(0x00002A31))!)",
-        "timesd"                          : "\(UnicodeScalar(UInt32(0x00002A30))!)",
-        "tint"                            : "\(UnicodeScalar(UInt32(0x0000222D))!)",
-        "toea"                            : "\(UnicodeScalar(UInt32(0x00002928))!)",
-        "top"                             : "\(UnicodeScalar(UInt32(0x000022A4))!)",
-        "topbot"                          : "\(UnicodeScalar(UInt32(0x00002336))!)",
-        "topcir"                          : "\(UnicodeScalar(UInt32(0x00002AF1))!)",
-        "Topf"                            : "\(UnicodeScalar(UInt32(0x0001D54B))!)",
-        "topf"                            : "\(UnicodeScalar(UInt32(0x0001D565))!)",
-        "topfork"                         : "\(UnicodeScalar(UInt32(0x00002ADA))!)",
-        "tosa"                            : "\(UnicodeScalar(UInt32(0x00002929))!)",
-        "tprime"                          : "\(UnicodeScalar(UInt32(0x00002034))!)",
-        "trade"                           : "\(UnicodeScalar(UInt32(0x00002122))!)",
-        "TRADE"                           : "\(UnicodeScalar(UInt32(0x00002122))!)",
-        "triangle"                        : "\(UnicodeScalar(UInt32(0x000025B5))!)",
-        "triangledown"                    : "\(UnicodeScalar(UInt32(0x000025BF))!)",
-        "triangleleft"                    : "\(UnicodeScalar(UInt32(0x000025C3))!)",
-        "trianglelefteq"                  : "\(UnicodeScalar(UInt32(0x000022B4))!)",
-        "triangleq"                       : "\(UnicodeScalar(UInt32(0x0000225C))!)",
-        "triangleright"                   : "\(UnicodeScalar(UInt32(0x000025B9))!)",
-        "trianglerighteq"                 : "\(UnicodeScalar(UInt32(0x000022B5))!)",
-        "tridot"                          : "\(UnicodeScalar(UInt32(0x000025EC))!)",
-        "trie"                            : "\(UnicodeScalar(UInt32(0x0000225C))!)",
-        "triminus"                        : "\(UnicodeScalar(UInt32(0x00002A3A))!)",
-        "TripleDot"                       : "\(UnicodeScalar(UInt32(0x000020DB))!)",
-        "triplus"                         : "\(UnicodeScalar(UInt32(0x00002A39))!)",
-        "trisb"                           : "\(UnicodeScalar(UInt32(0x000029CD))!)",
-        "tritime"                         : "\(UnicodeScalar(UInt32(0x00002A3B))!)",
-        "trpezium"                        : "\(UnicodeScalar(UInt32(0x000023E2))!)",
-        "Tscr"                            : "\(UnicodeScalar(UInt32(0x0001D4AF))!)",
-        "tscr"                            : "\(UnicodeScalar(UInt32(0x0001D4C9))!)",
-        "TScy"                            : "\(UnicodeScalar(UInt32(0x00000426))!)",
-        "tscy"                            : "\(UnicodeScalar(UInt32(0x00000446))!)",
-        "TSHcy"                           : "\(UnicodeScalar(UInt32(0x0000040B))!)",
-        "tshcy"                           : "\(UnicodeScalar(UInt32(0x0000045B))!)",
-        "Tstrok"                          : "\(UnicodeScalar(UInt32(0x00000166))!)",
-        "tstrok"                          : "\(UnicodeScalar(UInt32(0x00000167))!)",
-        "twixt"                           : "\(UnicodeScalar(UInt32(0x0000226C))!)",
-        "twoheadleftarrow"                : "\(UnicodeScalar(UInt32(0x0000219E))!)",
-        "twoheadrightarrow"               : "\(UnicodeScalar(UInt32(0x000021A0))!)",
-        "Uacute"                          : "\(UnicodeScalar(UInt32(0x000000DA))!)",
-        "uacute"                          : "\(UnicodeScalar(UInt32(0x000000FA))!)",
-        "uarr"                            : "\(UnicodeScalar(UInt32(0x00002191))!)",
-        "Uarr"                            : "\(UnicodeScalar(UInt32(0x0000219F))!)",
-        "uArr"                            : "\(UnicodeScalar(UInt32(0x000021D1))!)",
-        "Uarrocir"                        : "\(UnicodeScalar(UInt32(0x00002949))!)",
-        "Ubrcy"                           : "\(UnicodeScalar(UInt32(0x0000040E))!)",
-        "ubrcy"                           : "\(UnicodeScalar(UInt32(0x0000045E))!)",
-        "Ubreve"                          : "\(UnicodeScalar(UInt32(0x0000016C))!)",
-        "ubreve"                          : "\(UnicodeScalar(UInt32(0x0000016D))!)",
-        "Ucirc"                           : "\(UnicodeScalar(UInt32(0x000000DB))!)",
-        "ucirc"                           : "\(UnicodeScalar(UInt32(0x000000FB))!)",
-        "Ucy"                             : "\(UnicodeScalar(UInt32(0x00000423))!)",
-        "ucy"                             : "\(UnicodeScalar(UInt32(0x00000443))!)",
-        "udarr"                           : "\(UnicodeScalar(UInt32(0x000021C5))!)",
-        "Udblac"                          : "\(UnicodeScalar(UInt32(0x00000170))!)",
-        "udblac"                          : "\(UnicodeScalar(UInt32(0x00000171))!)",
-        "udhar"                           : "\(UnicodeScalar(UInt32(0x0000296E))!)",
-        "ufisht"                          : "\(UnicodeScalar(UInt32(0x0000297E))!)",
-        "Ufr"                             : "\(UnicodeScalar(UInt32(0x0001D518))!)",
-        "ufr"                             : "\(UnicodeScalar(UInt32(0x0001D532))!)",
-        "Ugrave"                          : "\(UnicodeScalar(UInt32(0x000000D9))!)",
-        "ugrave"                          : "\(UnicodeScalar(UInt32(0x000000F9))!)",
-        "uHar"                            : "\(UnicodeScalar(UInt32(0x00002963))!)",
-        "uharl"                           : "\(UnicodeScalar(UInt32(0x000021BF))!)",
-        "uharr"                           : "\(UnicodeScalar(UInt32(0x000021BE))!)",
-        "uhblk"                           : "\(UnicodeScalar(UInt32(0x00002580))!)",
-        "ulcorn"                          : "\(UnicodeScalar(UInt32(0x0000231C))!)",
-        "ulcorner"                        : "\(UnicodeScalar(UInt32(0x0000231C))!)",
-        "ulcrop"                          : "\(UnicodeScalar(UInt32(0x0000230F))!)",
-        "ultri"                           : "\(UnicodeScalar(UInt32(0x000025F8))!)",
-        "Umacr"                           : "\(UnicodeScalar(UInt32(0x0000016A))!)",
-        "umacr"                           : "\(UnicodeScalar(UInt32(0x0000016B))!)",
-        "uml"                             : "\(UnicodeScalar(UInt32(0x000000A8))!)",
-        "UnderBar"                        : "\(UnicodeScalar(UInt32(0x0000005F))!)",
-        "UnderBrace"                      : "\(UnicodeScalar(UInt32(0x000023DF))!)",
-        "UnderBracket"                    : "\(UnicodeScalar(UInt32(0x000023B5))!)",
-        "UnderParenthesis"                : "\(UnicodeScalar(UInt32(0x000023DD))!)",
-        "Union"                           : "\(UnicodeScalar(UInt32(0x000022C3))!)",
-        "UnionPlus"                       : "\(UnicodeScalar(UInt32(0x0000228E))!)",
-        "Uogon"                           : "\(UnicodeScalar(UInt32(0x00000172))!)",
-        "uogon"                           : "\(UnicodeScalar(UInt32(0x00000173))!)",
-        "Uopf"                            : "\(UnicodeScalar(UInt32(0x0001D54C))!)",
-        "uopf"                            : "\(UnicodeScalar(UInt32(0x0001D566))!)",
-        "uparrow"                         : "\(UnicodeScalar(UInt32(0x00002191))!)",
-        "UpArrow"                         : "\(UnicodeScalar(UInt32(0x00002191))!)",
-        "Uparrow"                         : "\(UnicodeScalar(UInt32(0x000021D1))!)",
-        "UpArrowBar"                      : "\(UnicodeScalar(UInt32(0x00002912))!)",
-        "UpArrowDownArrow"                : "\(UnicodeScalar(UInt32(0x000021C5))!)",
-        "updownarrow"                     : "\(UnicodeScalar(UInt32(0x00002195))!)",
-        "UpDownArrow"                     : "\(UnicodeScalar(UInt32(0x00002195))!)",
-        "Updownarrow"                     : "\(UnicodeScalar(UInt32(0x000021D5))!)",
-        "UpEquilibrium"                   : "\(UnicodeScalar(UInt32(0x0000296E))!)",
-        "upharpoonleft"                   : "\(UnicodeScalar(UInt32(0x000021BF))!)",
-        "upharpoonright"                  : "\(UnicodeScalar(UInt32(0x000021BE))!)",
-        "uplus"                           : "\(UnicodeScalar(UInt32(0x0000228E))!)",
-        "UpperLeftArrow"                  : "\(UnicodeScalar(UInt32(0x00002196))!)",
-        "UpperRightArrow"                 : "\(UnicodeScalar(UInt32(0x00002197))!)",
-        "upsi"                            : "\(UnicodeScalar(UInt32(0x000003C5))!)",
-        "Upsi"                            : "\(UnicodeScalar(UInt32(0x000003D2))!)",
-        "upsih"                           : "\(UnicodeScalar(UInt32(0x000003D2))!)",
-        "Upsilon"                         : "\(UnicodeScalar(UInt32(0x000003A5))!)",
-        "upsilon"                         : "\(UnicodeScalar(UInt32(0x000003C5))!)",
-        "UpTee"                           : "\(UnicodeScalar(UInt32(0x000022A5))!)",
-        "UpTeeArrow"                      : "\(UnicodeScalar(UInt32(0x000021A5))!)",
-        "upuparrows"                      : "\(UnicodeScalar(UInt32(0x000021C8))!)",
-        "urcorn"                          : "\(UnicodeScalar(UInt32(0x0000231D))!)",
-        "urcorner"                        : "\(UnicodeScalar(UInt32(0x0000231D))!)",
-        "urcrop"                          : "\(UnicodeScalar(UInt32(0x0000230E))!)",
-        "Uring"                           : "\(UnicodeScalar(UInt32(0x0000016E))!)",
-        "uring"                           : "\(UnicodeScalar(UInt32(0x0000016F))!)",
-        "urtri"                           : "\(UnicodeScalar(UInt32(0x000025F9))!)",
-        "Uscr"                            : "\(UnicodeScalar(UInt32(0x0001D4B0))!)",
-        "uscr"                            : "\(UnicodeScalar(UInt32(0x0001D4CA))!)",
-        "utdot"                           : "\(UnicodeScalar(UInt32(0x000022F0))!)",
-        "Utilde"                          : "\(UnicodeScalar(UInt32(0x00000168))!)",
-        "utilde"                          : "\(UnicodeScalar(UInt32(0x00000169))!)",
-        "utri"                            : "\(UnicodeScalar(UInt32(0x000025B5))!)",
-        "utrif"                           : "\(UnicodeScalar(UInt32(0x000025B4))!)",
-        "uuarr"                           : "\(UnicodeScalar(UInt32(0x000021C8))!)",
-        "Uuml"                            : "\(UnicodeScalar(UInt32(0x000000DC))!)",
-        "uuml"                            : "\(UnicodeScalar(UInt32(0x000000FC))!)",
-        "uwangle"                         : "\(UnicodeScalar(UInt32(0x000029A7))!)",
-        "vangrt"                          : "\(UnicodeScalar(UInt32(0x0000299C))!)",
-        "varepsilon"                      : "\(UnicodeScalar(UInt32(0x000003F5))!)",
-        "varkappa"                        : "\(UnicodeScalar(UInt32(0x000003F0))!)",
-        "varnothing"                      : "\(UnicodeScalar(UInt32(0x00002205))!)",
-        "varphi"                          : "\(UnicodeScalar(UInt32(0x000003D5))!)",
-        "varpi"                           : "\(UnicodeScalar(UInt32(0x000003D6))!)",
-        "varpropto"                       : "\(UnicodeScalar(UInt32(0x0000221D))!)",
-        "varr"                            : "\(UnicodeScalar(UInt32(0x00002195))!)",
-        "vArr"                            : "\(UnicodeScalar(UInt32(0x000021D5))!)",
-        "varrho"                          : "\(UnicodeScalar(UInt32(0x000003F1))!)",
-        "varsigma"                        : "\(UnicodeScalar(UInt32(0x000003C2))!)",
-        "varsubsetneq"                    : "\(UnicodeScalar(UInt32(0x0000228A))!)\(UnicodeScalar(UInt32(0x0000FE00))!)",
-        "varsubsetneqq"                   : "\(UnicodeScalar(UInt32(0x00002ACB))!)\(UnicodeScalar(UInt32(0x0000FE00))!)",
-        "varsupsetneq"                    : "\(UnicodeScalar(UInt32(0x0000228B))!)\(UnicodeScalar(UInt32(0x0000FE00))!)",
-        "varsupsetneqq"                   : "\(UnicodeScalar(UInt32(0x00002ACC))!)\(UnicodeScalar(UInt32(0x0000FE00))!)",
-        "vartheta"                        : "\(UnicodeScalar(UInt32(0x000003D1))!)",
-        "vartriangleleft"                 : "\(UnicodeScalar(UInt32(0x000022B2))!)",
-        "vartriangleright"                : "\(UnicodeScalar(UInt32(0x000022B3))!)",
-        "vBar"                            : "\(UnicodeScalar(UInt32(0x00002AE8))!)",
-        "Vbar"                            : "\(UnicodeScalar(UInt32(0x00002AEB))!)",
-        "vBarv"                           : "\(UnicodeScalar(UInt32(0x00002AE9))!)",
-        "Vcy"                             : "\(UnicodeScalar(UInt32(0x00000412))!)",
-        "vcy"                             : "\(UnicodeScalar(UInt32(0x00000432))!)",
-        "vdash"                           : "\(UnicodeScalar(UInt32(0x000022A2))!)",
-        "vDash"                           : "\(UnicodeScalar(UInt32(0x000022A8))!)",
-        "Vdash"                           : "\(UnicodeScalar(UInt32(0x000022A9))!)",
-        "VDash"                           : "\(UnicodeScalar(UInt32(0x000022AB))!)",
-        "Vdashl"                          : "\(UnicodeScalar(UInt32(0x00002AE6))!)",
-        "vee"                             : "\(UnicodeScalar(UInt32(0x00002228))!)",
-        "Vee"                             : "\(UnicodeScalar(UInt32(0x000022C1))!)",
-        "veebar"                          : "\(UnicodeScalar(UInt32(0x000022BB))!)",
-        "veeeq"                           : "\(UnicodeScalar(UInt32(0x0000225A))!)",
-        "vellip"                          : "\(UnicodeScalar(UInt32(0x000022EE))!)",
-        "verbar"                          : "\(UnicodeScalar(UInt32(0x0000007C))!)",
-        "Verbar"                          : "\(UnicodeScalar(UInt32(0x00002016))!)",
-        "vert"                            : "\(UnicodeScalar(UInt32(0x0000007C))!)",
-        "Vert"                            : "\(UnicodeScalar(UInt32(0x00002016))!)",
-        "VerticalBar"                     : "\(UnicodeScalar(UInt32(0x00002223))!)",
-        "VerticalLine"                    : "\(UnicodeScalar(UInt32(0x0000007C))!)",
-        "VerticalSeparator"               : "\(UnicodeScalar(UInt32(0x00002758))!)",
-        "VerticalTilde"                   : "\(UnicodeScalar(UInt32(0x00002240))!)",
-        "VeryThinSpace"                   : "\(UnicodeScalar(UInt32(0x0000200A))!)",
-        "Vfr"                             : "\(UnicodeScalar(UInt32(0x0001D519))!)",
-        "vfr"                             : "\(UnicodeScalar(UInt32(0x0001D533))!)",
-        "vltri"                           : "\(UnicodeScalar(UInt32(0x000022B2))!)",
-        "vnsub"                           : "\(UnicodeScalar(UInt32(0x00002282))!)\(UnicodeScalar(UInt32(0x000020D2))!)",
-        "vnsup"                           : "\(UnicodeScalar(UInt32(0x00002283))!)\(UnicodeScalar(UInt32(0x000020D2))!)",
-        "Vopf"                            : "\(UnicodeScalar(UInt32(0x0001D54D))!)",
-        "vopf"                            : "\(UnicodeScalar(UInt32(0x0001D567))!)",
-        "vprop"                           : "\(UnicodeScalar(UInt32(0x0000221D))!)",
-        "vrtri"                           : "\(UnicodeScalar(UInt32(0x000022B3))!)",
-        "Vscr"                            : "\(UnicodeScalar(UInt32(0x0001D4B1))!)",
-        "vscr"                            : "\(UnicodeScalar(UInt32(0x0001D4CB))!)",
-        "vsubne"                          : "\(UnicodeScalar(UInt32(0x0000228A))!)\(UnicodeScalar(UInt32(0x0000FE00))!)",
-        "vsubnE"                          : "\(UnicodeScalar(UInt32(0x00002ACB))!)\(UnicodeScalar(UInt32(0x0000FE00))!)",
-        "vsupne"                          : "\(UnicodeScalar(UInt32(0x0000228B))!)\(UnicodeScalar(UInt32(0x0000FE00))!)",
-        "vsupnE"                          : "\(UnicodeScalar(UInt32(0x00002ACC))!)\(UnicodeScalar(UInt32(0x0000FE00))!)",
-        "Vvdash"                          : "\(UnicodeScalar(UInt32(0x000022AA))!)",
-        "vzigzag"                         : "\(UnicodeScalar(UInt32(0x0000299A))!)",
-        "Wcirc"                           : "\(UnicodeScalar(UInt32(0x00000174))!)",
-        "wcirc"                           : "\(UnicodeScalar(UInt32(0x00000175))!)",
-        "wedbar"                          : "\(UnicodeScalar(UInt32(0x00002A5F))!)",
-        "wedge"                           : "\(UnicodeScalar(UInt32(0x00002227))!)",
-        "Wedge"                           : "\(UnicodeScalar(UInt32(0x000022C0))!)",
-        "wedgeq"                          : "\(UnicodeScalar(UInt32(0x00002259))!)",
-        "weierp"                          : "\(UnicodeScalar(UInt32(0x00002118))!)",
-        "Wfr"                             : "\(UnicodeScalar(UInt32(0x0001D51A))!)",
-        "wfr"                             : "\(UnicodeScalar(UInt32(0x0001D534))!)",
-        "Wopf"                            : "\(UnicodeScalar(UInt32(0x0001D54E))!)",
-        "wopf"                            : "\(UnicodeScalar(UInt32(0x0001D568))!)",
-        "wp"                              : "\(UnicodeScalar(UInt32(0x00002118))!)",
-        "wr"                              : "\(UnicodeScalar(UInt32(0x00002240))!)",
-        "wreath"                          : "\(UnicodeScalar(UInt32(0x00002240))!)",
-        "Wscr"                            : "\(UnicodeScalar(UInt32(0x0001D4B2))!)",
-        "wscr"                            : "\(UnicodeScalar(UInt32(0x0001D4CC))!)",
-        "xcap"                            : "\(UnicodeScalar(UInt32(0x000022C2))!)",
-        "xcirc"                           : "\(UnicodeScalar(UInt32(0x000025EF))!)",
-        "xcup"                            : "\(UnicodeScalar(UInt32(0x000022C3))!)",
-        "xdtri"                           : "\(UnicodeScalar(UInt32(0x000025BD))!)",
-        "Xfr"                             : "\(UnicodeScalar(UInt32(0x0001D51B))!)",
-        "xfr"                             : "\(UnicodeScalar(UInt32(0x0001D535))!)",
-        "xharr"                           : "\(UnicodeScalar(UInt32(0x000027F7))!)",
-        "xhArr"                           : "\(UnicodeScalar(UInt32(0x000027FA))!)",
-        "Xi"                              : "\(UnicodeScalar(UInt32(0x0000039E))!)",
-        "xi"                              : "\(UnicodeScalar(UInt32(0x000003BE))!)",
-        "xlarr"                           : "\(UnicodeScalar(UInt32(0x000027F5))!)",
-        "xlArr"                           : "\(UnicodeScalar(UInt32(0x000027F8))!)",
-        "xmap"                            : "\(UnicodeScalar(UInt32(0x000027FC))!)",
-        "xnis"                            : "\(UnicodeScalar(UInt32(0x000022FB))!)",
-        "xodot"                           : "\(UnicodeScalar(UInt32(0x00002A00))!)",
-        "Xopf"                            : "\(UnicodeScalar(UInt32(0x0001D54F))!)",
-        "xopf"                            : "\(UnicodeScalar(UInt32(0x0001D569))!)",
-        "xoplus"                          : "\(UnicodeScalar(UInt32(0x00002A01))!)",
-        "xotime"                          : "\(UnicodeScalar(UInt32(0x00002A02))!)",
-        "xrarr"                           : "\(UnicodeScalar(UInt32(0x000027F6))!)",
-        "xrArr"                           : "\(UnicodeScalar(UInt32(0x000027F9))!)",
-        "Xscr"                            : "\(UnicodeScalar(UInt32(0x0001D4B3))!)",
-        "xscr"                            : "\(UnicodeScalar(UInt32(0x0001D4CD))!)",
-        "xsqcup"                          : "\(UnicodeScalar(UInt32(0x00002A06))!)",
-        "xuplus"                          : "\(UnicodeScalar(UInt32(0x00002A04))!)",
-        "xutri"                           : "\(UnicodeScalar(UInt32(0x000025B3))!)",
-        "xvee"                            : "\(UnicodeScalar(UInt32(0x000022C1))!)",
-        "xwedge"                          : "\(UnicodeScalar(UInt32(0x000022C0))!)",
-        "Yacute"                          : "\(UnicodeScalar(UInt32(0x000000DD))!)",
-        "yacute"                          : "\(UnicodeScalar(UInt32(0x000000FD))!)",
-        "YAcy"                            : "\(UnicodeScalar(UInt32(0x0000042F))!)",
-        "yacy"                            : "\(UnicodeScalar(UInt32(0x0000044F))!)",
-        "Ycirc"                           : "\(UnicodeScalar(UInt32(0x00000176))!)",
-        "ycirc"                           : "\(UnicodeScalar(UInt32(0x00000177))!)",
-        "Ycy"                             : "\(UnicodeScalar(UInt32(0x0000042B))!)",
-        "ycy"                             : "\(UnicodeScalar(UInt32(0x0000044B))!)",
-        "yen"                             : "\(UnicodeScalar(UInt32(0x000000A5))!)",
-        "Yfr"                             : "\(UnicodeScalar(UInt32(0x0001D51C))!)",
-        "yfr"                             : "\(UnicodeScalar(UInt32(0x0001D536))!)",
-        "YIcy"                            : "\(UnicodeScalar(UInt32(0x00000407))!)",
-        "yicy"                            : "\(UnicodeScalar(UInt32(0x00000457))!)",
-        "Yopf"                            : "\(UnicodeScalar(UInt32(0x0001D550))!)",
-        "yopf"                            : "\(UnicodeScalar(UInt32(0x0001D56A))!)",
-        "Yscr"                            : "\(UnicodeScalar(UInt32(0x0001D4B4))!)",
-        "yscr"                            : "\(UnicodeScalar(UInt32(0x0001D4CE))!)",
-        "YUcy"                            : "\(UnicodeScalar(UInt32(0x0000042E))!)",
-        "yucy"                            : "\(UnicodeScalar(UInt32(0x0000044E))!)",
-        "yuml"                            : "\(UnicodeScalar(UInt32(0x000000FF))!)",
-        "Yuml"                            : "\(UnicodeScalar(UInt32(0x00000178))!)",
-        "Zacute"                          : "\(UnicodeScalar(UInt32(0x00000179))!)",
-        "zacute"                          : "\(UnicodeScalar(UInt32(0x0000017A))!)",
-        "Zcaron"                          : "\(UnicodeScalar(UInt32(0x0000017D))!)",
-        "zcaron"                          : "\(UnicodeScalar(UInt32(0x0000017E))!)",
-        "Zcy"                             : "\(UnicodeScalar(UInt32(0x00000417))!)",
-        "zcy"                             : "\(UnicodeScalar(UInt32(0x00000437))!)",
-        "Zdot"                            : "\(UnicodeScalar(UInt32(0x0000017B))!)",
-        "zdot"                            : "\(UnicodeScalar(UInt32(0x0000017C))!)",
-        "zeetrf"                          : "\(UnicodeScalar(UInt32(0x00002128))!)",
-        "ZeroWidthSpace"                  : "\(UnicodeScalar(UInt32(0x0000200B))!)",
-        "Zeta"                            : "\(UnicodeScalar(UInt32(0x00000396))!)",
-        "zeta"                            : "\(UnicodeScalar(UInt32(0x000003B6))!)",
-        "Zfr"                             : "\(UnicodeScalar(UInt32(0x00002128))!)",
-        "zfr"                             : "\(UnicodeScalar(UInt32(0x0001D537))!)",
-        "ZHcy"                            : "\(UnicodeScalar(UInt32(0x00000416))!)",
-        "zhcy"                            : "\(UnicodeScalar(UInt32(0x00000436))!)",
-        "zigrarr"                         : "\(UnicodeScalar(UInt32(0x000021DD))!)",
-        "Zopf"                            : "\(UnicodeScalar(UInt32(0x00002124))!)",
-        "zopf"                            : "\(UnicodeScalar(UInt32(0x0001D56B))!)",
-        "Zscr"                            : "\(UnicodeScalar(UInt32(0x0001D4B5))!)",
-        "zscr"                            : "\(UnicodeScalar(UInt32(0x0001D4CF))!)",
-        "zwj"                             : "\(UnicodeScalar(UInt32(0x0000200D))!)",
-        "zwnj"                            : "\(UnicodeScalar(UInt32(0x0000200C))!)",
-    ]
+    private static var exCache: [String: String] = [ "amp": "&", "lt": "<", "gt": ">", "quot": "\"", "apos": "'" ] // Preload with the XML Standard Entities.
+
+    /*===========================================================================================================================================================================*/
+    /// All 2,125 currently defined HTML entities.
+    ///
+    static func expandHTMLEntity(named: String) -> String? {
+        func _e(_ named: String) -> String? {
+            switch named {
+                case "Aacute":                          return "\(UnicodeScalar(UInt32(0x000000C1))!)"
+                case "aacute":                          return "\(UnicodeScalar(UInt32(0x000000E1))!)"
+                case "Abreve":                          return "\(UnicodeScalar(UInt32(0x00000102))!)"
+                case "abreve":                          return "\(UnicodeScalar(UInt32(0x00000103))!)"
+                case "ac":                              return "\(UnicodeScalar(UInt32(0x0000223E))!)"
+                case "acd":                             return "\(UnicodeScalar(UInt32(0x0000223F))!)"
+                case "acE":                             return "\(UnicodeScalar(UInt32(0x0000223E))!)\(UnicodeScalar(UInt32(0x00000333))!)"
+                case "Acirc":                           return "\(UnicodeScalar(UInt32(0x000000C2))!)"
+                case "acirc":                           return "\(UnicodeScalar(UInt32(0x000000E2))!)"
+                case "acute":                           return "\(UnicodeScalar(UInt32(0x000000B4))!)"
+                case "Acy":                             return "\(UnicodeScalar(UInt32(0x00000410))!)"
+                case "acy":                             return "\(UnicodeScalar(UInt32(0x00000430))!)"
+                case "AElig":                           return "\(UnicodeScalar(UInt32(0x000000C6))!)"
+                case "aelig":                           return "\(UnicodeScalar(UInt32(0x000000E6))!)"
+                case "af":                              return "\(UnicodeScalar(UInt32(0x00002061))!)"
+                case "Afr":                             return "\(UnicodeScalar(UInt32(0x0001D504))!)"
+                case "afr":                             return "\(UnicodeScalar(UInt32(0x0001D51E))!)"
+                case "Agrave":                          return "\(UnicodeScalar(UInt32(0x000000C0))!)"
+                case "agrave":                          return "\(UnicodeScalar(UInt32(0x000000E0))!)"
+                case "alefsym":                         return "\(UnicodeScalar(UInt32(0x00002135))!)"
+                case "aleph":                           return "\(UnicodeScalar(UInt32(0x00002135))!)"
+                case "Alpha":                           return "\(UnicodeScalar(UInt32(0x00000391))!)"
+                case "alpha":                           return "\(UnicodeScalar(UInt32(0x000003B1))!)"
+                case "Amacr":                           return "\(UnicodeScalar(UInt32(0x00000100))!)"
+                case "amacr":                           return "\(UnicodeScalar(UInt32(0x00000101))!)"
+                case "amalg":                           return "\(UnicodeScalar(UInt32(0x00002A3F))!)"
+                case "amp":                             return "\(UnicodeScalar(UInt32(0x00000026))!)"
+                case "AMP":                             return "\(UnicodeScalar(UInt32(0x00000026))!)"
+                case "and":                             return "\(UnicodeScalar(UInt32(0x00002227))!)"
+                case "And":                             return "\(UnicodeScalar(UInt32(0x00002A53))!)"
+                case "andand":                          return "\(UnicodeScalar(UInt32(0x00002A55))!)"
+                case "andd":                            return "\(UnicodeScalar(UInt32(0x00002A5C))!)"
+                case "andslope":                        return "\(UnicodeScalar(UInt32(0x00002A58))!)"
+                case "andv":                            return "\(UnicodeScalar(UInt32(0x00002A5A))!)"
+                case "ang":                             return "\(UnicodeScalar(UInt32(0x00002220))!)"
+                case "ange":                            return "\(UnicodeScalar(UInt32(0x000029A4))!)"
+                case "angle":                           return "\(UnicodeScalar(UInt32(0x00002220))!)"
+                case "angmsd":                          return "\(UnicodeScalar(UInt32(0x00002221))!)"
+                case "angmsdaa":                        return "\(UnicodeScalar(UInt32(0x000029A8))!)"
+                case "angmsdab":                        return "\(UnicodeScalar(UInt32(0x000029A9))!)"
+                case "angmsdac":                        return "\(UnicodeScalar(UInt32(0x000029AA))!)"
+                case "angmsdad":                        return "\(UnicodeScalar(UInt32(0x000029AB))!)"
+                case "angmsdae":                        return "\(UnicodeScalar(UInt32(0x000029AC))!)"
+                case "angmsdaf":                        return "\(UnicodeScalar(UInt32(0x000029AD))!)"
+                case "angmsdag":                        return "\(UnicodeScalar(UInt32(0x000029AE))!)"
+                case "angmsdah":                        return "\(UnicodeScalar(UInt32(0x000029AF))!)"
+                case "angrt":                           return "\(UnicodeScalar(UInt32(0x0000221F))!)"
+                case "angrtvb":                         return "\(UnicodeScalar(UInt32(0x000022BE))!)"
+                case "angrtvbd":                        return "\(UnicodeScalar(UInt32(0x0000299D))!)"
+                case "angsph":                          return "\(UnicodeScalar(UInt32(0x00002222))!)"
+                case "angst":                           return "\(UnicodeScalar(UInt32(0x000000C5))!)"
+                case "angzarr":                         return "\(UnicodeScalar(UInt32(0x0000237C))!)"
+                case "Aogon":                           return "\(UnicodeScalar(UInt32(0x00000104))!)"
+                case "aogon":                           return "\(UnicodeScalar(UInt32(0x00000105))!)"
+                case "Aopf":                            return "\(UnicodeScalar(UInt32(0x0001D538))!)"
+                case "aopf":                            return "\(UnicodeScalar(UInt32(0x0001D552))!)"
+                case "ap":                              return "\(UnicodeScalar(UInt32(0x00002248))!)"
+                case "apacir":                          return "\(UnicodeScalar(UInt32(0x00002A6F))!)"
+                case "ape":                             return "\(UnicodeScalar(UInt32(0x0000224A))!)"
+                case "apE":                             return "\(UnicodeScalar(UInt32(0x00002A70))!)"
+                case "apid":                            return "\(UnicodeScalar(UInt32(0x0000224B))!)"
+                case "apos":                            return "\(UnicodeScalar(UInt32(0x00000027))!)"
+                case "ApplyFunction":                   return "\(UnicodeScalar(UInt32(0x00002061))!)"
+                case "approx":                          return "\(UnicodeScalar(UInt32(0x00002248))!)"
+                case "approxeq":                        return "\(UnicodeScalar(UInt32(0x0000224A))!)"
+                case "Aring":                           return "\(UnicodeScalar(UInt32(0x000000C5))!)"
+                case "aring":                           return "\(UnicodeScalar(UInt32(0x000000E5))!)"
+                case "Ascr":                            return "\(UnicodeScalar(UInt32(0x0001D49C))!)"
+                case "ascr":                            return "\(UnicodeScalar(UInt32(0x0001D4B6))!)"
+                case "Assign":                          return "\(UnicodeScalar(UInt32(0x00002254))!)"
+                case "ast":                             return "\(UnicodeScalar(UInt32(0x0000002A))!)"
+                case "asymp":                           return "\(UnicodeScalar(UInt32(0x00002248))!)"
+                case "asympeq":                         return "\(UnicodeScalar(UInt32(0x0000224D))!)"
+                case "Atilde":                          return "\(UnicodeScalar(UInt32(0x000000C3))!)"
+                case "atilde":                          return "\(UnicodeScalar(UInt32(0x000000E3))!)"
+                case "Auml":                            return "\(UnicodeScalar(UInt32(0x000000C4))!)"
+                case "auml":                            return "\(UnicodeScalar(UInt32(0x000000E4))!)"
+                case "awconint":                        return "\(UnicodeScalar(UInt32(0x00002233))!)"
+                case "awint":                           return "\(UnicodeScalar(UInt32(0x00002A11))!)"
+                case "backcong":                        return "\(UnicodeScalar(UInt32(0x0000224C))!)"
+                case "backepsilon":                     return "\(UnicodeScalar(UInt32(0x000003F6))!)"
+                case "backprime":                       return "\(UnicodeScalar(UInt32(0x00002035))!)"
+                case "backsim":                         return "\(UnicodeScalar(UInt32(0x0000223D))!)"
+                case "backsimeq":                       return "\(UnicodeScalar(UInt32(0x000022CD))!)"
+                case "Backslash":                       return "\(UnicodeScalar(UInt32(0x00002216))!)"
+                case "Barv":                            return "\(UnicodeScalar(UInt32(0x00002AE7))!)"
+                case "barvee":                          return "\(UnicodeScalar(UInt32(0x000022BD))!)"
+                case "barwed":                          return "\(UnicodeScalar(UInt32(0x00002305))!)"
+                case "Barwed":                          return "\(UnicodeScalar(UInt32(0x00002306))!)"
+                case "barwedge":                        return "\(UnicodeScalar(UInt32(0x00002305))!)"
+                case "bbrk":                            return "\(UnicodeScalar(UInt32(0x000023B5))!)"
+                case "bbrktbrk":                        return "\(UnicodeScalar(UInt32(0x000023B6))!)"
+                case "bcong":                           return "\(UnicodeScalar(UInt32(0x0000224C))!)"
+                case "Bcy":                             return "\(UnicodeScalar(UInt32(0x00000411))!)"
+                case "bcy":                             return "\(UnicodeScalar(UInt32(0x00000431))!)"
+                case "bdquo":                           return "\(UnicodeScalar(UInt32(0x0000201E))!)"
+                case "becaus":                          return "\(UnicodeScalar(UInt32(0x00002235))!)"
+                case "because":                         return "\(UnicodeScalar(UInt32(0x00002235))!)"
+                case "Because":                         return "\(UnicodeScalar(UInt32(0x00002235))!)"
+                case "bemptyv":                         return "\(UnicodeScalar(UInt32(0x000029B0))!)"
+                case "bepsi":                           return "\(UnicodeScalar(UInt32(0x000003F6))!)"
+                case "bernou":                          return "\(UnicodeScalar(UInt32(0x0000212C))!)"
+                case "Bernoullis":                      return "\(UnicodeScalar(UInt32(0x0000212C))!)"
+                case "Beta":                            return "\(UnicodeScalar(UInt32(0x00000392))!)"
+                case "beta":                            return "\(UnicodeScalar(UInt32(0x000003B2))!)"
+                case "beth":                            return "\(UnicodeScalar(UInt32(0x00002136))!)"
+                case "between":                         return "\(UnicodeScalar(UInt32(0x0000226C))!)"
+                case "Bfr":                             return "\(UnicodeScalar(UInt32(0x0001D505))!)"
+                case "bfr":                             return "\(UnicodeScalar(UInt32(0x0001D51F))!)"
+                case "bigcap":                          return "\(UnicodeScalar(UInt32(0x000022C2))!)"
+                case "bigcirc":                         return "\(UnicodeScalar(UInt32(0x000025EF))!)"
+                case "bigcup":                          return "\(UnicodeScalar(UInt32(0x000022C3))!)"
+                case "bigodot":                         return "\(UnicodeScalar(UInt32(0x00002A00))!)"
+                case "bigoplus":                        return "\(UnicodeScalar(UInt32(0x00002A01))!)"
+                case "bigotimes":                       return "\(UnicodeScalar(UInt32(0x00002A02))!)"
+                case "bigsqcup":                        return "\(UnicodeScalar(UInt32(0x00002A06))!)"
+                case "bigstar":                         return "\(UnicodeScalar(UInt32(0x00002605))!)"
+                case "bigtriangledown":                 return "\(UnicodeScalar(UInt32(0x000025BD))!)"
+                case "bigtriangleup":                   return "\(UnicodeScalar(UInt32(0x000025B3))!)"
+                case "biguplus":                        return "\(UnicodeScalar(UInt32(0x00002A04))!)"
+                case "bigvee":                          return "\(UnicodeScalar(UInt32(0x000022C1))!)"
+                case "bigwedge":                        return "\(UnicodeScalar(UInt32(0x000022C0))!)"
+                case "bkarow":                          return "\(UnicodeScalar(UInt32(0x0000290D))!)"
+                case "blacklozenge":                    return "\(UnicodeScalar(UInt32(0x000029EB))!)"
+                case "blacksquare":                     return "\(UnicodeScalar(UInt32(0x000025AA))!)"
+                case "blacktriangle":                   return "\(UnicodeScalar(UInt32(0x000025B4))!)"
+                case "blacktriangledown":               return "\(UnicodeScalar(UInt32(0x000025BE))!)"
+                case "blacktriangleleft":               return "\(UnicodeScalar(UInt32(0x000025C2))!)"
+                case "blacktriangleright":              return "\(UnicodeScalar(UInt32(0x000025B8))!)"
+                case "blank":                           return "\(UnicodeScalar(UInt32(0x00002423))!)"
+                case "blk12":                           return "\(UnicodeScalar(UInt32(0x00002592))!)"
+                case "blk14":                           return "\(UnicodeScalar(UInt32(0x00002591))!)"
+                case "blk34":                           return "\(UnicodeScalar(UInt32(0x00002593))!)"
+                case "block":                           return "\(UnicodeScalar(UInt32(0x00002588))!)"
+                case "bne":                             return "\(UnicodeScalar(UInt32(0x0000003D))!)\(UnicodeScalar(UInt32(0x000020E5))!)"
+                case "bnequiv":                         return "\(UnicodeScalar(UInt32(0x00002261))!)\(UnicodeScalar(UInt32(0x000020E5))!)"
+                case "bnot":                            return "\(UnicodeScalar(UInt32(0x00002310))!)"
+                case "bNot":                            return "\(UnicodeScalar(UInt32(0x00002AED))!)"
+                case "Bopf":                            return "\(UnicodeScalar(UInt32(0x0001D539))!)"
+                case "bopf":                            return "\(UnicodeScalar(UInt32(0x0001D553))!)"
+                case "bot":                             return "\(UnicodeScalar(UInt32(0x000022A5))!)"
+                case "bottom":                          return "\(UnicodeScalar(UInt32(0x000022A5))!)"
+                case "bowtie":                          return "\(UnicodeScalar(UInt32(0x000022C8))!)"
+                case "boxbox":                          return "\(UnicodeScalar(UInt32(0x000029C9))!)"
+                case "boxdl":                           return "\(UnicodeScalar(UInt32(0x00002510))!)"
+                case "boxdL":                           return "\(UnicodeScalar(UInt32(0x00002555))!)"
+                case "boxDl":                           return "\(UnicodeScalar(UInt32(0x00002556))!)"
+                case "boxDL":                           return "\(UnicodeScalar(UInt32(0x00002557))!)"
+                case "boxdr":                           return "\(UnicodeScalar(UInt32(0x0000250C))!)"
+                case "boxdR":                           return "\(UnicodeScalar(UInt32(0x00002552))!)"
+                case "boxDr":                           return "\(UnicodeScalar(UInt32(0x00002553))!)"
+                case "boxDR":                           return "\(UnicodeScalar(UInt32(0x00002554))!)"
+                case "boxh":                            return "\(UnicodeScalar(UInt32(0x00002500))!)"
+                case "boxH":                            return "\(UnicodeScalar(UInt32(0x00002550))!)"
+                case "boxhd":                           return "\(UnicodeScalar(UInt32(0x0000252C))!)"
+                case "boxHd":                           return "\(UnicodeScalar(UInt32(0x00002564))!)"
+                case "boxhD":                           return "\(UnicodeScalar(UInt32(0x00002565))!)"
+                case "boxHD":                           return "\(UnicodeScalar(UInt32(0x00002566))!)"
+                case "boxhu":                           return "\(UnicodeScalar(UInt32(0x00002534))!)"
+                case "boxHu":                           return "\(UnicodeScalar(UInt32(0x00002567))!)"
+                case "boxhU":                           return "\(UnicodeScalar(UInt32(0x00002568))!)"
+                case "boxHU":                           return "\(UnicodeScalar(UInt32(0x00002569))!)"
+                case "boxminus":                        return "\(UnicodeScalar(UInt32(0x0000229F))!)"
+                case "boxplus":                         return "\(UnicodeScalar(UInt32(0x0000229E))!)"
+                case "boxtimes":                        return "\(UnicodeScalar(UInt32(0x000022A0))!)"
+                case "boxul":                           return "\(UnicodeScalar(UInt32(0x00002518))!)"
+                case "boxuL":                           return "\(UnicodeScalar(UInt32(0x0000255B))!)"
+                case "boxUl":                           return "\(UnicodeScalar(UInt32(0x0000255C))!)"
+                case "boxUL":                           return "\(UnicodeScalar(UInt32(0x0000255D))!)"
+                case "boxur":                           return "\(UnicodeScalar(UInt32(0x00002514))!)"
+                case "boxuR":                           return "\(UnicodeScalar(UInt32(0x00002558))!)"
+                case "boxUr":                           return "\(UnicodeScalar(UInt32(0x00002559))!)"
+                case "boxUR":                           return "\(UnicodeScalar(UInt32(0x0000255A))!)"
+                case "boxv":                            return "\(UnicodeScalar(UInt32(0x00002502))!)"
+                case "boxV":                            return "\(UnicodeScalar(UInt32(0x00002551))!)"
+                case "boxvh":                           return "\(UnicodeScalar(UInt32(0x0000253C))!)"
+                case "boxvH":                           return "\(UnicodeScalar(UInt32(0x0000256A))!)"
+                case "boxVh":                           return "\(UnicodeScalar(UInt32(0x0000256B))!)"
+                case "boxVH":                           return "\(UnicodeScalar(UInt32(0x0000256C))!)"
+                case "boxvl":                           return "\(UnicodeScalar(UInt32(0x00002524))!)"
+                case "boxvL":                           return "\(UnicodeScalar(UInt32(0x00002561))!)"
+                case "boxVl":                           return "\(UnicodeScalar(UInt32(0x00002562))!)"
+                case "boxVL":                           return "\(UnicodeScalar(UInt32(0x00002563))!)"
+                case "boxvr":                           return "\(UnicodeScalar(UInt32(0x0000251C))!)"
+                case "boxvR":                           return "\(UnicodeScalar(UInt32(0x0000255E))!)"
+                case "boxVr":                           return "\(UnicodeScalar(UInt32(0x0000255F))!)"
+                case "boxVR":                           return "\(UnicodeScalar(UInt32(0x00002560))!)"
+                case "bprime":                          return "\(UnicodeScalar(UInt32(0x00002035))!)"
+                case "breve":                           return "\(UnicodeScalar(UInt32(0x000002D8))!)"
+                case "Breve":                           return "\(UnicodeScalar(UInt32(0x000002D8))!)"
+                case "brvbar":                          return "\(UnicodeScalar(UInt32(0x000000A6))!)"
+                case "Bscr":                            return "\(UnicodeScalar(UInt32(0x0000212C))!)"
+                case "bscr":                            return "\(UnicodeScalar(UInt32(0x0001D4B7))!)"
+                case "bsemi":                           return "\(UnicodeScalar(UInt32(0x0000204F))!)"
+                case "bsim":                            return "\(UnicodeScalar(UInt32(0x0000223D))!)"
+                case "bsime":                           return "\(UnicodeScalar(UInt32(0x000022CD))!)"
+                case "bsol":                            return "\(UnicodeScalar(UInt32(0x0000005C))!)"
+                case "bsolb":                           return "\(UnicodeScalar(UInt32(0x000029C5))!)"
+                case "bsolhsub":                        return "\(UnicodeScalar(UInt32(0x000027C8))!)"
+                case "bull":                            return "\(UnicodeScalar(UInt32(0x00002022))!)"
+                case "bullet":                          return "\(UnicodeScalar(UInt32(0x00002022))!)"
+                case "bump":                            return "\(UnicodeScalar(UInt32(0x0000224E))!)"
+                case "bumpe":                           return "\(UnicodeScalar(UInt32(0x0000224F))!)"
+                case "bumpE":                           return "\(UnicodeScalar(UInt32(0x00002AAE))!)"
+                case "Bumpeq":                          return "\(UnicodeScalar(UInt32(0x0000224E))!)"
+                case "bumpeq":                          return "\(UnicodeScalar(UInt32(0x0000224F))!)"
+                case "Cacute":                          return "\(UnicodeScalar(UInt32(0x00000106))!)"
+                case "cacute":                          return "\(UnicodeScalar(UInt32(0x00000107))!)"
+                case "cap":                             return "\(UnicodeScalar(UInt32(0x00002229))!)"
+                case "Cap":                             return "\(UnicodeScalar(UInt32(0x000022D2))!)"
+                case "capand":                          return "\(UnicodeScalar(UInt32(0x00002A44))!)"
+                case "capbrcup":                        return "\(UnicodeScalar(UInt32(0x00002A49))!)"
+                case "capcap":                          return "\(UnicodeScalar(UInt32(0x00002A4B))!)"
+                case "capcup":                          return "\(UnicodeScalar(UInt32(0x00002A47))!)"
+                case "capdot":                          return "\(UnicodeScalar(UInt32(0x00002A40))!)"
+                case "CapitalDifferentialD":            return "\(UnicodeScalar(UInt32(0x00002145))!)"
+                case "caps":                            return "\(UnicodeScalar(UInt32(0x00002229))!)\(UnicodeScalar(UInt32(0x0000FE00))!)"
+                case "caret":                           return "\(UnicodeScalar(UInt32(0x00002041))!)"
+                case "caron":                           return "\(UnicodeScalar(UInt32(0x000002C7))!)"
+                case "Cayleys":                         return "\(UnicodeScalar(UInt32(0x0000212D))!)"
+                case "ccaps":                           return "\(UnicodeScalar(UInt32(0x00002A4D))!)"
+                case "Ccaron":                          return "\(UnicodeScalar(UInt32(0x0000010C))!)"
+                case "ccaron":                          return "\(UnicodeScalar(UInt32(0x0000010D))!)"
+                case "Ccedil":                          return "\(UnicodeScalar(UInt32(0x000000C7))!)"
+                case "ccedil":                          return "\(UnicodeScalar(UInt32(0x000000E7))!)"
+                case "Ccirc":                           return "\(UnicodeScalar(UInt32(0x00000108))!)"
+                case "ccirc":                           return "\(UnicodeScalar(UInt32(0x00000109))!)"
+                case "Cconint":                         return "\(UnicodeScalar(UInt32(0x00002230))!)"
+                case "ccups":                           return "\(UnicodeScalar(UInt32(0x00002A4C))!)"
+                case "ccupssm":                         return "\(UnicodeScalar(UInt32(0x00002A50))!)"
+                case "Cdot":                            return "\(UnicodeScalar(UInt32(0x0000010A))!)"
+                case "cdot":                            return "\(UnicodeScalar(UInt32(0x0000010B))!)"
+                case "cedil":                           return "\(UnicodeScalar(UInt32(0x000000B8))!)"
+                case "Cedilla":                         return "\(UnicodeScalar(UInt32(0x000000B8))!)"
+                case "cemptyv":                         return "\(UnicodeScalar(UInt32(0x000029B2))!)"
+                case "cent":                            return "\(UnicodeScalar(UInt32(0x000000A2))!)"
+                case "centerdot":                       return "\(UnicodeScalar(UInt32(0x000000B7))!)"
+                case "CenterDot":                       return "\(UnicodeScalar(UInt32(0x000000B7))!)"
+                case "Cfr":                             return "\(UnicodeScalar(UInt32(0x0000212D))!)"
+                case "cfr":                             return "\(UnicodeScalar(UInt32(0x0001D520))!)"
+                case "CHcy":                            return "\(UnicodeScalar(UInt32(0x00000427))!)"
+                case "chcy":                            return "\(UnicodeScalar(UInt32(0x00000447))!)"
+                case "check":                           return "\(UnicodeScalar(UInt32(0x00002713))!)"
+                case "checkmark":                       return "\(UnicodeScalar(UInt32(0x00002713))!)"
+                case "Chi":                             return "\(UnicodeScalar(UInt32(0x000003A7))!)"
+                case "chi":                             return "\(UnicodeScalar(UInt32(0x000003C7))!)"
+                case "cir":                             return "\(UnicodeScalar(UInt32(0x000025CB))!)"
+                case "circ":                            return "\(UnicodeScalar(UInt32(0x000002C6))!)"
+                case "circeq":                          return "\(UnicodeScalar(UInt32(0x00002257))!)"
+                case "circlearrowleft":                 return "\(UnicodeScalar(UInt32(0x000021BA))!)"
+                case "circlearrowright":                return "\(UnicodeScalar(UInt32(0x000021BB))!)"
+                case "circledast":                      return "\(UnicodeScalar(UInt32(0x0000229B))!)"
+                case "circledcirc":                     return "\(UnicodeScalar(UInt32(0x0000229A))!)"
+                case "circleddash":                     return "\(UnicodeScalar(UInt32(0x0000229D))!)"
+                case "CircleDot":                       return "\(UnicodeScalar(UInt32(0x00002299))!)"
+                case "circledR":                        return "\(UnicodeScalar(UInt32(0x000000AE))!)"
+                case "circledS":                        return "\(UnicodeScalar(UInt32(0x000024C8))!)"
+                case "CircleMinus":                     return "\(UnicodeScalar(UInt32(0x00002296))!)"
+                case "CirclePlus":                      return "\(UnicodeScalar(UInt32(0x00002295))!)"
+                case "CircleTimes":                     return "\(UnicodeScalar(UInt32(0x00002297))!)"
+                case "cire":                            return "\(UnicodeScalar(UInt32(0x00002257))!)"
+                case "cirE":                            return "\(UnicodeScalar(UInt32(0x000029C3))!)"
+                case "cirfnint":                        return "\(UnicodeScalar(UInt32(0x00002A10))!)"
+                case "cirmid":                          return "\(UnicodeScalar(UInt32(0x00002AEF))!)"
+                case "cirscir":                         return "\(UnicodeScalar(UInt32(0x000029C2))!)"
+                case "ClockwiseContourIntegral":        return "\(UnicodeScalar(UInt32(0x00002232))!)"
+                case "CloseCurlyDoubleQuote":           return "\(UnicodeScalar(UInt32(0x0000201D))!)"
+                case "CloseCurlyQuote":                 return "\(UnicodeScalar(UInt32(0x00002019))!)"
+                case "clubs":                           return "\(UnicodeScalar(UInt32(0x00002663))!)"
+                case "clubsuit":                        return "\(UnicodeScalar(UInt32(0x00002663))!)"
+                case "colon":                           return "\(UnicodeScalar(UInt32(0x0000003A))!)"
+                case "Colon":                           return "\(UnicodeScalar(UInt32(0x00002237))!)"
+                case "colone":                          return "\(UnicodeScalar(UInt32(0x00002254))!)"
+                case "Colone":                          return "\(UnicodeScalar(UInt32(0x00002A74))!)"
+                case "coloneq":                         return "\(UnicodeScalar(UInt32(0x00002254))!)"
+                case "comma":                           return "\(UnicodeScalar(UInt32(0x0000002C))!)"
+                case "commat":                          return "\(UnicodeScalar(UInt32(0x00000040))!)"
+                case "comp":                            return "\(UnicodeScalar(UInt32(0x00002201))!)"
+                case "compfn":                          return "\(UnicodeScalar(UInt32(0x00002218))!)"
+                case "complement":                      return "\(UnicodeScalar(UInt32(0x00002201))!)"
+                case "complexes":                       return "\(UnicodeScalar(UInt32(0x00002102))!)"
+                case "cong":                            return "\(UnicodeScalar(UInt32(0x00002245))!)"
+                case "congdot":                         return "\(UnicodeScalar(UInt32(0x00002A6D))!)"
+                case "Congruent":                       return "\(UnicodeScalar(UInt32(0x00002261))!)"
+                case "conint":                          return "\(UnicodeScalar(UInt32(0x0000222E))!)"
+                case "Conint":                          return "\(UnicodeScalar(UInt32(0x0000222F))!)"
+                case "ContourIntegral":                 return "\(UnicodeScalar(UInt32(0x0000222E))!)"
+                case "Copf":                            return "\(UnicodeScalar(UInt32(0x00002102))!)"
+                case "copf":                            return "\(UnicodeScalar(UInt32(0x0001D554))!)"
+                case "coprod":                          return "\(UnicodeScalar(UInt32(0x00002210))!)"
+                case "Coproduct":                       return "\(UnicodeScalar(UInt32(0x00002210))!)"
+                case "copy":                            return "\(UnicodeScalar(UInt32(0x000000A9))!)"
+                case "COPY":                            return "\(UnicodeScalar(UInt32(0x000000A9))!)"
+                case "copysr":                          return "\(UnicodeScalar(UInt32(0x00002117))!)"
+                case "CounterClockwiseContourIntegral": return "\(UnicodeScalar(UInt32(0x00002233))!)"
+                case "crarr":                           return "\(UnicodeScalar(UInt32(0x000021B5))!)"
+                case "cross":                           return "\(UnicodeScalar(UInt32(0x00002717))!)"
+                case "Cross":                           return "\(UnicodeScalar(UInt32(0x00002A2F))!)"
+                case "Cscr":                            return "\(UnicodeScalar(UInt32(0x0001D49E))!)"
+                case "cscr":                            return "\(UnicodeScalar(UInt32(0x0001D4B8))!)"
+                case "csub":                            return "\(UnicodeScalar(UInt32(0x00002ACF))!)"
+                case "csube":                           return "\(UnicodeScalar(UInt32(0x00002AD1))!)"
+                case "csup":                            return "\(UnicodeScalar(UInt32(0x00002AD0))!)"
+                case "csupe":                           return "\(UnicodeScalar(UInt32(0x00002AD2))!)"
+                case "ctdot":                           return "\(UnicodeScalar(UInt32(0x000022EF))!)"
+                case "cudarrl":                         return "\(UnicodeScalar(UInt32(0x00002938))!)"
+                case "cudarrr":                         return "\(UnicodeScalar(UInt32(0x00002935))!)"
+                case "cuepr":                           return "\(UnicodeScalar(UInt32(0x000022DE))!)"
+                case "cuesc":                           return "\(UnicodeScalar(UInt32(0x000022DF))!)"
+                case "cularr":                          return "\(UnicodeScalar(UInt32(0x000021B6))!)"
+                case "cularrp":                         return "\(UnicodeScalar(UInt32(0x0000293D))!)"
+                case "cup":                             return "\(UnicodeScalar(UInt32(0x0000222A))!)"
+                case "Cup":                             return "\(UnicodeScalar(UInt32(0x000022D3))!)"
+                case "cupbrcap":                        return "\(UnicodeScalar(UInt32(0x00002A48))!)"
+                case "CupCap":                          return "\(UnicodeScalar(UInt32(0x0000224D))!)"
+                case "cupcap":                          return "\(UnicodeScalar(UInt32(0x00002A46))!)"
+                case "cupcup":                          return "\(UnicodeScalar(UInt32(0x00002A4A))!)"
+                case "cupdot":                          return "\(UnicodeScalar(UInt32(0x0000228D))!)"
+                case "cupor":                           return "\(UnicodeScalar(UInt32(0x00002A45))!)"
+                case "cups":                            return "\(UnicodeScalar(UInt32(0x0000222A))!)\(UnicodeScalar(UInt32(0x0000FE00))!)"
+                case "curarr":                          return "\(UnicodeScalar(UInt32(0x000021B7))!)"
+                case "curarrm":                         return "\(UnicodeScalar(UInt32(0x0000293C))!)"
+                case "curlyeqprec":                     return "\(UnicodeScalar(UInt32(0x000022DE))!)"
+                case "curlyeqsucc":                     return "\(UnicodeScalar(UInt32(0x000022DF))!)"
+                case "curlyvee":                        return "\(UnicodeScalar(UInt32(0x000022CE))!)"
+                case "curlywedge":                      return "\(UnicodeScalar(UInt32(0x000022CF))!)"
+                case "curren":                          return "\(UnicodeScalar(UInt32(0x000000A4))!)"
+                case "curvearrowleft":                  return "\(UnicodeScalar(UInt32(0x000021B6))!)"
+                case "curvearrowright":                 return "\(UnicodeScalar(UInt32(0x000021B7))!)"
+                case "cuvee":                           return "\(UnicodeScalar(UInt32(0x000022CE))!)"
+                case "cuwed":                           return "\(UnicodeScalar(UInt32(0x000022CF))!)"
+                case "cwconint":                        return "\(UnicodeScalar(UInt32(0x00002232))!)"
+                case "cwint":                           return "\(UnicodeScalar(UInt32(0x00002231))!)"
+                case "cylcty":                          return "\(UnicodeScalar(UInt32(0x0000232D))!)"
+                case "dagger":                          return "\(UnicodeScalar(UInt32(0x00002020))!)"
+                case "Dagger":                          return "\(UnicodeScalar(UInt32(0x00002021))!)"
+                case "daleth":                          return "\(UnicodeScalar(UInt32(0x00002138))!)"
+                case "darr":                            return "\(UnicodeScalar(UInt32(0x00002193))!)"
+                case "Darr":                            return "\(UnicodeScalar(UInt32(0x000021A1))!)"
+                case "dArr":                            return "\(UnicodeScalar(UInt32(0x000021D3))!)"
+                case "dash":                            return "\(UnicodeScalar(UInt32(0x00002010))!)"
+                case "dashv":                           return "\(UnicodeScalar(UInt32(0x000022A3))!)"
+                case "Dashv":                           return "\(UnicodeScalar(UInt32(0x00002AE4))!)"
+                case "dbkarow":                         return "\(UnicodeScalar(UInt32(0x0000290F))!)"
+                case "dblac":                           return "\(UnicodeScalar(UInt32(0x000002DD))!)"
+                case "Dcaron":                          return "\(UnicodeScalar(UInt32(0x0000010E))!)"
+                case "dcaron":                          return "\(UnicodeScalar(UInt32(0x0000010F))!)"
+                case "Dcy":                             return "\(UnicodeScalar(UInt32(0x00000414))!)"
+                case "dcy":                             return "\(UnicodeScalar(UInt32(0x00000434))!)"
+                case "DD":                              return "\(UnicodeScalar(UInt32(0x00002145))!)"
+                case "dd":                              return "\(UnicodeScalar(UInt32(0x00002146))!)"
+                case "ddagger":                         return "\(UnicodeScalar(UInt32(0x00002021))!)"
+                case "ddarr":                           return "\(UnicodeScalar(UInt32(0x000021CA))!)"
+                case "DDotrahd":                        return "\(UnicodeScalar(UInt32(0x00002911))!)"
+                case "ddotseq":                         return "\(UnicodeScalar(UInt32(0x00002A77))!)"
+                case "deg":                             return "\(UnicodeScalar(UInt32(0x000000B0))!)"
+                case "Del":                             return "\(UnicodeScalar(UInt32(0x00002207))!)"
+                case "Delta":                           return "\(UnicodeScalar(UInt32(0x00000394))!)"
+                case "delta":                           return "\(UnicodeScalar(UInt32(0x000003B4))!)"
+                case "demptyv":                         return "\(UnicodeScalar(UInt32(0x000029B1))!)"
+                case "dfisht":                          return "\(UnicodeScalar(UInt32(0x0000297F))!)"
+                case "Dfr":                             return "\(UnicodeScalar(UInt32(0x0001D507))!)"
+                case "dfr":                             return "\(UnicodeScalar(UInt32(0x0001D521))!)"
+                case "dHar":                            return "\(UnicodeScalar(UInt32(0x00002965))!)"
+                case "dharl":                           return "\(UnicodeScalar(UInt32(0x000021C3))!)"
+                case "dharr":                           return "\(UnicodeScalar(UInt32(0x000021C2))!)"
+                case "DiacriticalAcute":                return "\(UnicodeScalar(UInt32(0x000000B4))!)"
+                case "DiacriticalDot":                  return "\(UnicodeScalar(UInt32(0x000002D9))!)"
+                case "DiacriticalDoubleAcute":          return "\(UnicodeScalar(UInt32(0x000002DD))!)"
+                case "DiacriticalGrave":                return "\(UnicodeScalar(UInt32(0x00000060))!)"
+                case "DiacriticalTilde":                return "\(UnicodeScalar(UInt32(0x000002DC))!)"
+                case "diam":                            return "\(UnicodeScalar(UInt32(0x000022C4))!)"
+                case "diamond":                         return "\(UnicodeScalar(UInt32(0x000022C4))!)"
+                case "Diamond":                         return "\(UnicodeScalar(UInt32(0x000022C4))!)"
+                case "diamondsuit":                     return "\(UnicodeScalar(UInt32(0x00002666))!)"
+                case "diams":                           return "\(UnicodeScalar(UInt32(0x00002666))!)"
+                case "die":                             return "\(UnicodeScalar(UInt32(0x000000A8))!)"
+                case "DifferentialD":                   return "\(UnicodeScalar(UInt32(0x00002146))!)"
+                case "digamma":                         return "\(UnicodeScalar(UInt32(0x000003DD))!)"
+                case "disin":                           return "\(UnicodeScalar(UInt32(0x000022F2))!)"
+                case "div":                             return "\(UnicodeScalar(UInt32(0x000000F7))!)"
+                case "divide":                          return "\(UnicodeScalar(UInt32(0x000000F7))!)"
+                case "divideontimes":                   return "\(UnicodeScalar(UInt32(0x000022C7))!)"
+                case "divonx":                          return "\(UnicodeScalar(UInt32(0x000022C7))!)"
+                case "DJcy":                            return "\(UnicodeScalar(UInt32(0x00000402))!)"
+                case "djcy":                            return "\(UnicodeScalar(UInt32(0x00000452))!)"
+                case "dlcorn":                          return "\(UnicodeScalar(UInt32(0x0000231E))!)"
+                case "dlcrop":                          return "\(UnicodeScalar(UInt32(0x0000230D))!)"
+                case "dollar":                          return "\(UnicodeScalar(UInt32(0x00000024))!)"
+                case "Dopf":                            return "\(UnicodeScalar(UInt32(0x0001D53B))!)"
+                case "dopf":                            return "\(UnicodeScalar(UInt32(0x0001D555))!)"
+                case "Dot":                             return "\(UnicodeScalar(UInt32(0x000000A8))!)"
+                case "dot":                             return "\(UnicodeScalar(UInt32(0x000002D9))!)"
+                case "DotDot":                          return "\(UnicodeScalar(UInt32(0x000020DC))!)"
+                case "doteq":                           return "\(UnicodeScalar(UInt32(0x00002250))!)"
+                case "doteqdot":                        return "\(UnicodeScalar(UInt32(0x00002251))!)"
+                case "DotEqual":                        return "\(UnicodeScalar(UInt32(0x00002250))!)"
+                case "dotminus":                        return "\(UnicodeScalar(UInt32(0x00002238))!)"
+                case "dotplus":                         return "\(UnicodeScalar(UInt32(0x00002214))!)"
+                case "dotsquare":                       return "\(UnicodeScalar(UInt32(0x000022A1))!)"
+                case "doublebarwedge":                  return "\(UnicodeScalar(UInt32(0x00002306))!)"
+                case "DoubleContourIntegral":           return "\(UnicodeScalar(UInt32(0x0000222F))!)"
+                case "DoubleDot":                       return "\(UnicodeScalar(UInt32(0x000000A8))!)"
+                case "DoubleDownArrow":                 return "\(UnicodeScalar(UInt32(0x000021D3))!)"
+                case "DoubleLeftArrow":                 return "\(UnicodeScalar(UInt32(0x000021D0))!)"
+                case "DoubleLeftRightArrow":            return "\(UnicodeScalar(UInt32(0x000021D4))!)"
+                case "DoubleLeftTee":                   return "\(UnicodeScalar(UInt32(0x00002AE4))!)"
+                case "DoubleLongLeftArrow":             return "\(UnicodeScalar(UInt32(0x000027F8))!)"
+                case "DoubleLongLeftRightArrow":        return "\(UnicodeScalar(UInt32(0x000027FA))!)"
+                case "DoubleLongRightArrow":            return "\(UnicodeScalar(UInt32(0x000027F9))!)"
+                case "DoubleRightArrow":                return "\(UnicodeScalar(UInt32(0x000021D2))!)"
+                case "DoubleRightTee":                  return "\(UnicodeScalar(UInt32(0x000022A8))!)"
+                case "DoubleUpArrow":                   return "\(UnicodeScalar(UInt32(0x000021D1))!)"
+                case "DoubleUpDownArrow":               return "\(UnicodeScalar(UInt32(0x000021D5))!)"
+                case "DoubleVerticalBar":               return "\(UnicodeScalar(UInt32(0x00002225))!)"
+                case "downarrow":                       return "\(UnicodeScalar(UInt32(0x00002193))!)"
+                case "DownArrow":                       return "\(UnicodeScalar(UInt32(0x00002193))!)"
+                case "Downarrow":                       return "\(UnicodeScalar(UInt32(0x000021D3))!)"
+                case "DownArrowBar":                    return "\(UnicodeScalar(UInt32(0x00002913))!)"
+                case "DownArrowUpArrow":                return "\(UnicodeScalar(UInt32(0x000021F5))!)"
+                case "DownBreve":                       return "\(UnicodeScalar(UInt32(0x00000311))!)"
+                case "downdownarrows":                  return "\(UnicodeScalar(UInt32(0x000021CA))!)"
+                case "downharpoonleft":                 return "\(UnicodeScalar(UInt32(0x000021C3))!)"
+                case "downharpoonright":                return "\(UnicodeScalar(UInt32(0x000021C2))!)"
+                case "DownLeftRightVector":             return "\(UnicodeScalar(UInt32(0x00002950))!)"
+                case "DownLeftTeeVector":               return "\(UnicodeScalar(UInt32(0x0000295E))!)"
+                case "DownLeftVector":                  return "\(UnicodeScalar(UInt32(0x000021BD))!)"
+                case "DownLeftVectorBar":               return "\(UnicodeScalar(UInt32(0x00002956))!)"
+                case "DownRightTeeVector":              return "\(UnicodeScalar(UInt32(0x0000295F))!)"
+                case "DownRightVector":                 return "\(UnicodeScalar(UInt32(0x000021C1))!)"
+                case "DownRightVectorBar":              return "\(UnicodeScalar(UInt32(0x00002957))!)"
+                case "DownTee":                         return "\(UnicodeScalar(UInt32(0x000022A4))!)"
+                case "DownTeeArrow":                    return "\(UnicodeScalar(UInt32(0x000021A7))!)"
+                case "drbkarow":                        return "\(UnicodeScalar(UInt32(0x00002910))!)"
+                case "drcorn":                          return "\(UnicodeScalar(UInt32(0x0000231F))!)"
+                case "drcrop":                          return "\(UnicodeScalar(UInt32(0x0000230C))!)"
+                case "Dscr":                            return "\(UnicodeScalar(UInt32(0x0001D49F))!)"
+                case "dscr":                            return "\(UnicodeScalar(UInt32(0x0001D4B9))!)"
+                case "DScy":                            return "\(UnicodeScalar(UInt32(0x00000405))!)"
+                case "dscy":                            return "\(UnicodeScalar(UInt32(0x00000455))!)"
+                case "dsol":                            return "\(UnicodeScalar(UInt32(0x000029F6))!)"
+                case "Dstrok":                          return "\(UnicodeScalar(UInt32(0x00000110))!)"
+                case "dstrok":                          return "\(UnicodeScalar(UInt32(0x00000111))!)"
+                case "dtdot":                           return "\(UnicodeScalar(UInt32(0x000022F1))!)"
+                case "dtri":                            return "\(UnicodeScalar(UInt32(0x000025BF))!)"
+                case "dtrif":                           return "\(UnicodeScalar(UInt32(0x000025BE))!)"
+                case "duarr":                           return "\(UnicodeScalar(UInt32(0x000021F5))!)"
+                case "duhar":                           return "\(UnicodeScalar(UInt32(0x0000296F))!)"
+                case "dwangle":                         return "\(UnicodeScalar(UInt32(0x000029A6))!)"
+                case "DZcy":                            return "\(UnicodeScalar(UInt32(0x0000040F))!)"
+                case "dzcy":                            return "\(UnicodeScalar(UInt32(0x0000045F))!)"
+                case "dzigrarr":                        return "\(UnicodeScalar(UInt32(0x000027FF))!)"
+                case "Eacute":                          return "\(UnicodeScalar(UInt32(0x000000C9))!)"
+                case "eacute":                          return "\(UnicodeScalar(UInt32(0x000000E9))!)"
+                case "easter":                          return "\(UnicodeScalar(UInt32(0x00002A6E))!)"
+                case "Ecaron":                          return "\(UnicodeScalar(UInt32(0x0000011A))!)"
+                case "ecaron":                          return "\(UnicodeScalar(UInt32(0x0000011B))!)"
+                case "ecir":                            return "\(UnicodeScalar(UInt32(0x00002256))!)"
+                case "Ecirc":                           return "\(UnicodeScalar(UInt32(0x000000CA))!)"
+                case "ecirc":                           return "\(UnicodeScalar(UInt32(0x000000EA))!)"
+                case "ecolon":                          return "\(UnicodeScalar(UInt32(0x00002255))!)"
+                case "Ecy":                             return "\(UnicodeScalar(UInt32(0x0000042D))!)"
+                case "ecy":                             return "\(UnicodeScalar(UInt32(0x0000044D))!)"
+                case "eDDot":                           return "\(UnicodeScalar(UInt32(0x00002A77))!)"
+                case "Edot":                            return "\(UnicodeScalar(UInt32(0x00000116))!)"
+                case "edot":                            return "\(UnicodeScalar(UInt32(0x00000117))!)"
+                case "eDot":                            return "\(UnicodeScalar(UInt32(0x00002251))!)"
+                case "ee":                              return "\(UnicodeScalar(UInt32(0x00002147))!)"
+                case "efDot":                           return "\(UnicodeScalar(UInt32(0x00002252))!)"
+                case "Efr":                             return "\(UnicodeScalar(UInt32(0x0001D508))!)"
+                case "efr":                             return "\(UnicodeScalar(UInt32(0x0001D522))!)"
+                case "eg":                              return "\(UnicodeScalar(UInt32(0x00002A9A))!)"
+                case "Egrave":                          return "\(UnicodeScalar(UInt32(0x000000C8))!)"
+                case "egrave":                          return "\(UnicodeScalar(UInt32(0x000000E8))!)"
+                case "egs":                             return "\(UnicodeScalar(UInt32(0x00002A96))!)"
+                case "egsdot":                          return "\(UnicodeScalar(UInt32(0x00002A98))!)"
+                case "el":                              return "\(UnicodeScalar(UInt32(0x00002A99))!)"
+                case "Element":                         return "\(UnicodeScalar(UInt32(0x00002208))!)"
+                case "elinters":                        return "\(UnicodeScalar(UInt32(0x000023E7))!)"
+                case "ell":                             return "\(UnicodeScalar(UInt32(0x00002113))!)"
+                case "els":                             return "\(UnicodeScalar(UInt32(0x00002A95))!)"
+                case "elsdot":                          return "\(UnicodeScalar(UInt32(0x00002A97))!)"
+                case "Emacr":                           return "\(UnicodeScalar(UInt32(0x00000112))!)"
+                case "emacr":                           return "\(UnicodeScalar(UInt32(0x00000113))!)"
+                case "empty":                           return "\(UnicodeScalar(UInt32(0x00002205))!)"
+                case "emptyset":                        return "\(UnicodeScalar(UInt32(0x00002205))!)"
+                case "EmptySmallSquare":                return "\(UnicodeScalar(UInt32(0x000025FB))!)"
+                case "emptyv":                          return "\(UnicodeScalar(UInt32(0x00002205))!)"
+                case "EmptyVerySmallSquare":            return "\(UnicodeScalar(UInt32(0x000025AB))!)"
+                case "emsp":                            return "\(UnicodeScalar(UInt32(0x00002003))!)"
+                case "emsp13":                          return "\(UnicodeScalar(UInt32(0x00002004))!)"
+                case "emsp14":                          return "\(UnicodeScalar(UInt32(0x00002005))!)"
+                case "ENG":                             return "\(UnicodeScalar(UInt32(0x0000014A))!)"
+                case "eng":                             return "\(UnicodeScalar(UInt32(0x0000014B))!)"
+                case "ensp":                            return "\(UnicodeScalar(UInt32(0x00002002))!)"
+                case "Eogon":                           return "\(UnicodeScalar(UInt32(0x00000118))!)"
+                case "eogon":                           return "\(UnicodeScalar(UInt32(0x00000119))!)"
+                case "Eopf":                            return "\(UnicodeScalar(UInt32(0x0001D53C))!)"
+                case "eopf":                            return "\(UnicodeScalar(UInt32(0x0001D556))!)"
+                case "epar":                            return "\(UnicodeScalar(UInt32(0x000022D5))!)"
+                case "eparsl":                          return "\(UnicodeScalar(UInt32(0x000029E3))!)"
+                case "eplus":                           return "\(UnicodeScalar(UInt32(0x00002A71))!)"
+                case "epsi":                            return "\(UnicodeScalar(UInt32(0x000003B5))!)"
+                case "Epsilon":                         return "\(UnicodeScalar(UInt32(0x00000395))!)"
+                case "epsilon":                         return "\(UnicodeScalar(UInt32(0x000003B5))!)"
+                case "epsiv":                           return "\(UnicodeScalar(UInt32(0x000003F5))!)"
+                case "eqcirc":                          return "\(UnicodeScalar(UInt32(0x00002256))!)"
+                case "eqcolon":                         return "\(UnicodeScalar(UInt32(0x00002255))!)"
+                case "eqsim":                           return "\(UnicodeScalar(UInt32(0x00002242))!)"
+                case "eqslantgtr":                      return "\(UnicodeScalar(UInt32(0x00002A96))!)"
+                case "eqslantless":                     return "\(UnicodeScalar(UInt32(0x00002A95))!)"
+                case "Equal":                           return "\(UnicodeScalar(UInt32(0x00002A75))!)"
+                case "equals":                          return "\(UnicodeScalar(UInt32(0x0000003D))!)"
+                case "EqualTilde":                      return "\(UnicodeScalar(UInt32(0x00002242))!)"
+                case "equest":                          return "\(UnicodeScalar(UInt32(0x0000225F))!)"
+                case "Equilibrium":                     return "\(UnicodeScalar(UInt32(0x000021CC))!)"
+                case "equiv":                           return "\(UnicodeScalar(UInt32(0x00002261))!)"
+                case "equivDD":                         return "\(UnicodeScalar(UInt32(0x00002A78))!)"
+                case "eqvparsl":                        return "\(UnicodeScalar(UInt32(0x000029E5))!)"
+                case "erarr":                           return "\(UnicodeScalar(UInt32(0x00002971))!)"
+                case "erDot":                           return "\(UnicodeScalar(UInt32(0x00002253))!)"
+                case "escr":                            return "\(UnicodeScalar(UInt32(0x0000212F))!)"
+                case "Escr":                            return "\(UnicodeScalar(UInt32(0x00002130))!)"
+                case "esdot":                           return "\(UnicodeScalar(UInt32(0x00002250))!)"
+                case "esim":                            return "\(UnicodeScalar(UInt32(0x00002242))!)"
+                case "Esim":                            return "\(UnicodeScalar(UInt32(0x00002A73))!)"
+                case "Eta":                             return "\(UnicodeScalar(UInt32(0x00000397))!)"
+                case "eta":                             return "\(UnicodeScalar(UInt32(0x000003B7))!)"
+                case "ETH":                             return "\(UnicodeScalar(UInt32(0x000000D0))!)"
+                case "eth":                             return "\(UnicodeScalar(UInt32(0x000000F0))!)"
+                case "Euml":                            return "\(UnicodeScalar(UInt32(0x000000CB))!)"
+                case "euml":                            return "\(UnicodeScalar(UInt32(0x000000EB))!)"
+                case "euro":                            return "\(UnicodeScalar(UInt32(0x000020AC))!)"
+                case "excl":                            return "\(UnicodeScalar(UInt32(0x00000021))!)"
+                case "exist":                           return "\(UnicodeScalar(UInt32(0x00002203))!)"
+                case "Exists":                          return "\(UnicodeScalar(UInt32(0x00002203))!)"
+                case "expectation":                     return "\(UnicodeScalar(UInt32(0x00002130))!)"
+                case "ExponentialE":                    return "\(UnicodeScalar(UInt32(0x00002147))!)"
+                case "exponentiale":                    return "\(UnicodeScalar(UInt32(0x00002147))!)"
+                case "fallingdotseq":                   return "\(UnicodeScalar(UInt32(0x00002252))!)"
+                case "Fcy":                             return "\(UnicodeScalar(UInt32(0x00000424))!)"
+                case "fcy":                             return "\(UnicodeScalar(UInt32(0x00000444))!)"
+                case "female":                          return "\(UnicodeScalar(UInt32(0x00002640))!)"
+                case "ffilig":                          return "\(UnicodeScalar(UInt32(0x0000FB03))!)"
+                case "fflig":                           return "\(UnicodeScalar(UInt32(0x0000FB00))!)"
+                case "ffllig":                          return "\(UnicodeScalar(UInt32(0x0000FB04))!)"
+                case "Ffr":                             return "\(UnicodeScalar(UInt32(0x0001D509))!)"
+                case "ffr":                             return "\(UnicodeScalar(UInt32(0x0001D523))!)"
+                case "filig":                           return "\(UnicodeScalar(UInt32(0x0000FB01))!)"
+                case "FilledSmallSquare":               return "\(UnicodeScalar(UInt32(0x000025FC))!)"
+                case "FilledVerySmallSquare":           return "\(UnicodeScalar(UInt32(0x000025AA))!)"
+                case "fjlig":                           return "\(UnicodeScalar(UInt32(0x00000066))!)\(UnicodeScalar(UInt32(0x0000006A))!)"
+                case "flat":                            return "\(UnicodeScalar(UInt32(0x0000266D))!)"
+                case "fllig":                           return "\(UnicodeScalar(UInt32(0x0000FB02))!)"
+                case "fltns":                           return "\(UnicodeScalar(UInt32(0x000025B1))!)"
+                case "fnof":                            return "\(UnicodeScalar(UInt32(0x00000192))!)"
+                case "Fopf":                            return "\(UnicodeScalar(UInt32(0x0001D53D))!)"
+                case "fopf":                            return "\(UnicodeScalar(UInt32(0x0001D557))!)"
+                case "forall":                          return "\(UnicodeScalar(UInt32(0x00002200))!)"
+                case "ForAll":                          return "\(UnicodeScalar(UInt32(0x00002200))!)"
+                case "fork":                            return "\(UnicodeScalar(UInt32(0x000022D4))!)"
+                case "forkv":                           return "\(UnicodeScalar(UInt32(0x00002AD9))!)"
+                case "Fouriertrf":                      return "\(UnicodeScalar(UInt32(0x00002131))!)"
+                case "fpartint":                        return "\(UnicodeScalar(UInt32(0x00002A0D))!)"
+                case "frac12":                          return "\(UnicodeScalar(UInt32(0x000000BD))!)"
+                case "frac13":                          return "\(UnicodeScalar(UInt32(0x00002153))!)"
+                case "frac14":                          return "\(UnicodeScalar(UInt32(0x000000BC))!)"
+                case "frac15":                          return "\(UnicodeScalar(UInt32(0x00002155))!)"
+                case "frac16":                          return "\(UnicodeScalar(UInt32(0x00002159))!)"
+                case "frac18":                          return "\(UnicodeScalar(UInt32(0x0000215B))!)"
+                case "frac23":                          return "\(UnicodeScalar(UInt32(0x00002154))!)"
+                case "frac25":                          return "\(UnicodeScalar(UInt32(0x00002156))!)"
+                case "frac34":                          return "\(UnicodeScalar(UInt32(0x000000BE))!)"
+                case "frac35":                          return "\(UnicodeScalar(UInt32(0x00002157))!)"
+                case "frac38":                          return "\(UnicodeScalar(UInt32(0x0000215C))!)"
+                case "frac45":                          return "\(UnicodeScalar(UInt32(0x00002158))!)"
+                case "frac56":                          return "\(UnicodeScalar(UInt32(0x0000215A))!)"
+                case "frac58":                          return "\(UnicodeScalar(UInt32(0x0000215D))!)"
+                case "frac78":                          return "\(UnicodeScalar(UInt32(0x0000215E))!)"
+                case "frasl":                           return "\(UnicodeScalar(UInt32(0x00002044))!)"
+                case "frown":                           return "\(UnicodeScalar(UInt32(0x00002322))!)"
+                case "Fscr":                            return "\(UnicodeScalar(UInt32(0x00002131))!)"
+                case "fscr":                            return "\(UnicodeScalar(UInt32(0x0001D4BB))!)"
+                case "gacute":                          return "\(UnicodeScalar(UInt32(0x000001F5))!)"
+                case "Gamma":                           return "\(UnicodeScalar(UInt32(0x00000393))!)"
+                case "gamma":                           return "\(UnicodeScalar(UInt32(0x000003B3))!)"
+                case "Gammad":                          return "\(UnicodeScalar(UInt32(0x000003DC))!)"
+                case "gammad":                          return "\(UnicodeScalar(UInt32(0x000003DD))!)"
+                case "gap":                             return "\(UnicodeScalar(UInt32(0x00002A86))!)"
+                case "Gbreve":                          return "\(UnicodeScalar(UInt32(0x0000011E))!)"
+                case "gbreve":                          return "\(UnicodeScalar(UInt32(0x0000011F))!)"
+                case "Gcedil":                          return "\(UnicodeScalar(UInt32(0x00000122))!)"
+                case "Gcirc":                           return "\(UnicodeScalar(UInt32(0x0000011C))!)"
+                case "gcirc":                           return "\(UnicodeScalar(UInt32(0x0000011D))!)"
+                case "Gcy":                             return "\(UnicodeScalar(UInt32(0x00000413))!)"
+                case "gcy":                             return "\(UnicodeScalar(UInt32(0x00000433))!)"
+                case "Gdot":                            return "\(UnicodeScalar(UInt32(0x00000120))!)"
+                case "gdot":                            return "\(UnicodeScalar(UInt32(0x00000121))!)"
+                case "ge":                              return "\(UnicodeScalar(UInt32(0x00002265))!)"
+                case "gE":                              return "\(UnicodeScalar(UInt32(0x00002267))!)"
+                case "gel":                             return "\(UnicodeScalar(UInt32(0x000022DB))!)"
+                case "gEl":                             return "\(UnicodeScalar(UInt32(0x00002A8C))!)"
+                case "geq":                             return "\(UnicodeScalar(UInt32(0x00002265))!)"
+                case "geqq":                            return "\(UnicodeScalar(UInt32(0x00002267))!)"
+                case "geqslant":                        return "\(UnicodeScalar(UInt32(0x00002A7E))!)"
+                case "ges":                             return "\(UnicodeScalar(UInt32(0x00002A7E))!)"
+                case "gescc":                           return "\(UnicodeScalar(UInt32(0x00002AA9))!)"
+                case "gesdot":                          return "\(UnicodeScalar(UInt32(0x00002A80))!)"
+                case "gesdoto":                         return "\(UnicodeScalar(UInt32(0x00002A82))!)"
+                case "gesdotol":                        return "\(UnicodeScalar(UInt32(0x00002A84))!)"
+                case "gesl":                            return "\(UnicodeScalar(UInt32(0x000022DB))!)\(UnicodeScalar(UInt32(0x0000FE00))!)"
+                case "gesles":                          return "\(UnicodeScalar(UInt32(0x00002A94))!)"
+                case "Gfr":                             return "\(UnicodeScalar(UInt32(0x0001D50A))!)"
+                case "gfr":                             return "\(UnicodeScalar(UInt32(0x0001D524))!)"
+                case "gg":                              return "\(UnicodeScalar(UInt32(0x0000226B))!)"
+                case "Gg":                              return "\(UnicodeScalar(UInt32(0x000022D9))!)"
+                case "ggg":                             return "\(UnicodeScalar(UInt32(0x000022D9))!)"
+                case "gimel":                           return "\(UnicodeScalar(UInt32(0x00002137))!)"
+                case "GJcy":                            return "\(UnicodeScalar(UInt32(0x00000403))!)"
+                case "gjcy":                            return "\(UnicodeScalar(UInt32(0x00000453))!)"
+                case "gl":                              return "\(UnicodeScalar(UInt32(0x00002277))!)"
+                case "gla":                             return "\(UnicodeScalar(UInt32(0x00002AA5))!)"
+                case "glE":                             return "\(UnicodeScalar(UInt32(0x00002A92))!)"
+                case "glj":                             return "\(UnicodeScalar(UInt32(0x00002AA4))!)"
+                case "gnap":                            return "\(UnicodeScalar(UInt32(0x00002A8A))!)"
+                case "gnapprox":                        return "\(UnicodeScalar(UInt32(0x00002A8A))!)"
+                case "gnE":                             return "\(UnicodeScalar(UInt32(0x00002269))!)"
+                case "gne":                             return "\(UnicodeScalar(UInt32(0x00002A88))!)"
+                case "gneq":                            return "\(UnicodeScalar(UInt32(0x00002A88))!)"
+                case "gneqq":                           return "\(UnicodeScalar(UInt32(0x00002269))!)"
+                case "gnsim":                           return "\(UnicodeScalar(UInt32(0x000022E7))!)"
+                case "Gopf":                            return "\(UnicodeScalar(UInt32(0x0001D53E))!)"
+                case "gopf":                            return "\(UnicodeScalar(UInt32(0x0001D558))!)"
+                case "grave":                           return "\(UnicodeScalar(UInt32(0x00000060))!)"
+                case "GreaterEqual":                    return "\(UnicodeScalar(UInt32(0x00002265))!)"
+                case "GreaterEqualLess":                return "\(UnicodeScalar(UInt32(0x000022DB))!)"
+                case "GreaterFullEqual":                return "\(UnicodeScalar(UInt32(0x00002267))!)"
+                case "GreaterGreater":                  return "\(UnicodeScalar(UInt32(0x00002AA2))!)"
+                case "GreaterLess":                     return "\(UnicodeScalar(UInt32(0x00002277))!)"
+                case "GreaterSlantEqual":               return "\(UnicodeScalar(UInt32(0x00002A7E))!)"
+                case "GreaterTilde":                    return "\(UnicodeScalar(UInt32(0x00002273))!)"
+                case "gscr":                            return "\(UnicodeScalar(UInt32(0x0000210A))!)"
+                case "Gscr":                            return "\(UnicodeScalar(UInt32(0x0001D4A2))!)"
+                case "gsim":                            return "\(UnicodeScalar(UInt32(0x00002273))!)"
+                case "gsime":                           return "\(UnicodeScalar(UInt32(0x00002A8E))!)"
+                case "gsiml":                           return "\(UnicodeScalar(UInt32(0x00002A90))!)"
+                case "gt":                              return "\(UnicodeScalar(UInt32(0x0000003E))!)"
+                case "GT":                              return "\(UnicodeScalar(UInt32(0x0000003E))!)"
+                case "Gt":                              return "\(UnicodeScalar(UInt32(0x0000226B))!)"
+                case "gtcc":                            return "\(UnicodeScalar(UInt32(0x00002AA7))!)"
+                case "gtcir":                           return "\(UnicodeScalar(UInt32(0x00002A7A))!)"
+                case "gtdot":                           return "\(UnicodeScalar(UInt32(0x000022D7))!)"
+                case "gtlPar":                          return "\(UnicodeScalar(UInt32(0x00002995))!)"
+                case "gtquest":                         return "\(UnicodeScalar(UInt32(0x00002A7C))!)"
+                case "gtrapprox":                       return "\(UnicodeScalar(UInt32(0x00002A86))!)"
+                case "gtrarr":                          return "\(UnicodeScalar(UInt32(0x00002978))!)"
+                case "gtrdot":                          return "\(UnicodeScalar(UInt32(0x000022D7))!)"
+                case "gtreqless":                       return "\(UnicodeScalar(UInt32(0x000022DB))!)"
+                case "gtreqqless":                      return "\(UnicodeScalar(UInt32(0x00002A8C))!)"
+                case "gtrless":                         return "\(UnicodeScalar(UInt32(0x00002277))!)"
+                case "gtrsim":                          return "\(UnicodeScalar(UInt32(0x00002273))!)"
+                case "gvertneqq":                       return "\(UnicodeScalar(UInt32(0x00002269))!)\(UnicodeScalar(UInt32(0x0000FE00))!)"
+                case "gvnE":                            return "\(UnicodeScalar(UInt32(0x00002269))!)\(UnicodeScalar(UInt32(0x0000FE00))!)"
+                case "Hacek":                           return "\(UnicodeScalar(UInt32(0x000002C7))!)"
+                case "hairsp":                          return "\(UnicodeScalar(UInt32(0x0000200A))!)"
+                case "half":                            return "\(UnicodeScalar(UInt32(0x000000BD))!)"
+                case "hamilt":                          return "\(UnicodeScalar(UInt32(0x0000210B))!)"
+                case "HARDcy":                          return "\(UnicodeScalar(UInt32(0x0000042A))!)"
+                case "hardcy":                          return "\(UnicodeScalar(UInt32(0x0000044A))!)"
+                case "harr":                            return "\(UnicodeScalar(UInt32(0x00002194))!)"
+                case "hArr":                            return "\(UnicodeScalar(UInt32(0x000021D4))!)"
+                case "harrcir":                         return "\(UnicodeScalar(UInt32(0x00002948))!)"
+                case "harrw":                           return "\(UnicodeScalar(UInt32(0x000021AD))!)"
+                case "Hat":                             return "\(UnicodeScalar(UInt32(0x0000005E))!)"
+                case "hbar":                            return "\(UnicodeScalar(UInt32(0x0000210F))!)"
+                case "Hcirc":                           return "\(UnicodeScalar(UInt32(0x00000124))!)"
+                case "hcirc":                           return "\(UnicodeScalar(UInt32(0x00000125))!)"
+                case "hearts":                          return "\(UnicodeScalar(UInt32(0x00002665))!)"
+                case "heartsuit":                       return "\(UnicodeScalar(UInt32(0x00002665))!)"
+                case "hellip":                          return "\(UnicodeScalar(UInt32(0x00002026))!)"
+                case "hercon":                          return "\(UnicodeScalar(UInt32(0x000022B9))!)"
+                case "Hfr":                             return "\(UnicodeScalar(UInt32(0x0000210C))!)"
+                case "hfr":                             return "\(UnicodeScalar(UInt32(0x0001D525))!)"
+                case "HilbertSpace":                    return "\(UnicodeScalar(UInt32(0x0000210B))!)"
+                case "hksearow":                        return "\(UnicodeScalar(UInt32(0x00002925))!)"
+                case "hkswarow":                        return "\(UnicodeScalar(UInt32(0x00002926))!)"
+                case "hoarr":                           return "\(UnicodeScalar(UInt32(0x000021FF))!)"
+                case "homtht":                          return "\(UnicodeScalar(UInt32(0x0000223B))!)"
+                case "hookleftarrow":                   return "\(UnicodeScalar(UInt32(0x000021A9))!)"
+                case "hookrightarrow":                  return "\(UnicodeScalar(UInt32(0x000021AA))!)"
+                case "Hopf":                            return "\(UnicodeScalar(UInt32(0x0000210D))!)"
+                case "hopf":                            return "\(UnicodeScalar(UInt32(0x0001D559))!)"
+                case "horbar":                          return "\(UnicodeScalar(UInt32(0x00002015))!)"
+                case "HorizontalLine":                  return "\(UnicodeScalar(UInt32(0x00002500))!)"
+                case "Hscr":                            return "\(UnicodeScalar(UInt32(0x0000210B))!)"
+                case "hscr":                            return "\(UnicodeScalar(UInt32(0x0001D4BD))!)"
+                case "hslash":                          return "\(UnicodeScalar(UInt32(0x0000210F))!)"
+                case "Hstrok":                          return "\(UnicodeScalar(UInt32(0x00000126))!)"
+                case "hstrok":                          return "\(UnicodeScalar(UInt32(0x00000127))!)"
+                case "HumpDownHump":                    return "\(UnicodeScalar(UInt32(0x0000224E))!)"
+                case "HumpEqual":                       return "\(UnicodeScalar(UInt32(0x0000224F))!)"
+                case "hybull":                          return "\(UnicodeScalar(UInt32(0x00002043))!)"
+                case "hyphen":                          return "\(UnicodeScalar(UInt32(0x00002010))!)"
+                case "Iacute":                          return "\(UnicodeScalar(UInt32(0x000000CD))!)"
+                case "iacute":                          return "\(UnicodeScalar(UInt32(0x000000ED))!)"
+                case "ic":                              return "\(UnicodeScalar(UInt32(0x00002063))!)"
+                case "Icirc":                           return "\(UnicodeScalar(UInt32(0x000000CE))!)"
+                case "icirc":                           return "\(UnicodeScalar(UInt32(0x000000EE))!)"
+                case "Icy":                             return "\(UnicodeScalar(UInt32(0x00000418))!)"
+                case "icy":                             return "\(UnicodeScalar(UInt32(0x00000438))!)"
+                case "Idot":                            return "\(UnicodeScalar(UInt32(0x00000130))!)"
+                case "IEcy":                            return "\(UnicodeScalar(UInt32(0x00000415))!)"
+                case "iecy":                            return "\(UnicodeScalar(UInt32(0x00000435))!)"
+                case "iexcl":                           return "\(UnicodeScalar(UInt32(0x000000A1))!)"
+                case "iff":                             return "\(UnicodeScalar(UInt32(0x000021D4))!)"
+                case "Ifr":                             return "\(UnicodeScalar(UInt32(0x00002111))!)"
+                case "ifr":                             return "\(UnicodeScalar(UInt32(0x0001D526))!)"
+                case "Igrave":                          return "\(UnicodeScalar(UInt32(0x000000CC))!)"
+                case "igrave":                          return "\(UnicodeScalar(UInt32(0x000000EC))!)"
+                case "ii":                              return "\(UnicodeScalar(UInt32(0x00002148))!)"
+                case "iiiint":                          return "\(UnicodeScalar(UInt32(0x00002A0C))!)"
+                case "iiint":                           return "\(UnicodeScalar(UInt32(0x0000222D))!)"
+                case "iinfin":                          return "\(UnicodeScalar(UInt32(0x000029DC))!)"
+                case "iiota":                           return "\(UnicodeScalar(UInt32(0x00002129))!)"
+                case "IJlig":                           return "\(UnicodeScalar(UInt32(0x00000132))!)"
+                case "ijlig":                           return "\(UnicodeScalar(UInt32(0x00000133))!)"
+                case "Im":                              return "\(UnicodeScalar(UInt32(0x00002111))!)"
+                case "Imacr":                           return "\(UnicodeScalar(UInt32(0x0000012A))!)"
+                case "imacr":                           return "\(UnicodeScalar(UInt32(0x0000012B))!)"
+                case "image":                           return "\(UnicodeScalar(UInt32(0x00002111))!)"
+                case "ImaginaryI":                      return "\(UnicodeScalar(UInt32(0x00002148))!)"
+                case "imagline":                        return "\(UnicodeScalar(UInt32(0x00002110))!)"
+                case "imagpart":                        return "\(UnicodeScalar(UInt32(0x00002111))!)"
+                case "imath":                           return "\(UnicodeScalar(UInt32(0x00000131))!)"
+                case "imof":                            return "\(UnicodeScalar(UInt32(0x000022B7))!)"
+                case "imped":                           return "\(UnicodeScalar(UInt32(0x000001B5))!)"
+                case "Implies":                         return "\(UnicodeScalar(UInt32(0x000021D2))!)"
+                case "in":                              return "\(UnicodeScalar(UInt32(0x00002208))!)"
+                case "incare":                          return "\(UnicodeScalar(UInt32(0x00002105))!)"
+                case "infin":                           return "\(UnicodeScalar(UInt32(0x0000221E))!)"
+                case "infintie":                        return "\(UnicodeScalar(UInt32(0x000029DD))!)"
+                case "inodot":                          return "\(UnicodeScalar(UInt32(0x00000131))!)"
+                case "int":                             return "\(UnicodeScalar(UInt32(0x0000222B))!)"
+                case "Int":                             return "\(UnicodeScalar(UInt32(0x0000222C))!)"
+                case "intcal":                          return "\(UnicodeScalar(UInt32(0x000022BA))!)"
+                case "integers":                        return "\(UnicodeScalar(UInt32(0x00002124))!)"
+                case "Integral":                        return "\(UnicodeScalar(UInt32(0x0000222B))!)"
+                case "intercal":                        return "\(UnicodeScalar(UInt32(0x000022BA))!)"
+                case "Intersection":                    return "\(UnicodeScalar(UInt32(0x000022C2))!)"
+                case "intlarhk":                        return "\(UnicodeScalar(UInt32(0x00002A17))!)"
+                case "intprod":                         return "\(UnicodeScalar(UInt32(0x00002A3C))!)"
+                case "InvisibleComma":                  return "\(UnicodeScalar(UInt32(0x00002063))!)"
+                case "InvisibleTimes":                  return "\(UnicodeScalar(UInt32(0x00002062))!)"
+                case "IOcy":                            return "\(UnicodeScalar(UInt32(0x00000401))!)"
+                case "iocy":                            return "\(UnicodeScalar(UInt32(0x00000451))!)"
+                case "Iogon":                           return "\(UnicodeScalar(UInt32(0x0000012E))!)"
+                case "iogon":                           return "\(UnicodeScalar(UInt32(0x0000012F))!)"
+                case "Iopf":                            return "\(UnicodeScalar(UInt32(0x0001D540))!)"
+                case "iopf":                            return "\(UnicodeScalar(UInt32(0x0001D55A))!)"
+                case "Iota":                            return "\(UnicodeScalar(UInt32(0x00000399))!)"
+                case "iota":                            return "\(UnicodeScalar(UInt32(0x000003B9))!)"
+                case "iprod":                           return "\(UnicodeScalar(UInt32(0x00002A3C))!)"
+                case "iquest":                          return "\(UnicodeScalar(UInt32(0x000000BF))!)"
+                case "Iscr":                            return "\(UnicodeScalar(UInt32(0x00002110))!)"
+                case "iscr":                            return "\(UnicodeScalar(UInt32(0x0001D4BE))!)"
+                case "isin":                            return "\(UnicodeScalar(UInt32(0x00002208))!)"
+                case "isindot":                         return "\(UnicodeScalar(UInt32(0x000022F5))!)"
+                case "isinE":                           return "\(UnicodeScalar(UInt32(0x000022F9))!)"
+                case "isins":                           return "\(UnicodeScalar(UInt32(0x000022F4))!)"
+                case "isinsv":                          return "\(UnicodeScalar(UInt32(0x000022F3))!)"
+                case "isinv":                           return "\(UnicodeScalar(UInt32(0x00002208))!)"
+                case "it":                              return "\(UnicodeScalar(UInt32(0x00002062))!)"
+                case "Itilde":                          return "\(UnicodeScalar(UInt32(0x00000128))!)"
+                case "itilde":                          return "\(UnicodeScalar(UInt32(0x00000129))!)"
+                case "Iukcy":                           return "\(UnicodeScalar(UInt32(0x00000406))!)"
+                case "iukcy":                           return "\(UnicodeScalar(UInt32(0x00000456))!)"
+                case "Iuml":                            return "\(UnicodeScalar(UInt32(0x000000CF))!)"
+                case "iuml":                            return "\(UnicodeScalar(UInt32(0x000000EF))!)"
+                case "Jcirc":                           return "\(UnicodeScalar(UInt32(0x00000134))!)"
+                case "jcirc":                           return "\(UnicodeScalar(UInt32(0x00000135))!)"
+                case "Jcy":                             return "\(UnicodeScalar(UInt32(0x00000419))!)"
+                case "jcy":                             return "\(UnicodeScalar(UInt32(0x00000439))!)"
+                case "Jfr":                             return "\(UnicodeScalar(UInt32(0x0001D50D))!)"
+                case "jfr":                             return "\(UnicodeScalar(UInt32(0x0001D527))!)"
+                case "jmath":                           return "\(UnicodeScalar(UInt32(0x00000237))!)"
+                case "Jopf":                            return "\(UnicodeScalar(UInt32(0x0001D541))!)"
+                case "jopf":                            return "\(UnicodeScalar(UInt32(0x0001D55B))!)"
+                case "Jscr":                            return "\(UnicodeScalar(UInt32(0x0001D4A5))!)"
+                case "jscr":                            return "\(UnicodeScalar(UInt32(0x0001D4BF))!)"
+                case "Jsercy":                          return "\(UnicodeScalar(UInt32(0x00000408))!)"
+                case "jsercy":                          return "\(UnicodeScalar(UInt32(0x00000458))!)"
+                case "Jukcy":                           return "\(UnicodeScalar(UInt32(0x00000404))!)"
+                case "jukcy":                           return "\(UnicodeScalar(UInt32(0x00000454))!)"
+                case "Kappa":                           return "\(UnicodeScalar(UInt32(0x0000039A))!)"
+                case "kappa":                           return "\(UnicodeScalar(UInt32(0x000003BA))!)"
+                case "kappav":                          return "\(UnicodeScalar(UInt32(0x000003F0))!)"
+                case "Kcedil":                          return "\(UnicodeScalar(UInt32(0x00000136))!)"
+                case "kcedil":                          return "\(UnicodeScalar(UInt32(0x00000137))!)"
+                case "Kcy":                             return "\(UnicodeScalar(UInt32(0x0000041A))!)"
+                case "kcy":                             return "\(UnicodeScalar(UInt32(0x0000043A))!)"
+                case "Kfr":                             return "\(UnicodeScalar(UInt32(0x0001D50E))!)"
+                case "kfr":                             return "\(UnicodeScalar(UInt32(0x0001D528))!)"
+                case "kgreen":                          return "\(UnicodeScalar(UInt32(0x00000138))!)"
+                case "KHcy":                            return "\(UnicodeScalar(UInt32(0x00000425))!)"
+                case "khcy":                            return "\(UnicodeScalar(UInt32(0x00000445))!)"
+                case "KJcy":                            return "\(UnicodeScalar(UInt32(0x0000040C))!)"
+                case "kjcy":                            return "\(UnicodeScalar(UInt32(0x0000045C))!)"
+                case "Kopf":                            return "\(UnicodeScalar(UInt32(0x0001D542))!)"
+                case "kopf":                            return "\(UnicodeScalar(UInt32(0x0001D55C))!)"
+                case "Kscr":                            return "\(UnicodeScalar(UInt32(0x0001D4A6))!)"
+                case "kscr":                            return "\(UnicodeScalar(UInt32(0x0001D4C0))!)"
+                case "lAarr":                           return "\(UnicodeScalar(UInt32(0x000021DA))!)"
+                case "Lacute":                          return "\(UnicodeScalar(UInt32(0x00000139))!)"
+                case "lacute":                          return "\(UnicodeScalar(UInt32(0x0000013A))!)"
+                case "laemptyv":                        return "\(UnicodeScalar(UInt32(0x000029B4))!)"
+                case "lagran":                          return "\(UnicodeScalar(UInt32(0x00002112))!)"
+                case "Lambda":                          return "\(UnicodeScalar(UInt32(0x0000039B))!)"
+                case "lambda":                          return "\(UnicodeScalar(UInt32(0x000003BB))!)"
+                case "lang":                            return "\(UnicodeScalar(UInt32(0x000027E8))!)"
+                case "Lang":                            return "\(UnicodeScalar(UInt32(0x000027EA))!)"
+                case "langd":                           return "\(UnicodeScalar(UInt32(0x00002991))!)"
+                case "langle":                          return "\(UnicodeScalar(UInt32(0x000027E8))!)"
+                case "lap":                             return "\(UnicodeScalar(UInt32(0x00002A85))!)"
+                case "Laplacetrf":                      return "\(UnicodeScalar(UInt32(0x00002112))!)"
+                case "laquo":                           return "\(UnicodeScalar(UInt32(0x000000AB))!)"
+                case "larr":                            return "\(UnicodeScalar(UInt32(0x00002190))!)"
+                case "Larr":                            return "\(UnicodeScalar(UInt32(0x0000219E))!)"
+                case "lArr":                            return "\(UnicodeScalar(UInt32(0x000021D0))!)"
+                case "larrb":                           return "\(UnicodeScalar(UInt32(0x000021E4))!)"
+                case "larrbfs":                         return "\(UnicodeScalar(UInt32(0x0000291F))!)"
+                case "larrfs":                          return "\(UnicodeScalar(UInt32(0x0000291D))!)"
+                case "larrhk":                          return "\(UnicodeScalar(UInt32(0x000021A9))!)"
+                case "larrlp":                          return "\(UnicodeScalar(UInt32(0x000021AB))!)"
+                case "larrpl":                          return "\(UnicodeScalar(UInt32(0x00002939))!)"
+                case "larrsim":                         return "\(UnicodeScalar(UInt32(0x00002973))!)"
+                case "larrtl":                          return "\(UnicodeScalar(UInt32(0x000021A2))!)"
+                case "lat":                             return "\(UnicodeScalar(UInt32(0x00002AAB))!)"
+                case "latail":                          return "\(UnicodeScalar(UInt32(0x00002919))!)"
+                case "lAtail":                          return "\(UnicodeScalar(UInt32(0x0000291B))!)"
+                case "late":                            return "\(UnicodeScalar(UInt32(0x00002AAD))!)"
+                case "lates":                           return "\(UnicodeScalar(UInt32(0x00002AAD))!)\(UnicodeScalar(UInt32(0x0000FE00))!)"
+                case "lbarr":                           return "\(UnicodeScalar(UInt32(0x0000290C))!)"
+                case "lBarr":                           return "\(UnicodeScalar(UInt32(0x0000290E))!)"
+                case "lbbrk":                           return "\(UnicodeScalar(UInt32(0x00002772))!)"
+                case "lbrace":                          return "\(UnicodeScalar(UInt32(0x0000007B))!)"
+                case "lbrack":                          return "\(UnicodeScalar(UInt32(0x0000005B))!)"
+                case "lbrke":                           return "\(UnicodeScalar(UInt32(0x0000298B))!)"
+                case "lbrksld":                         return "\(UnicodeScalar(UInt32(0x0000298F))!)"
+                case "lbrkslu":                         return "\(UnicodeScalar(UInt32(0x0000298D))!)"
+                case "Lcaron":                          return "\(UnicodeScalar(UInt32(0x0000013D))!)"
+                case "lcaron":                          return "\(UnicodeScalar(UInt32(0x0000013E))!)"
+                case "Lcedil":                          return "\(UnicodeScalar(UInt32(0x0000013B))!)"
+                case "lcedil":                          return "\(UnicodeScalar(UInt32(0x0000013C))!)"
+                case "lceil":                           return "\(UnicodeScalar(UInt32(0x00002308))!)"
+                case "lcub":                            return "\(UnicodeScalar(UInt32(0x0000007B))!)"
+                case "Lcy":                             return "\(UnicodeScalar(UInt32(0x0000041B))!)"
+                case "lcy":                             return "\(UnicodeScalar(UInt32(0x0000043B))!)"
+                case "ldca":                            return "\(UnicodeScalar(UInt32(0x00002936))!)"
+                case "ldquo":                           return "\(UnicodeScalar(UInt32(0x0000201C))!)"
+                case "ldquor":                          return "\(UnicodeScalar(UInt32(0x0000201E))!)"
+                case "ldrdhar":                         return "\(UnicodeScalar(UInt32(0x00002967))!)"
+                case "ldrushar":                        return "\(UnicodeScalar(UInt32(0x0000294B))!)"
+                case "ldsh":                            return "\(UnicodeScalar(UInt32(0x000021B2))!)"
+                case "le":                              return "\(UnicodeScalar(UInt32(0x00002264))!)"
+                case "lE":                              return "\(UnicodeScalar(UInt32(0x00002266))!)"
+                case "LeftAngleBracket":                return "\(UnicodeScalar(UInt32(0x000027E8))!)"
+                case "leftarrow":                       return "\(UnicodeScalar(UInt32(0x00002190))!)"
+                case "LeftArrow":                       return "\(UnicodeScalar(UInt32(0x00002190))!)"
+                case "Leftarrow":                       return "\(UnicodeScalar(UInt32(0x000021D0))!)"
+                case "LeftArrowBar":                    return "\(UnicodeScalar(UInt32(0x000021E4))!)"
+                case "LeftArrowRightArrow":             return "\(UnicodeScalar(UInt32(0x000021C6))!)"
+                case "leftarrowtail":                   return "\(UnicodeScalar(UInt32(0x000021A2))!)"
+                case "LeftCeiling":                     return "\(UnicodeScalar(UInt32(0x00002308))!)"
+                case "LeftDoubleBracket":               return "\(UnicodeScalar(UInt32(0x000027E6))!)"
+                case "LeftDownTeeVector":               return "\(UnicodeScalar(UInt32(0x00002961))!)"
+                case "LeftDownVector":                  return "\(UnicodeScalar(UInt32(0x000021C3))!)"
+                case "LeftDownVectorBar":               return "\(UnicodeScalar(UInt32(0x00002959))!)"
+                case "LeftFloor":                       return "\(UnicodeScalar(UInt32(0x0000230A))!)"
+                case "leftharpoondown":                 return "\(UnicodeScalar(UInt32(0x000021BD))!)"
+                case "leftharpoonup":                   return "\(UnicodeScalar(UInt32(0x000021BC))!)"
+                case "leftleftarrows":                  return "\(UnicodeScalar(UInt32(0x000021C7))!)"
+                case "leftrightarrow":                  return "\(UnicodeScalar(UInt32(0x00002194))!)"
+                case "LeftRightArrow":                  return "\(UnicodeScalar(UInt32(0x00002194))!)"
+                case "Leftrightarrow":                  return "\(UnicodeScalar(UInt32(0x000021D4))!)"
+                case "leftrightarrows":                 return "\(UnicodeScalar(UInt32(0x000021C6))!)"
+                case "leftrightharpoons":               return "\(UnicodeScalar(UInt32(0x000021CB))!)"
+                case "leftrightsquigarrow":             return "\(UnicodeScalar(UInt32(0x000021AD))!)"
+                case "LeftRightVector":                 return "\(UnicodeScalar(UInt32(0x0000294E))!)"
+                case "LeftTee":                         return "\(UnicodeScalar(UInt32(0x000022A3))!)"
+                case "LeftTeeArrow":                    return "\(UnicodeScalar(UInt32(0x000021A4))!)"
+                case "LeftTeeVector":                   return "\(UnicodeScalar(UInt32(0x0000295A))!)"
+                case "leftthreetimes":                  return "\(UnicodeScalar(UInt32(0x000022CB))!)"
+                case "LeftTriangle":                    return "\(UnicodeScalar(UInt32(0x000022B2))!)"
+                case "LeftTriangleBar":                 return "\(UnicodeScalar(UInt32(0x000029CF))!)"
+                case "LeftTriangleEqual":               return "\(UnicodeScalar(UInt32(0x000022B4))!)"
+                case "LeftUpDownVector":                return "\(UnicodeScalar(UInt32(0x00002951))!)"
+                case "LeftUpTeeVector":                 return "\(UnicodeScalar(UInt32(0x00002960))!)"
+                case "LeftUpVector":                    return "\(UnicodeScalar(UInt32(0x000021BF))!)"
+                case "LeftUpVectorBar":                 return "\(UnicodeScalar(UInt32(0x00002958))!)"
+                case "LeftVector":                      return "\(UnicodeScalar(UInt32(0x000021BC))!)"
+                case "LeftVectorBar":                   return "\(UnicodeScalar(UInt32(0x00002952))!)"
+                case "leg":                             return "\(UnicodeScalar(UInt32(0x000022DA))!)"
+                case "lEg":                             return "\(UnicodeScalar(UInt32(0x00002A8B))!)"
+                case "leq":                             return "\(UnicodeScalar(UInt32(0x00002264))!)"
+                case "leqq":                            return "\(UnicodeScalar(UInt32(0x00002266))!)"
+                case "leqslant":                        return "\(UnicodeScalar(UInt32(0x00002A7D))!)"
+                case "les":                             return "\(UnicodeScalar(UInt32(0x00002A7D))!)"
+                case "lescc":                           return "\(UnicodeScalar(UInt32(0x00002AA8))!)"
+                case "lesdot":                          return "\(UnicodeScalar(UInt32(0x00002A7F))!)"
+                case "lesdoto":                         return "\(UnicodeScalar(UInt32(0x00002A81))!)"
+                case "lesdotor":                        return "\(UnicodeScalar(UInt32(0x00002A83))!)"
+                case "lesg":                            return "\(UnicodeScalar(UInt32(0x000022DA))!)\(UnicodeScalar(UInt32(0x0000FE00))!)"
+                case "lesges":                          return "\(UnicodeScalar(UInt32(0x00002A93))!)"
+                case "lessapprox":                      return "\(UnicodeScalar(UInt32(0x00002A85))!)"
+                case "lessdot":                         return "\(UnicodeScalar(UInt32(0x000022D6))!)"
+                case "lesseqgtr":                       return "\(UnicodeScalar(UInt32(0x000022DA))!)"
+                case "lesseqqgtr":                      return "\(UnicodeScalar(UInt32(0x00002A8B))!)"
+                case "LessEqualGreater":                return "\(UnicodeScalar(UInt32(0x000022DA))!)"
+                case "LessFullEqual":                   return "\(UnicodeScalar(UInt32(0x00002266))!)"
+                case "LessGreater":                     return "\(UnicodeScalar(UInt32(0x00002276))!)"
+                case "lessgtr":                         return "\(UnicodeScalar(UInt32(0x00002276))!)"
+                case "LessLess":                        return "\(UnicodeScalar(UInt32(0x00002AA1))!)"
+                case "lesssim":                         return "\(UnicodeScalar(UInt32(0x00002272))!)"
+                case "LessSlantEqual":                  return "\(UnicodeScalar(UInt32(0x00002A7D))!)"
+                case "LessTilde":                       return "\(UnicodeScalar(UInt32(0x00002272))!)"
+                case "lfisht":                          return "\(UnicodeScalar(UInt32(0x0000297C))!)"
+                case "lfloor":                          return "\(UnicodeScalar(UInt32(0x0000230A))!)"
+                case "Lfr":                             return "\(UnicodeScalar(UInt32(0x0001D50F))!)"
+                case "lfr":                             return "\(UnicodeScalar(UInt32(0x0001D529))!)"
+                case "lg":                              return "\(UnicodeScalar(UInt32(0x00002276))!)"
+                case "lgE":                             return "\(UnicodeScalar(UInt32(0x00002A91))!)"
+                case "lHar":                            return "\(UnicodeScalar(UInt32(0x00002962))!)"
+                case "lhard":                           return "\(UnicodeScalar(UInt32(0x000021BD))!)"
+                case "lharu":                           return "\(UnicodeScalar(UInt32(0x000021BC))!)"
+                case "lharul":                          return "\(UnicodeScalar(UInt32(0x0000296A))!)"
+                case "lhblk":                           return "\(UnicodeScalar(UInt32(0x00002584))!)"
+                case "LJcy":                            return "\(UnicodeScalar(UInt32(0x00000409))!)"
+                case "ljcy":                            return "\(UnicodeScalar(UInt32(0x00000459))!)"
+                case "ll":                              return "\(UnicodeScalar(UInt32(0x0000226A))!)"
+                case "Ll":                              return "\(UnicodeScalar(UInt32(0x000022D8))!)"
+                case "llarr":                           return "\(UnicodeScalar(UInt32(0x000021C7))!)"
+                case "llcorner":                        return "\(UnicodeScalar(UInt32(0x0000231E))!)"
+                case "Lleftarrow":                      return "\(UnicodeScalar(UInt32(0x000021DA))!)"
+                case "llhard":                          return "\(UnicodeScalar(UInt32(0x0000296B))!)"
+                case "lltri":                           return "\(UnicodeScalar(UInt32(0x000025FA))!)"
+                case "Lmidot":                          return "\(UnicodeScalar(UInt32(0x0000013F))!)"
+                case "lmidot":                          return "\(UnicodeScalar(UInt32(0x00000140))!)"
+                case "lmoust":                          return "\(UnicodeScalar(UInt32(0x000023B0))!)"
+                case "lmoustache":                      return "\(UnicodeScalar(UInt32(0x000023B0))!)"
+                case "lnap":                            return "\(UnicodeScalar(UInt32(0x00002A89))!)"
+                case "lnapprox":                        return "\(UnicodeScalar(UInt32(0x00002A89))!)"
+                case "lnE":                             return "\(UnicodeScalar(UInt32(0x00002268))!)"
+                case "lne":                             return "\(UnicodeScalar(UInt32(0x00002A87))!)"
+                case "lneq":                            return "\(UnicodeScalar(UInt32(0x00002A87))!)"
+                case "lneqq":                           return "\(UnicodeScalar(UInt32(0x00002268))!)"
+                case "lnsim":                           return "\(UnicodeScalar(UInt32(0x000022E6))!)"
+                case "loang":                           return "\(UnicodeScalar(UInt32(0x000027EC))!)"
+                case "loarr":                           return "\(UnicodeScalar(UInt32(0x000021FD))!)"
+                case "lobrk":                           return "\(UnicodeScalar(UInt32(0x000027E6))!)"
+                case "longleftarrow":                   return "\(UnicodeScalar(UInt32(0x000027F5))!)"
+                case "LongLeftArrow":                   return "\(UnicodeScalar(UInt32(0x000027F5))!)"
+                case "Longleftarrow":                   return "\(UnicodeScalar(UInt32(0x000027F8))!)"
+                case "longleftrightarrow":              return "\(UnicodeScalar(UInt32(0x000027F7))!)"
+                case "LongLeftRightArrow":              return "\(UnicodeScalar(UInt32(0x000027F7))!)"
+                case "Longleftrightarrow":              return "\(UnicodeScalar(UInt32(0x000027FA))!)"
+                case "longmapsto":                      return "\(UnicodeScalar(UInt32(0x000027FC))!)"
+                case "longrightarrow":                  return "\(UnicodeScalar(UInt32(0x000027F6))!)"
+                case "LongRightArrow":                  return "\(UnicodeScalar(UInt32(0x000027F6))!)"
+                case "Longrightarrow":                  return "\(UnicodeScalar(UInt32(0x000027F9))!)"
+                case "looparrowleft":                   return "\(UnicodeScalar(UInt32(0x000021AB))!)"
+                case "looparrowright":                  return "\(UnicodeScalar(UInt32(0x000021AC))!)"
+                case "lopar":                           return "\(UnicodeScalar(UInt32(0x00002985))!)"
+                case "Lopf":                            return "\(UnicodeScalar(UInt32(0x0001D543))!)"
+                case "lopf":                            return "\(UnicodeScalar(UInt32(0x0001D55D))!)"
+                case "loplus":                          return "\(UnicodeScalar(UInt32(0x00002A2D))!)"
+                case "lotimes":                         return "\(UnicodeScalar(UInt32(0x00002A34))!)"
+                case "lowast":                          return "\(UnicodeScalar(UInt32(0x00002217))!)"
+                case "lowbar":                          return "\(UnicodeScalar(UInt32(0x0000005F))!)"
+                case "LowerLeftArrow":                  return "\(UnicodeScalar(UInt32(0x00002199))!)"
+                case "LowerRightArrow":                 return "\(UnicodeScalar(UInt32(0x00002198))!)"
+                case "loz":                             return "\(UnicodeScalar(UInt32(0x000025CA))!)"
+                case "lozenge":                         return "\(UnicodeScalar(UInt32(0x000025CA))!)"
+                case "lozf":                            return "\(UnicodeScalar(UInt32(0x000029EB))!)"
+                case "lpar":                            return "\(UnicodeScalar(UInt32(0x00000028))!)"
+                case "lparlt":                          return "\(UnicodeScalar(UInt32(0x00002993))!)"
+                case "lrarr":                           return "\(UnicodeScalar(UInt32(0x000021C6))!)"
+                case "lrcorner":                        return "\(UnicodeScalar(UInt32(0x0000231F))!)"
+                case "lrhar":                           return "\(UnicodeScalar(UInt32(0x000021CB))!)"
+                case "lrhard":                          return "\(UnicodeScalar(UInt32(0x0000296D))!)"
+                case "lrm":                             return "\(UnicodeScalar(UInt32(0x0000200E))!)"
+                case "lrtri":                           return "\(UnicodeScalar(UInt32(0x000022BF))!)"
+                case "lsaquo":                          return "\(UnicodeScalar(UInt32(0x00002039))!)"
+                case "Lscr":                            return "\(UnicodeScalar(UInt32(0x00002112))!)"
+                case "lscr":                            return "\(UnicodeScalar(UInt32(0x0001D4C1))!)"
+                case "lsh":                             return "\(UnicodeScalar(UInt32(0x000021B0))!)"
+                case "Lsh":                             return "\(UnicodeScalar(UInt32(0x000021B0))!)"
+                case "lsim":                            return "\(UnicodeScalar(UInt32(0x00002272))!)"
+                case "lsime":                           return "\(UnicodeScalar(UInt32(0x00002A8D))!)"
+                case "lsimg":                           return "\(UnicodeScalar(UInt32(0x00002A8F))!)"
+                case "lsqb":                            return "\(UnicodeScalar(UInt32(0x0000005B))!)"
+                case "lsquo":                           return "\(UnicodeScalar(UInt32(0x00002018))!)"
+                case "lsquor":                          return "\(UnicodeScalar(UInt32(0x0000201A))!)"
+                case "Lstrok":                          return "\(UnicodeScalar(UInt32(0x00000141))!)"
+                case "lstrok":                          return "\(UnicodeScalar(UInt32(0x00000142))!)"
+                case "lt":                              return "\(UnicodeScalar(UInt32(0x0000003C))!)"
+                case "LT":                              return "\(UnicodeScalar(UInt32(0x0000003C))!)"
+                case "Lt":                              return "\(UnicodeScalar(UInt32(0x0000226A))!)"
+                case "ltcc":                            return "\(UnicodeScalar(UInt32(0x00002AA6))!)"
+                case "ltcir":                           return "\(UnicodeScalar(UInt32(0x00002A79))!)"
+                case "ltdot":                           return "\(UnicodeScalar(UInt32(0x000022D6))!)"
+                case "lthree":                          return "\(UnicodeScalar(UInt32(0x000022CB))!)"
+                case "ltimes":                          return "\(UnicodeScalar(UInt32(0x000022C9))!)"
+                case "ltlarr":                          return "\(UnicodeScalar(UInt32(0x00002976))!)"
+                case "ltquest":                         return "\(UnicodeScalar(UInt32(0x00002A7B))!)"
+                case "ltri":                            return "\(UnicodeScalar(UInt32(0x000025C3))!)"
+                case "ltrie":                           return "\(UnicodeScalar(UInt32(0x000022B4))!)"
+                case "ltrif":                           return "\(UnicodeScalar(UInt32(0x000025C2))!)"
+                case "ltrPar":                          return "\(UnicodeScalar(UInt32(0x00002996))!)"
+                case "lurdshar":                        return "\(UnicodeScalar(UInt32(0x0000294A))!)"
+                case "luruhar":                         return "\(UnicodeScalar(UInt32(0x00002966))!)"
+                case "lvertneqq":                       return "\(UnicodeScalar(UInt32(0x00002268))!)\(UnicodeScalar(UInt32(0x0000FE00))!)"
+                case "lvnE":                            return "\(UnicodeScalar(UInt32(0x00002268))!)\(UnicodeScalar(UInt32(0x0000FE00))!)"
+                case "macr":                            return "\(UnicodeScalar(UInt32(0x000000AF))!)"
+                case "male":                            return "\(UnicodeScalar(UInt32(0x00002642))!)"
+                case "malt":                            return "\(UnicodeScalar(UInt32(0x00002720))!)"
+                case "maltese":                         return "\(UnicodeScalar(UInt32(0x00002720))!)"
+                case "map":                             return "\(UnicodeScalar(UInt32(0x000021A6))!)"
+                case "Map":                             return "\(UnicodeScalar(UInt32(0x00002905))!)"
+                case "mapsto":                          return "\(UnicodeScalar(UInt32(0x000021A6))!)"
+                case "mapstodown":                      return "\(UnicodeScalar(UInt32(0x000021A7))!)"
+                case "mapstoleft":                      return "\(UnicodeScalar(UInt32(0x000021A4))!)"
+                case "mapstoup":                        return "\(UnicodeScalar(UInt32(0x000021A5))!)"
+                case "marker":                          return "\(UnicodeScalar(UInt32(0x000025AE))!)"
+                case "mcomma":                          return "\(UnicodeScalar(UInt32(0x00002A29))!)"
+                case "Mcy":                             return "\(UnicodeScalar(UInt32(0x0000041C))!)"
+                case "mcy":                             return "\(UnicodeScalar(UInt32(0x0000043C))!)"
+                case "mdash":                           return "\(UnicodeScalar(UInt32(0x00002014))!)"
+                case "mDDot":                           return "\(UnicodeScalar(UInt32(0x0000223A))!)"
+                case "measuredangle":                   return "\(UnicodeScalar(UInt32(0x00002221))!)"
+                case "MediumSpace":                     return "\(UnicodeScalar(UInt32(0x0000205F))!)"
+                case "Mellintrf":                       return "\(UnicodeScalar(UInt32(0x00002133))!)"
+                case "Mfr":                             return "\(UnicodeScalar(UInt32(0x0001D510))!)"
+                case "mfr":                             return "\(UnicodeScalar(UInt32(0x0001D52A))!)"
+                case "mho":                             return "\(UnicodeScalar(UInt32(0x00002127))!)"
+                case "micro":                           return "\(UnicodeScalar(UInt32(0x000000B5))!)"
+                case "mid":                             return "\(UnicodeScalar(UInt32(0x00002223))!)"
+                case "midast":                          return "\(UnicodeScalar(UInt32(0x0000002A))!)"
+                case "midcir":                          return "\(UnicodeScalar(UInt32(0x00002AF0))!)"
+                case "middot":                          return "\(UnicodeScalar(UInt32(0x000000B7))!)"
+                case "minus":                           return "\(UnicodeScalar(UInt32(0x00002212))!)"
+                case "minusb":                          return "\(UnicodeScalar(UInt32(0x0000229F))!)"
+                case "minusd":                          return "\(UnicodeScalar(UInt32(0x00002238))!)"
+                case "minusdu":                         return "\(UnicodeScalar(UInt32(0x00002A2A))!)"
+                case "MinusPlus":                       return "\(UnicodeScalar(UInt32(0x00002213))!)"
+                case "mlcp":                            return "\(UnicodeScalar(UInt32(0x00002ADB))!)"
+                case "mldr":                            return "\(UnicodeScalar(UInt32(0x00002026))!)"
+                case "mnplus":                          return "\(UnicodeScalar(UInt32(0x00002213))!)"
+                case "models":                          return "\(UnicodeScalar(UInt32(0x000022A7))!)"
+                case "Mopf":                            return "\(UnicodeScalar(UInt32(0x0001D544))!)"
+                case "mopf":                            return "\(UnicodeScalar(UInt32(0x0001D55E))!)"
+                case "mp":                              return "\(UnicodeScalar(UInt32(0x00002213))!)"
+                case "Mscr":                            return "\(UnicodeScalar(UInt32(0x00002133))!)"
+                case "mscr":                            return "\(UnicodeScalar(UInt32(0x0001D4C2))!)"
+                case "mstpos":                          return "\(UnicodeScalar(UInt32(0x0000223E))!)"
+                case "Mu":                              return "\(UnicodeScalar(UInt32(0x0000039C))!)"
+                case "mu":                              return "\(UnicodeScalar(UInt32(0x000003BC))!)"
+                case "multimap":                        return "\(UnicodeScalar(UInt32(0x000022B8))!)"
+                case "mumap":                           return "\(UnicodeScalar(UInt32(0x000022B8))!)"
+                case "nabla":                           return "\(UnicodeScalar(UInt32(0x00002207))!)"
+                case "Nacute":                          return "\(UnicodeScalar(UInt32(0x00000143))!)"
+                case "nacute":                          return "\(UnicodeScalar(UInt32(0x00000144))!)"
+                case "nang":                            return "\(UnicodeScalar(UInt32(0x00002220))!)\(UnicodeScalar(UInt32(0x000020D2))!)"
+                case "nap":                             return "\(UnicodeScalar(UInt32(0x00002249))!)"
+                case "napE":                            return "\(UnicodeScalar(UInt32(0x00002A70))!)\(UnicodeScalar(UInt32(0x00000338))!)"
+                case "napid":                           return "\(UnicodeScalar(UInt32(0x0000224B))!)\(UnicodeScalar(UInt32(0x00000338))!)"
+                case "napos":                           return "\(UnicodeScalar(UInt32(0x00000149))!)"
+                case "napprox":                         return "\(UnicodeScalar(UInt32(0x00002249))!)"
+                case "natur":                           return "\(UnicodeScalar(UInt32(0x0000266E))!)"
+                case "natural":                         return "\(UnicodeScalar(UInt32(0x0000266E))!)"
+                case "naturals":                        return "\(UnicodeScalar(UInt32(0x00002115))!)"
+                case "nbsp":                            return "\(UnicodeScalar(UInt32(0x000000A0))!)"
+                case "nbump":                           return "\(UnicodeScalar(UInt32(0x0000224E))!)\(UnicodeScalar(UInt32(0x00000338))!)"
+                case "nbumpe":                          return "\(UnicodeScalar(UInt32(0x0000224F))!)\(UnicodeScalar(UInt32(0x00000338))!)"
+                case "ncap":                            return "\(UnicodeScalar(UInt32(0x00002A43))!)"
+                case "Ncaron":                          return "\(UnicodeScalar(UInt32(0x00000147))!)"
+                case "ncaron":                          return "\(UnicodeScalar(UInt32(0x00000148))!)"
+                case "Ncedil":                          return "\(UnicodeScalar(UInt32(0x00000145))!)"
+                case "ncedil":                          return "\(UnicodeScalar(UInt32(0x00000146))!)"
+                case "ncong":                           return "\(UnicodeScalar(UInt32(0x00002247))!)"
+                case "ncongdot":                        return "\(UnicodeScalar(UInt32(0x00002A6D))!)\(UnicodeScalar(UInt32(0x00000338))!)"
+                case "ncup":                            return "\(UnicodeScalar(UInt32(0x00002A42))!)"
+                case "Ncy":                             return "\(UnicodeScalar(UInt32(0x0000041D))!)"
+                case "ncy":                             return "\(UnicodeScalar(UInt32(0x0000043D))!)"
+                case "ndash":                           return "\(UnicodeScalar(UInt32(0x00002013))!)"
+                case "ne":                              return "\(UnicodeScalar(UInt32(0x00002260))!)"
+                case "nearhk":                          return "\(UnicodeScalar(UInt32(0x00002924))!)"
+                case "nearr":                           return "\(UnicodeScalar(UInt32(0x00002197))!)"
+                case "neArr":                           return "\(UnicodeScalar(UInt32(0x000021D7))!)"
+                case "nearrow":                         return "\(UnicodeScalar(UInt32(0x00002197))!)"
+                case "nedot":                           return "\(UnicodeScalar(UInt32(0x00002250))!)\(UnicodeScalar(UInt32(0x00000338))!)"
+                case "NegativeMediumSpace":             return "\(UnicodeScalar(UInt32(0x0000200B))!)"
+                case "NegativeThickSpace":              return "\(UnicodeScalar(UInt32(0x0000200B))!)"
+                case "NegativeThinSpace":               return "\(UnicodeScalar(UInt32(0x0000200B))!)"
+                case "NegativeVeryThinSpace":           return "\(UnicodeScalar(UInt32(0x0000200B))!)"
+                case "nequiv":                          return "\(UnicodeScalar(UInt32(0x00002262))!)"
+                case "nesear":                          return "\(UnicodeScalar(UInt32(0x00002928))!)"
+                case "nesim":                           return "\(UnicodeScalar(UInt32(0x00002242))!)\(UnicodeScalar(UInt32(0x00000338))!)"
+                case "NestedGreaterGreater":            return "\(UnicodeScalar(UInt32(0x0000226B))!)"
+                case "NestedLessLess":                  return "\(UnicodeScalar(UInt32(0x0000226A))!)"
+                case "NewLine":                         return "\(UnicodeScalar(UInt32(0x0000000A))!)"
+                case "nexist":                          return "\(UnicodeScalar(UInt32(0x00002204))!)"
+                case "nexists":                         return "\(UnicodeScalar(UInt32(0x00002204))!)"
+                case "Nfr":                             return "\(UnicodeScalar(UInt32(0x0001D511))!)"
+                case "nfr":                             return "\(UnicodeScalar(UInt32(0x0001D52B))!)"
+                case "nge":                             return "\(UnicodeScalar(UInt32(0x00002271))!)"
+                case "ngE":                             return "\(UnicodeScalar(UInt32(0x00002267))!)\(UnicodeScalar(UInt32(0x00000338))!)"
+                case "ngeq":                            return "\(UnicodeScalar(UInt32(0x00002271))!)"
+                case "ngeqq":                           return "\(UnicodeScalar(UInt32(0x00002267))!)\(UnicodeScalar(UInt32(0x00000338))!)"
+                case "ngeqslant":                       return "\(UnicodeScalar(UInt32(0x00002A7E))!)\(UnicodeScalar(UInt32(0x00000338))!)"
+                case "nges":                            return "\(UnicodeScalar(UInt32(0x00002A7E))!)\(UnicodeScalar(UInt32(0x00000338))!)"
+                case "nGg":                             return "\(UnicodeScalar(UInt32(0x000022D9))!)\(UnicodeScalar(UInt32(0x00000338))!)"
+                case "ngsim":                           return "\(UnicodeScalar(UInt32(0x00002275))!)"
+                case "ngt":                             return "\(UnicodeScalar(UInt32(0x0000226F))!)"
+                case "nGt":                             return "\(UnicodeScalar(UInt32(0x0000226B))!)\(UnicodeScalar(UInt32(0x000020D2))!)"
+                case "ngtr":                            return "\(UnicodeScalar(UInt32(0x0000226F))!)"
+                case "nGtv":                            return "\(UnicodeScalar(UInt32(0x0000226B))!)\(UnicodeScalar(UInt32(0x00000338))!)"
+                case "nharr":                           return "\(UnicodeScalar(UInt32(0x000021AE))!)"
+                case "nhArr":                           return "\(UnicodeScalar(UInt32(0x000021CE))!)"
+                case "nhpar":                           return "\(UnicodeScalar(UInt32(0x00002AF2))!)"
+                case "ni":                              return "\(UnicodeScalar(UInt32(0x0000220B))!)"
+                case "nis":                             return "\(UnicodeScalar(UInt32(0x000022FC))!)"
+                case "nisd":                            return "\(UnicodeScalar(UInt32(0x000022FA))!)"
+                case "niv":                             return "\(UnicodeScalar(UInt32(0x0000220B))!)"
+                case "NJcy":                            return "\(UnicodeScalar(UInt32(0x0000040A))!)"
+                case "njcy":                            return "\(UnicodeScalar(UInt32(0x0000045A))!)"
+                case "nlarr":                           return "\(UnicodeScalar(UInt32(0x0000219A))!)"
+                case "nlArr":                           return "\(UnicodeScalar(UInt32(0x000021CD))!)"
+                case "nldr":                            return "\(UnicodeScalar(UInt32(0x00002025))!)"
+                case "nle":                             return "\(UnicodeScalar(UInt32(0x00002270))!)"
+                case "nlE":                             return "\(UnicodeScalar(UInt32(0x00002266))!)\(UnicodeScalar(UInt32(0x00000338))!)"
+                case "nleftarrow":                      return "\(UnicodeScalar(UInt32(0x0000219A))!)"
+                case "nLeftarrow":                      return "\(UnicodeScalar(UInt32(0x000021CD))!)"
+                case "nleftrightarrow":                 return "\(UnicodeScalar(UInt32(0x000021AE))!)"
+                case "nLeftrightarrow":                 return "\(UnicodeScalar(UInt32(0x000021CE))!)"
+                case "nleq":                            return "\(UnicodeScalar(UInt32(0x00002270))!)"
+                case "nleqq":                           return "\(UnicodeScalar(UInt32(0x00002266))!)\(UnicodeScalar(UInt32(0x00000338))!)"
+                case "nleqslant":                       return "\(UnicodeScalar(UInt32(0x00002A7D))!)\(UnicodeScalar(UInt32(0x00000338))!)"
+                case "nles":                            return "\(UnicodeScalar(UInt32(0x00002A7D))!)\(UnicodeScalar(UInt32(0x00000338))!)"
+                case "nless":                           return "\(UnicodeScalar(UInt32(0x0000226E))!)"
+                case "nLl":                             return "\(UnicodeScalar(UInt32(0x000022D8))!)\(UnicodeScalar(UInt32(0x00000338))!)"
+                case "nlsim":                           return "\(UnicodeScalar(UInt32(0x00002274))!)"
+                case "nlt":                             return "\(UnicodeScalar(UInt32(0x0000226E))!)"
+                case "nLt":                             return "\(UnicodeScalar(UInt32(0x0000226A))!)\(UnicodeScalar(UInt32(0x000020D2))!)"
+                case "nltri":                           return "\(UnicodeScalar(UInt32(0x000022EA))!)"
+                case "nltrie":                          return "\(UnicodeScalar(UInt32(0x000022EC))!)"
+                case "nLtv":                            return "\(UnicodeScalar(UInt32(0x0000226A))!)\(UnicodeScalar(UInt32(0x00000338))!)"
+                case "nmid":                            return "\(UnicodeScalar(UInt32(0x00002224))!)"
+                case "NoBreak":                         return "\(UnicodeScalar(UInt32(0x00002060))!)"
+                case "NonBreakingSpace":                return "\(UnicodeScalar(UInt32(0x000000A0))!)"
+                case "Nopf":                            return "\(UnicodeScalar(UInt32(0x00002115))!)"
+                case "nopf":                            return "\(UnicodeScalar(UInt32(0x0001D55F))!)"
+                case "not":                             return "\(UnicodeScalar(UInt32(0x000000AC))!)"
+                case "Not":                             return "\(UnicodeScalar(UInt32(0x00002AEC))!)"
+                case "NotCongruent":                    return "\(UnicodeScalar(UInt32(0x00002262))!)"
+                case "NotCupCap":                       return "\(UnicodeScalar(UInt32(0x0000226D))!)"
+                case "NotDoubleVerticalBar":            return "\(UnicodeScalar(UInt32(0x00002226))!)"
+                case "NotElement":                      return "\(UnicodeScalar(UInt32(0x00002209))!)"
+                case "NotEqual":                        return "\(UnicodeScalar(UInt32(0x00002260))!)"
+                case "NotEqualTilde":                   return "\(UnicodeScalar(UInt32(0x00002242))!)\(UnicodeScalar(UInt32(0x00000338))!)"
+                case "NotExists":                       return "\(UnicodeScalar(UInt32(0x00002204))!)"
+                case "NotGreater":                      return "\(UnicodeScalar(UInt32(0x0000226F))!)"
+                case "NotGreaterEqual":                 return "\(UnicodeScalar(UInt32(0x00002271))!)"
+                case "NotGreaterFullEqual":             return "\(UnicodeScalar(UInt32(0x00002267))!)\(UnicodeScalar(UInt32(0x00000338))!)"
+                case "NotGreaterGreater":               return "\(UnicodeScalar(UInt32(0x0000226B))!)\(UnicodeScalar(UInt32(0x00000338))!)"
+                case "NotGreaterLess":                  return "\(UnicodeScalar(UInt32(0x00002279))!)"
+                case "NotGreaterSlantEqual":            return "\(UnicodeScalar(UInt32(0x00002A7E))!)\(UnicodeScalar(UInt32(0x00000338))!)"
+                case "NotGreaterTilde":                 return "\(UnicodeScalar(UInt32(0x00002275))!)"
+                case "NotHumpDownHump":                 return "\(UnicodeScalar(UInt32(0x0000224E))!)\(UnicodeScalar(UInt32(0x00000338))!)"
+                case "NotHumpEqual":                    return "\(UnicodeScalar(UInt32(0x0000224F))!)\(UnicodeScalar(UInt32(0x00000338))!)"
+                case "notin":                           return "\(UnicodeScalar(UInt32(0x00002209))!)"
+                case "notindot":                        return "\(UnicodeScalar(UInt32(0x000022F5))!)\(UnicodeScalar(UInt32(0x00000338))!)"
+                case "notinE":                          return "\(UnicodeScalar(UInt32(0x000022F9))!)\(UnicodeScalar(UInt32(0x00000338))!)"
+                case "notinva":                         return "\(UnicodeScalar(UInt32(0x00002209))!)"
+                case "notinvb":                         return "\(UnicodeScalar(UInt32(0x000022F7))!)"
+                case "notinvc":                         return "\(UnicodeScalar(UInt32(0x000022F6))!)"
+                case "NotLeftTriangle":                 return "\(UnicodeScalar(UInt32(0x000022EA))!)"
+                case "NotLeftTriangleBar":              return "\(UnicodeScalar(UInt32(0x000029CF))!)\(UnicodeScalar(UInt32(0x00000338))!)"
+                case "NotLeftTriangleEqual":            return "\(UnicodeScalar(UInt32(0x000022EC))!)"
+                case "NotLess":                         return "\(UnicodeScalar(UInt32(0x0000226E))!)"
+                case "NotLessEqual":                    return "\(UnicodeScalar(UInt32(0x00002270))!)"
+                case "NotLessGreater":                  return "\(UnicodeScalar(UInt32(0x00002278))!)"
+                case "NotLessLess":                     return "\(UnicodeScalar(UInt32(0x0000226A))!)\(UnicodeScalar(UInt32(0x00000338))!)"
+                case "NotLessSlantEqual":               return "\(UnicodeScalar(UInt32(0x00002A7D))!)\(UnicodeScalar(UInt32(0x00000338))!)"
+                case "NotLessTilde":                    return "\(UnicodeScalar(UInt32(0x00002274))!)"
+                case "NotNestedGreaterGreater":         return "\(UnicodeScalar(UInt32(0x00002AA2))!)\(UnicodeScalar(UInt32(0x00000338))!)"
+                case "NotNestedLessLess":               return "\(UnicodeScalar(UInt32(0x00002AA1))!)\(UnicodeScalar(UInt32(0x00000338))!)"
+                case "notni":                           return "\(UnicodeScalar(UInt32(0x0000220C))!)"
+                case "notniva":                         return "\(UnicodeScalar(UInt32(0x0000220C))!)"
+                case "notnivb":                         return "\(UnicodeScalar(UInt32(0x000022FE))!)"
+                case "notnivc":                         return "\(UnicodeScalar(UInt32(0x000022FD))!)"
+                case "NotPrecedes":                     return "\(UnicodeScalar(UInt32(0x00002280))!)"
+                case "NotPrecedesEqual":                return "\(UnicodeScalar(UInt32(0x00002AAF))!)\(UnicodeScalar(UInt32(0x00000338))!)"
+                case "NotPrecedesSlantEqual":           return "\(UnicodeScalar(UInt32(0x000022E0))!)"
+                case "NotReverseElement":               return "\(UnicodeScalar(UInt32(0x0000220C))!)"
+                case "NotRightTriangle":                return "\(UnicodeScalar(UInt32(0x000022EB))!)"
+                case "NotRightTriangleBar":             return "\(UnicodeScalar(UInt32(0x000029D0))!)\(UnicodeScalar(UInt32(0x00000338))!)"
+                case "NotRightTriangleEqual":           return "\(UnicodeScalar(UInt32(0x000022ED))!)"
+                case "NotSquareSubset":                 return "\(UnicodeScalar(UInt32(0x0000228F))!)\(UnicodeScalar(UInt32(0x00000338))!)"
+                case "NotSquareSubsetEqual":            return "\(UnicodeScalar(UInt32(0x000022E2))!)"
+                case "NotSquareSuperset":               return "\(UnicodeScalar(UInt32(0x00002290))!)\(UnicodeScalar(UInt32(0x00000338))!)"
+                case "NotSquareSupersetEqual":          return "\(UnicodeScalar(UInt32(0x000022E3))!)"
+                case "NotSubset":                       return "\(UnicodeScalar(UInt32(0x00002282))!)\(UnicodeScalar(UInt32(0x000020D2))!)"
+                case "NotSubsetEqual":                  return "\(UnicodeScalar(UInt32(0x00002288))!)"
+                case "NotSucceeds":                     return "\(UnicodeScalar(UInt32(0x00002281))!)"
+                case "NotSucceedsEqual":                return "\(UnicodeScalar(UInt32(0x00002AB0))!)\(UnicodeScalar(UInt32(0x00000338))!)"
+                case "NotSucceedsSlantEqual":           return "\(UnicodeScalar(UInt32(0x000022E1))!)"
+                case "NotSucceedsTilde":                return "\(UnicodeScalar(UInt32(0x0000227F))!)\(UnicodeScalar(UInt32(0x00000338))!)"
+                case "NotSuperset":                     return "\(UnicodeScalar(UInt32(0x00002283))!)\(UnicodeScalar(UInt32(0x000020D2))!)"
+                case "NotSupersetEqual":                return "\(UnicodeScalar(UInt32(0x00002289))!)"
+                case "NotTilde":                        return "\(UnicodeScalar(UInt32(0x00002241))!)"
+                case "NotTildeEqual":                   return "\(UnicodeScalar(UInt32(0x00002244))!)"
+                case "NotTildeFullEqual":               return "\(UnicodeScalar(UInt32(0x00002247))!)"
+                case "NotTildeTilde":                   return "\(UnicodeScalar(UInt32(0x00002249))!)"
+                case "NotVerticalBar":                  return "\(UnicodeScalar(UInt32(0x00002224))!)"
+                case "npar":                            return "\(UnicodeScalar(UInt32(0x00002226))!)"
+                case "nparallel":                       return "\(UnicodeScalar(UInt32(0x00002226))!)"
+                case "nparsl":                          return "\(UnicodeScalar(UInt32(0x00002AFD))!)\(UnicodeScalar(UInt32(0x000020E5))!)"
+                case "npart":                           return "\(UnicodeScalar(UInt32(0x00002202))!)\(UnicodeScalar(UInt32(0x00000338))!)"
+                case "npolint":                         return "\(UnicodeScalar(UInt32(0x00002A14))!)"
+                case "npr":                             return "\(UnicodeScalar(UInt32(0x00002280))!)"
+                case "nprcue":                          return "\(UnicodeScalar(UInt32(0x000022E0))!)"
+                case "npre":                            return "\(UnicodeScalar(UInt32(0x00002AAF))!)\(UnicodeScalar(UInt32(0x00000338))!)"
+                case "nprec":                           return "\(UnicodeScalar(UInt32(0x00002280))!)"
+                case "npreceq":                         return "\(UnicodeScalar(UInt32(0x00002AAF))!)\(UnicodeScalar(UInt32(0x00000338))!)"
+                case "nrarr":                           return "\(UnicodeScalar(UInt32(0x0000219B))!)"
+                case "nrArr":                           return "\(UnicodeScalar(UInt32(0x000021CF))!)"
+                case "nrarrc":                          return "\(UnicodeScalar(UInt32(0x00002933))!)\(UnicodeScalar(UInt32(0x00000338))!)"
+                case "nrarrw":                          return "\(UnicodeScalar(UInt32(0x0000219D))!)\(UnicodeScalar(UInt32(0x00000338))!)"
+                case "nrightarrow":                     return "\(UnicodeScalar(UInt32(0x0000219B))!)"
+                case "nRightarrow":                     return "\(UnicodeScalar(UInt32(0x000021CF))!)"
+                case "nrtri":                           return "\(UnicodeScalar(UInt32(0x000022EB))!)"
+                case "nrtrie":                          return "\(UnicodeScalar(UInt32(0x000022ED))!)"
+                case "nsc":                             return "\(UnicodeScalar(UInt32(0x00002281))!)"
+                case "nsccue":                          return "\(UnicodeScalar(UInt32(0x000022E1))!)"
+                case "nsce":                            return "\(UnicodeScalar(UInt32(0x00002AB0))!)\(UnicodeScalar(UInt32(0x00000338))!)"
+                case "Nscr":                            return "\(UnicodeScalar(UInt32(0x0001D4A9))!)"
+                case "nscr":                            return "\(UnicodeScalar(UInt32(0x0001D4C3))!)"
+                case "nshortmid":                       return "\(UnicodeScalar(UInt32(0x00002224))!)"
+                case "nshortparallel":                  return "\(UnicodeScalar(UInt32(0x00002226))!)"
+                case "nsim":                            return "\(UnicodeScalar(UInt32(0x00002241))!)"
+                case "nsime":                           return "\(UnicodeScalar(UInt32(0x00002244))!)"
+                case "nsimeq":                          return "\(UnicodeScalar(UInt32(0x00002244))!)"
+                case "nsmid":                           return "\(UnicodeScalar(UInt32(0x00002224))!)"
+                case "nspar":                           return "\(UnicodeScalar(UInt32(0x00002226))!)"
+                case "nsqsube":                         return "\(UnicodeScalar(UInt32(0x000022E2))!)"
+                case "nsqsupe":                         return "\(UnicodeScalar(UInt32(0x000022E3))!)"
+                case "nsub":                            return "\(UnicodeScalar(UInt32(0x00002284))!)"
+                case "nsube":                           return "\(UnicodeScalar(UInt32(0x00002288))!)"
+                case "nsubE":                           return "\(UnicodeScalar(UInt32(0x00002AC5))!)\(UnicodeScalar(UInt32(0x00000338))!)"
+                case "nsubset":                         return "\(UnicodeScalar(UInt32(0x00002282))!)\(UnicodeScalar(UInt32(0x000020D2))!)"
+                case "nsubseteq":                       return "\(UnicodeScalar(UInt32(0x00002288))!)"
+                case "nsubseteqq":                      return "\(UnicodeScalar(UInt32(0x00002AC5))!)\(UnicodeScalar(UInt32(0x00000338))!)"
+                case "nsucc":                           return "\(UnicodeScalar(UInt32(0x00002281))!)"
+                case "nsucceq":                         return "\(UnicodeScalar(UInt32(0x00002AB0))!)\(UnicodeScalar(UInt32(0x00000338))!)"
+                case "nsup":                            return "\(UnicodeScalar(UInt32(0x00002285))!)"
+                case "nsupe":                           return "\(UnicodeScalar(UInt32(0x00002289))!)"
+                case "nsupE":                           return "\(UnicodeScalar(UInt32(0x00002AC6))!)\(UnicodeScalar(UInt32(0x00000338))!)"
+                case "nsupset":                         return "\(UnicodeScalar(UInt32(0x00002283))!)\(UnicodeScalar(UInt32(0x000020D2))!)"
+                case "nsupseteq":                       return "\(UnicodeScalar(UInt32(0x00002289))!)"
+                case "nsupseteqq":                      return "\(UnicodeScalar(UInt32(0x00002AC6))!)\(UnicodeScalar(UInt32(0x00000338))!)"
+                case "ntgl":                            return "\(UnicodeScalar(UInt32(0x00002279))!)"
+                case "Ntilde":                          return "\(UnicodeScalar(UInt32(0x000000D1))!)"
+                case "ntilde":                          return "\(UnicodeScalar(UInt32(0x000000F1))!)"
+                case "ntlg":                            return "\(UnicodeScalar(UInt32(0x00002278))!)"
+                case "ntriangleleft":                   return "\(UnicodeScalar(UInt32(0x000022EA))!)"
+                case "ntrianglelefteq":                 return "\(UnicodeScalar(UInt32(0x000022EC))!)"
+                case "ntriangleright":                  return "\(UnicodeScalar(UInt32(0x000022EB))!)"
+                case "ntrianglerighteq":                return "\(UnicodeScalar(UInt32(0x000022ED))!)"
+                case "Nu":                              return "\(UnicodeScalar(UInt32(0x0000039D))!)"
+                case "nu":                              return "\(UnicodeScalar(UInt32(0x000003BD))!)"
+                case "num":                             return "\(UnicodeScalar(UInt32(0x00000023))!)"
+                case "numero":                          return "\(UnicodeScalar(UInt32(0x00002116))!)"
+                case "numsp":                           return "\(UnicodeScalar(UInt32(0x00002007))!)"
+                case "nvap":                            return "\(UnicodeScalar(UInt32(0x0000224D))!)\(UnicodeScalar(UInt32(0x000020D2))!)"
+                case "nvdash":                          return "\(UnicodeScalar(UInt32(0x000022AC))!)"
+                case "nvDash":                          return "\(UnicodeScalar(UInt32(0x000022AD))!)"
+                case "nVdash":                          return "\(UnicodeScalar(UInt32(0x000022AE))!)"
+                case "nVDash":                          return "\(UnicodeScalar(UInt32(0x000022AF))!)"
+                case "nvge":                            return "\(UnicodeScalar(UInt32(0x00002265))!)\(UnicodeScalar(UInt32(0x000020D2))!)"
+                case "nvgt":                            return "\(UnicodeScalar(UInt32(0x0000003E))!)\(UnicodeScalar(UInt32(0x000020D2))!)"
+                case "nvHarr":                          return "\(UnicodeScalar(UInt32(0x00002904))!)"
+                case "nvinfin":                         return "\(UnicodeScalar(UInt32(0x000029DE))!)"
+                case "nvlArr":                          return "\(UnicodeScalar(UInt32(0x00002902))!)"
+                case "nvle":                            return "\(UnicodeScalar(UInt32(0x00002264))!)\(UnicodeScalar(UInt32(0x000020D2))!)"
+                case "nvlt":                            return "\(UnicodeScalar(UInt32(0x0000003C))!)\(UnicodeScalar(UInt32(0x000020D2))!)"
+                case "nvltrie":                         return "\(UnicodeScalar(UInt32(0x000022B4))!)\(UnicodeScalar(UInt32(0x000020D2))!)"
+                case "nvrArr":                          return "\(UnicodeScalar(UInt32(0x00002903))!)"
+                case "nvrtrie":                         return "\(UnicodeScalar(UInt32(0x000022B5))!)\(UnicodeScalar(UInt32(0x000020D2))!)"
+                case "nvsim":                           return "\(UnicodeScalar(UInt32(0x0000223C))!)\(UnicodeScalar(UInt32(0x000020D2))!)"
+                case "nwarhk":                          return "\(UnicodeScalar(UInt32(0x00002923))!)"
+                case "nwarr":                           return "\(UnicodeScalar(UInt32(0x00002196))!)"
+                case "nwArr":                           return "\(UnicodeScalar(UInt32(0x000021D6))!)"
+                case "nwarrow":                         return "\(UnicodeScalar(UInt32(0x00002196))!)"
+                case "nwnear":                          return "\(UnicodeScalar(UInt32(0x00002927))!)"
+                case "Oacute":                          return "\(UnicodeScalar(UInt32(0x000000D3))!)"
+                case "oacute":                          return "\(UnicodeScalar(UInt32(0x000000F3))!)"
+                case "oast":                            return "\(UnicodeScalar(UInt32(0x0000229B))!)"
+                case "ocir":                            return "\(UnicodeScalar(UInt32(0x0000229A))!)"
+                case "Ocirc":                           return "\(UnicodeScalar(UInt32(0x000000D4))!)"
+                case "ocirc":                           return "\(UnicodeScalar(UInt32(0x000000F4))!)"
+                case "Ocy":                             return "\(UnicodeScalar(UInt32(0x0000041E))!)"
+                case "ocy":                             return "\(UnicodeScalar(UInt32(0x0000043E))!)"
+                case "odash":                           return "\(UnicodeScalar(UInt32(0x0000229D))!)"
+                case "Odblac":                          return "\(UnicodeScalar(UInt32(0x00000150))!)"
+                case "odblac":                          return "\(UnicodeScalar(UInt32(0x00000151))!)"
+                case "odiv":                            return "\(UnicodeScalar(UInt32(0x00002A38))!)"
+                case "odot":                            return "\(UnicodeScalar(UInt32(0x00002299))!)"
+                case "odsold":                          return "\(UnicodeScalar(UInt32(0x000029BC))!)"
+                case "OElig":                           return "\(UnicodeScalar(UInt32(0x00000152))!)"
+                case "oelig":                           return "\(UnicodeScalar(UInt32(0x00000153))!)"
+                case "ofcir":                           return "\(UnicodeScalar(UInt32(0x000029BF))!)"
+                case "Ofr":                             return "\(UnicodeScalar(UInt32(0x0001D512))!)"
+                case "ofr":                             return "\(UnicodeScalar(UInt32(0x0001D52C))!)"
+                case "ogon":                            return "\(UnicodeScalar(UInt32(0x000002DB))!)"
+                case "Ograve":                          return "\(UnicodeScalar(UInt32(0x000000D2))!)"
+                case "ograve":                          return "\(UnicodeScalar(UInt32(0x000000F2))!)"
+                case "ogt":                             return "\(UnicodeScalar(UInt32(0x000029C1))!)"
+                case "ohbar":                           return "\(UnicodeScalar(UInt32(0x000029B5))!)"
+                case "ohm":                             return "\(UnicodeScalar(UInt32(0x000003A9))!)"
+                case "oint":                            return "\(UnicodeScalar(UInt32(0x0000222E))!)"
+                case "olarr":                           return "\(UnicodeScalar(UInt32(0x000021BA))!)"
+                case "olcir":                           return "\(UnicodeScalar(UInt32(0x000029BE))!)"
+                case "olcross":                         return "\(UnicodeScalar(UInt32(0x000029BB))!)"
+                case "oline":                           return "\(UnicodeScalar(UInt32(0x0000203E))!)"
+                case "olt":                             return "\(UnicodeScalar(UInt32(0x000029C0))!)"
+                case "Omacr":                           return "\(UnicodeScalar(UInt32(0x0000014C))!)"
+                case "omacr":                           return "\(UnicodeScalar(UInt32(0x0000014D))!)"
+                case "Omega":                           return "\(UnicodeScalar(UInt32(0x000003A9))!)"
+                case "omega":                           return "\(UnicodeScalar(UInt32(0x000003C9))!)"
+                case "Omicron":                         return "\(UnicodeScalar(UInt32(0x0000039F))!)"
+                case "omicron":                         return "\(UnicodeScalar(UInt32(0x000003BF))!)"
+                case "omid":                            return "\(UnicodeScalar(UInt32(0x000029B6))!)"
+                case "ominus":                          return "\(UnicodeScalar(UInt32(0x00002296))!)"
+                case "Oopf":                            return "\(UnicodeScalar(UInt32(0x0001D546))!)"
+                case "oopf":                            return "\(UnicodeScalar(UInt32(0x0001D560))!)"
+                case "opar":                            return "\(UnicodeScalar(UInt32(0x000029B7))!)"
+                case "OpenCurlyDoubleQuote":            return "\(UnicodeScalar(UInt32(0x0000201C))!)"
+                case "OpenCurlyQuote":                  return "\(UnicodeScalar(UInt32(0x00002018))!)"
+                case "operp":                           return "\(UnicodeScalar(UInt32(0x000029B9))!)"
+                case "oplus":                           return "\(UnicodeScalar(UInt32(0x00002295))!)"
+                case "or":                              return "\(UnicodeScalar(UInt32(0x00002228))!)"
+                case "Or":                              return "\(UnicodeScalar(UInt32(0x00002A54))!)"
+                case "orarr":                           return "\(UnicodeScalar(UInt32(0x000021BB))!)"
+                case "ord":                             return "\(UnicodeScalar(UInt32(0x00002A5D))!)"
+                case "order":                           return "\(UnicodeScalar(UInt32(0x00002134))!)"
+                case "orderof":                         return "\(UnicodeScalar(UInt32(0x00002134))!)"
+                case "ordf":                            return "\(UnicodeScalar(UInt32(0x000000AA))!)"
+                case "ordm":                            return "\(UnicodeScalar(UInt32(0x000000BA))!)"
+                case "origof":                          return "\(UnicodeScalar(UInt32(0x000022B6))!)"
+                case "oror":                            return "\(UnicodeScalar(UInt32(0x00002A56))!)"
+                case "orslope":                         return "\(UnicodeScalar(UInt32(0x00002A57))!)"
+                case "orv":                             return "\(UnicodeScalar(UInt32(0x00002A5B))!)"
+                case "oS":                              return "\(UnicodeScalar(UInt32(0x000024C8))!)"
+                case "oscr":                            return "\(UnicodeScalar(UInt32(0x00002134))!)"
+                case "Oscr":                            return "\(UnicodeScalar(UInt32(0x0001D4AA))!)"
+                case "Oslash":                          return "\(UnicodeScalar(UInt32(0x000000D8))!)"
+                case "oslash":                          return "\(UnicodeScalar(UInt32(0x000000F8))!)"
+                case "osol":                            return "\(UnicodeScalar(UInt32(0x00002298))!)"
+                case "Otilde":                          return "\(UnicodeScalar(UInt32(0x000000D5))!)"
+                case "otilde":                          return "\(UnicodeScalar(UInt32(0x000000F5))!)"
+                case "otimes":                          return "\(UnicodeScalar(UInt32(0x00002297))!)"
+                case "Otimes":                          return "\(UnicodeScalar(UInt32(0x00002A37))!)"
+                case "otimesas":                        return "\(UnicodeScalar(UInt32(0x00002A36))!)"
+                case "Ouml":                            return "\(UnicodeScalar(UInt32(0x000000D6))!)"
+                case "ouml":                            return "\(UnicodeScalar(UInt32(0x000000F6))!)"
+                case "ovbar":                           return "\(UnicodeScalar(UInt32(0x0000233D))!)"
+                case "OverBar":                         return "\(UnicodeScalar(UInt32(0x0000203E))!)"
+                case "OverBrace":                       return "\(UnicodeScalar(UInt32(0x000023DE))!)"
+                case "OverBracket":                     return "\(UnicodeScalar(UInt32(0x000023B4))!)"
+                case "OverParenthesis":                 return "\(UnicodeScalar(UInt32(0x000023DC))!)"
+                case "par":                             return "\(UnicodeScalar(UInt32(0x00002225))!)"
+                case "para":                            return "\(UnicodeScalar(UInt32(0x000000B6))!)"
+                case "parallel":                        return "\(UnicodeScalar(UInt32(0x00002225))!)"
+                case "parsim":                          return "\(UnicodeScalar(UInt32(0x00002AF3))!)"
+                case "parsl":                           return "\(UnicodeScalar(UInt32(0x00002AFD))!)"
+                case "part":                            return "\(UnicodeScalar(UInt32(0x00002202))!)"
+                case "PartialD":                        return "\(UnicodeScalar(UInt32(0x00002202))!)"
+                case "Pcy":                             return "\(UnicodeScalar(UInt32(0x0000041F))!)"
+                case "pcy":                             return "\(UnicodeScalar(UInt32(0x0000043F))!)"
+                case "percnt":                          return "\(UnicodeScalar(UInt32(0x00000025))!)"
+                case "period":                          return "\(UnicodeScalar(UInt32(0x0000002E))!)"
+                case "permil":                          return "\(UnicodeScalar(UInt32(0x00002030))!)"
+                case "perp":                            return "\(UnicodeScalar(UInt32(0x000022A5))!)"
+                case "pertenk":                         return "\(UnicodeScalar(UInt32(0x00002031))!)"
+                case "Pfr":                             return "\(UnicodeScalar(UInt32(0x0001D513))!)"
+                case "pfr":                             return "\(UnicodeScalar(UInt32(0x0001D52D))!)"
+                case "Phi":                             return "\(UnicodeScalar(UInt32(0x000003A6))!)"
+                case "phi":                             return "\(UnicodeScalar(UInt32(0x000003C6))!)"
+                case "phiv":                            return "\(UnicodeScalar(UInt32(0x000003D5))!)"
+                case "phmmat":                          return "\(UnicodeScalar(UInt32(0x00002133))!)"
+                case "phone":                           return "\(UnicodeScalar(UInt32(0x0000260E))!)"
+                case "Pi":                              return "\(UnicodeScalar(UInt32(0x000003A0))!)"
+                case "pi":                              return "\(UnicodeScalar(UInt32(0x000003C0))!)"
+                case "pitchfork":                       return "\(UnicodeScalar(UInt32(0x000022D4))!)"
+                case "piv":                             return "\(UnicodeScalar(UInt32(0x000003D6))!)"
+                case "planck":                          return "\(UnicodeScalar(UInt32(0x0000210F))!)"
+                case "planckh":                         return "\(UnicodeScalar(UInt32(0x0000210E))!)"
+                case "plankv":                          return "\(UnicodeScalar(UInt32(0x0000210F))!)"
+                case "plus":                            return "\(UnicodeScalar(UInt32(0x0000002B))!)"
+                case "plusacir":                        return "\(UnicodeScalar(UInt32(0x00002A23))!)"
+                case "plusb":                           return "\(UnicodeScalar(UInt32(0x0000229E))!)"
+                case "pluscir":                         return "\(UnicodeScalar(UInt32(0x00002A22))!)"
+                case "plusdo":                          return "\(UnicodeScalar(UInt32(0x00002214))!)"
+                case "plusdu":                          return "\(UnicodeScalar(UInt32(0x00002A25))!)"
+                case "pluse":                           return "\(UnicodeScalar(UInt32(0x00002A72))!)"
+                case "PlusMinus":                       return "\(UnicodeScalar(UInt32(0x000000B1))!)"
+                case "plusmn":                          return "\(UnicodeScalar(UInt32(0x000000B1))!)"
+                case "plussim":                         return "\(UnicodeScalar(UInt32(0x00002A26))!)"
+                case "plustwo":                         return "\(UnicodeScalar(UInt32(0x00002A27))!)"
+                case "pm":                              return "\(UnicodeScalar(UInt32(0x000000B1))!)"
+                case "Poincareplane":                   return "\(UnicodeScalar(UInt32(0x0000210C))!)"
+                case "pointint":                        return "\(UnicodeScalar(UInt32(0x00002A15))!)"
+                case "Popf":                            return "\(UnicodeScalar(UInt32(0x00002119))!)"
+                case "popf":                            return "\(UnicodeScalar(UInt32(0x0001D561))!)"
+                case "pound":                           return "\(UnicodeScalar(UInt32(0x000000A3))!)"
+                case "pr":                              return "\(UnicodeScalar(UInt32(0x0000227A))!)"
+                case "Pr":                              return "\(UnicodeScalar(UInt32(0x00002ABB))!)"
+                case "prap":                            return "\(UnicodeScalar(UInt32(0x00002AB7))!)"
+                case "prcue":                           return "\(UnicodeScalar(UInt32(0x0000227C))!)"
+                case "pre":                             return "\(UnicodeScalar(UInt32(0x00002AAF))!)"
+                case "prE":                             return "\(UnicodeScalar(UInt32(0x00002AB3))!)"
+                case "prec":                            return "\(UnicodeScalar(UInt32(0x0000227A))!)"
+                case "precapprox":                      return "\(UnicodeScalar(UInt32(0x00002AB7))!)"
+                case "preccurlyeq":                     return "\(UnicodeScalar(UInt32(0x0000227C))!)"
+                case "Precedes":                        return "\(UnicodeScalar(UInt32(0x0000227A))!)"
+                case "PrecedesEqual":                   return "\(UnicodeScalar(UInt32(0x00002AAF))!)"
+                case "PrecedesSlantEqual":              return "\(UnicodeScalar(UInt32(0x0000227C))!)"
+                case "PrecedesTilde":                   return "\(UnicodeScalar(UInt32(0x0000227E))!)"
+                case "preceq":                          return "\(UnicodeScalar(UInt32(0x00002AAF))!)"
+                case "precnapprox":                     return "\(UnicodeScalar(UInt32(0x00002AB9))!)"
+                case "precneqq":                        return "\(UnicodeScalar(UInt32(0x00002AB5))!)"
+                case "precnsim":                        return "\(UnicodeScalar(UInt32(0x000022E8))!)"
+                case "precsim":                         return "\(UnicodeScalar(UInt32(0x0000227E))!)"
+                case "prime":                           return "\(UnicodeScalar(UInt32(0x00002032))!)"
+                case "Prime":                           return "\(UnicodeScalar(UInt32(0x00002033))!)"
+                case "primes":                          return "\(UnicodeScalar(UInt32(0x00002119))!)"
+                case "prnap":                           return "\(UnicodeScalar(UInt32(0x00002AB9))!)"
+                case "prnE":                            return "\(UnicodeScalar(UInt32(0x00002AB5))!)"
+                case "prnsim":                          return "\(UnicodeScalar(UInt32(0x000022E8))!)"
+                case "prod":                            return "\(UnicodeScalar(UInt32(0x0000220F))!)"
+                case "Product":                         return "\(UnicodeScalar(UInt32(0x0000220F))!)"
+                case "profalar":                        return "\(UnicodeScalar(UInt32(0x0000232E))!)"
+                case "profline":                        return "\(UnicodeScalar(UInt32(0x00002312))!)"
+                case "profsurf":                        return "\(UnicodeScalar(UInt32(0x00002313))!)"
+                case "prop":                            return "\(UnicodeScalar(UInt32(0x0000221D))!)"
+                case "Proportion":                      return "\(UnicodeScalar(UInt32(0x00002237))!)"
+                case "Proportional":                    return "\(UnicodeScalar(UInt32(0x0000221D))!)"
+                case "propto":                          return "\(UnicodeScalar(UInt32(0x0000221D))!)"
+                case "prsim":                           return "\(UnicodeScalar(UInt32(0x0000227E))!)"
+                case "prurel":                          return "\(UnicodeScalar(UInt32(0x000022B0))!)"
+                case "Pscr":                            return "\(UnicodeScalar(UInt32(0x0001D4AB))!)"
+                case "pscr":                            return "\(UnicodeScalar(UInt32(0x0001D4C5))!)"
+                case "Psi":                             return "\(UnicodeScalar(UInt32(0x000003A8))!)"
+                case "psi":                             return "\(UnicodeScalar(UInt32(0x000003C8))!)"
+                case "puncsp":                          return "\(UnicodeScalar(UInt32(0x00002008))!)"
+                case "Qfr":                             return "\(UnicodeScalar(UInt32(0x0001D514))!)"
+                case "qfr":                             return "\(UnicodeScalar(UInt32(0x0001D52E))!)"
+                case "qint":                            return "\(UnicodeScalar(UInt32(0x00002A0C))!)"
+                case "Qopf":                            return "\(UnicodeScalar(UInt32(0x0000211A))!)"
+                case "qopf":                            return "\(UnicodeScalar(UInt32(0x0001D562))!)"
+                case "qprime":                          return "\(UnicodeScalar(UInt32(0x00002057))!)"
+                case "Qscr":                            return "\(UnicodeScalar(UInt32(0x0001D4AC))!)"
+                case "qscr":                            return "\(UnicodeScalar(UInt32(0x0001D4C6))!)"
+                case "quaternions":                     return "\(UnicodeScalar(UInt32(0x0000210D))!)"
+                case "quatint":                         return "\(UnicodeScalar(UInt32(0x00002A16))!)"
+                case "quest":                           return "\(UnicodeScalar(UInt32(0x0000003F))!)"
+                case "questeq":                         return "\(UnicodeScalar(UInt32(0x0000225F))!)"
+                case "quot":                            return "\(UnicodeScalar(UInt32(0x00000022))!)"
+                case "QUOT":                            return "\(UnicodeScalar(UInt32(0x00000022))!)"
+                case "rAarr":                           return "\(UnicodeScalar(UInt32(0x000021DB))!)"
+                case "race":                            return "\(UnicodeScalar(UInt32(0x0000223D))!)\(UnicodeScalar(UInt32(0x00000331))!)"
+                case "Racute":                          return "\(UnicodeScalar(UInt32(0x00000154))!)"
+                case "racute":                          return "\(UnicodeScalar(UInt32(0x00000155))!)"
+                case "radic":                           return "\(UnicodeScalar(UInt32(0x0000221A))!)"
+                case "raemptyv":                        return "\(UnicodeScalar(UInt32(0x000029B3))!)"
+                case "rang":                            return "\(UnicodeScalar(UInt32(0x000027E9))!)"
+                case "Rang":                            return "\(UnicodeScalar(UInt32(0x000027EB))!)"
+                case "rangd":                           return "\(UnicodeScalar(UInt32(0x00002992))!)"
+                case "range":                           return "\(UnicodeScalar(UInt32(0x000029A5))!)"
+                case "rangle":                          return "\(UnicodeScalar(UInt32(0x000027E9))!)"
+                case "raquo":                           return "\(UnicodeScalar(UInt32(0x000000BB))!)"
+                case "rarr":                            return "\(UnicodeScalar(UInt32(0x00002192))!)"
+                case "Rarr":                            return "\(UnicodeScalar(UInt32(0x000021A0))!)"
+                case "rArr":                            return "\(UnicodeScalar(UInt32(0x000021D2))!)"
+                case "rarrap":                          return "\(UnicodeScalar(UInt32(0x00002975))!)"
+                case "rarrb":                           return "\(UnicodeScalar(UInt32(0x000021E5))!)"
+                case "rarrbfs":                         return "\(UnicodeScalar(UInt32(0x00002920))!)"
+                case "rarrc":                           return "\(UnicodeScalar(UInt32(0x00002933))!)"
+                case "rarrfs":                          return "\(UnicodeScalar(UInt32(0x0000291E))!)"
+                case "rarrhk":                          return "\(UnicodeScalar(UInt32(0x000021AA))!)"
+                case "rarrlp":                          return "\(UnicodeScalar(UInt32(0x000021AC))!)"
+                case "rarrpl":                          return "\(UnicodeScalar(UInt32(0x00002945))!)"
+                case "rarrsim":                         return "\(UnicodeScalar(UInt32(0x00002974))!)"
+                case "rarrtl":                          return "\(UnicodeScalar(UInt32(0x000021A3))!)"
+                case "Rarrtl":                          return "\(UnicodeScalar(UInt32(0x00002916))!)"
+                case "rarrw":                           return "\(UnicodeScalar(UInt32(0x0000219D))!)"
+                case "ratail":                          return "\(UnicodeScalar(UInt32(0x0000291A))!)"
+                case "rAtail":                          return "\(UnicodeScalar(UInt32(0x0000291C))!)"
+                case "ratio":                           return "\(UnicodeScalar(UInt32(0x00002236))!)"
+                case "rationals":                       return "\(UnicodeScalar(UInt32(0x0000211A))!)"
+                case "rbarr":                           return "\(UnicodeScalar(UInt32(0x0000290D))!)"
+                case "rBarr":                           return "\(UnicodeScalar(UInt32(0x0000290F))!)"
+                case "RBarr":                           return "\(UnicodeScalar(UInt32(0x00002910))!)"
+                case "rbbrk":                           return "\(UnicodeScalar(UInt32(0x00002773))!)"
+                case "rbrace":                          return "\(UnicodeScalar(UInt32(0x0000007D))!)"
+                case "rbrack":                          return "\(UnicodeScalar(UInt32(0x0000005D))!)"
+                case "rbrke":                           return "\(UnicodeScalar(UInt32(0x0000298C))!)"
+                case "rbrksld":                         return "\(UnicodeScalar(UInt32(0x0000298E))!)"
+                case "rbrkslu":                         return "\(UnicodeScalar(UInt32(0x00002990))!)"
+                case "Rcaron":                          return "\(UnicodeScalar(UInt32(0x00000158))!)"
+                case "rcaron":                          return "\(UnicodeScalar(UInt32(0x00000159))!)"
+                case "Rcedil":                          return "\(UnicodeScalar(UInt32(0x00000156))!)"
+                case "rcedil":                          return "\(UnicodeScalar(UInt32(0x00000157))!)"
+                case "rceil":                           return "\(UnicodeScalar(UInt32(0x00002309))!)"
+                case "rcub":                            return "\(UnicodeScalar(UInt32(0x0000007D))!)"
+                case "Rcy":                             return "\(UnicodeScalar(UInt32(0x00000420))!)"
+                case "rcy":                             return "\(UnicodeScalar(UInt32(0x00000440))!)"
+                case "rdca":                            return "\(UnicodeScalar(UInt32(0x00002937))!)"
+                case "rdldhar":                         return "\(UnicodeScalar(UInt32(0x00002969))!)"
+                case "rdquo":                           return "\(UnicodeScalar(UInt32(0x0000201D))!)"
+                case "rdquor":                          return "\(UnicodeScalar(UInt32(0x0000201D))!)"
+                case "rdsh":                            return "\(UnicodeScalar(UInt32(0x000021B3))!)"
+                case "Re":                              return "\(UnicodeScalar(UInt32(0x0000211C))!)"
+                case "real":                            return "\(UnicodeScalar(UInt32(0x0000211C))!)"
+                case "realine":                         return "\(UnicodeScalar(UInt32(0x0000211B))!)"
+                case "realpart":                        return "\(UnicodeScalar(UInt32(0x0000211C))!)"
+                case "reals":                           return "\(UnicodeScalar(UInt32(0x0000211D))!)"
+                case "rect":                            return "\(UnicodeScalar(UInt32(0x000025AD))!)"
+                case "reg":                             return "\(UnicodeScalar(UInt32(0x000000AE))!)"
+                case "REG":                             return "\(UnicodeScalar(UInt32(0x000000AE))!)"
+                case "ReverseElement":                  return "\(UnicodeScalar(UInt32(0x0000220B))!)"
+                case "ReverseEquilibrium":              return "\(UnicodeScalar(UInt32(0x000021CB))!)"
+                case "ReverseUpEquilibrium":            return "\(UnicodeScalar(UInt32(0x0000296F))!)"
+                case "rfisht":                          return "\(UnicodeScalar(UInt32(0x0000297D))!)"
+                case "rfloor":                          return "\(UnicodeScalar(UInt32(0x0000230B))!)"
+                case "Rfr":                             return "\(UnicodeScalar(UInt32(0x0000211C))!)"
+                case "rfr":                             return "\(UnicodeScalar(UInt32(0x0001D52F))!)"
+                case "rHar":                            return "\(UnicodeScalar(UInt32(0x00002964))!)"
+                case "rhard":                           return "\(UnicodeScalar(UInt32(0x000021C1))!)"
+                case "rharu":                           return "\(UnicodeScalar(UInt32(0x000021C0))!)"
+                case "rharul":                          return "\(UnicodeScalar(UInt32(0x0000296C))!)"
+                case "Rho":                             return "\(UnicodeScalar(UInt32(0x000003A1))!)"
+                case "rho":                             return "\(UnicodeScalar(UInt32(0x000003C1))!)"
+                case "rhov":                            return "\(UnicodeScalar(UInt32(0x000003F1))!)"
+                case "RightAngleBracket":               return "\(UnicodeScalar(UInt32(0x000027E9))!)"
+                case "rightarrow":                      return "\(UnicodeScalar(UInt32(0x00002192))!)"
+                case "RightArrow":                      return "\(UnicodeScalar(UInt32(0x00002192))!)"
+                case "Rightarrow":                      return "\(UnicodeScalar(UInt32(0x000021D2))!)"
+                case "RightArrowBar":                   return "\(UnicodeScalar(UInt32(0x000021E5))!)"
+                case "RightArrowLeftArrow":             return "\(UnicodeScalar(UInt32(0x000021C4))!)"
+                case "rightarrowtail":                  return "\(UnicodeScalar(UInt32(0x000021A3))!)"
+                case "RightCeiling":                    return "\(UnicodeScalar(UInt32(0x00002309))!)"
+                case "RightDoubleBracket":              return "\(UnicodeScalar(UInt32(0x000027E7))!)"
+                case "RightDownTeeVector":              return "\(UnicodeScalar(UInt32(0x0000295D))!)"
+                case "RightDownVector":                 return "\(UnicodeScalar(UInt32(0x000021C2))!)"
+                case "RightDownVectorBar":              return "\(UnicodeScalar(UInt32(0x00002955))!)"
+                case "RightFloor":                      return "\(UnicodeScalar(UInt32(0x0000230B))!)"
+                case "rightharpoondown":                return "\(UnicodeScalar(UInt32(0x000021C1))!)"
+                case "rightharpoonup":                  return "\(UnicodeScalar(UInt32(0x000021C0))!)"
+                case "rightleftarrows":                 return "\(UnicodeScalar(UInt32(0x000021C4))!)"
+                case "rightleftharpoons":               return "\(UnicodeScalar(UInt32(0x000021CC))!)"
+                case "rightrightarrows":                return "\(UnicodeScalar(UInt32(0x000021C9))!)"
+                case "rightsquigarrow":                 return "\(UnicodeScalar(UInt32(0x0000219D))!)"
+                case "RightTee":                        return "\(UnicodeScalar(UInt32(0x000022A2))!)"
+                case "RightTeeArrow":                   return "\(UnicodeScalar(UInt32(0x000021A6))!)"
+                case "RightTeeVector":                  return "\(UnicodeScalar(UInt32(0x0000295B))!)"
+                case "rightthreetimes":                 return "\(UnicodeScalar(UInt32(0x000022CC))!)"
+                case "RightTriangle":                   return "\(UnicodeScalar(UInt32(0x000022B3))!)"
+                case "RightTriangleBar":                return "\(UnicodeScalar(UInt32(0x000029D0))!)"
+                case "RightTriangleEqual":              return "\(UnicodeScalar(UInt32(0x000022B5))!)"
+                case "RightUpDownVector":               return "\(UnicodeScalar(UInt32(0x0000294F))!)"
+                case "RightUpTeeVector":                return "\(UnicodeScalar(UInt32(0x0000295C))!)"
+                case "RightUpVector":                   return "\(UnicodeScalar(UInt32(0x000021BE))!)"
+                case "RightUpVectorBar":                return "\(UnicodeScalar(UInt32(0x00002954))!)"
+                case "RightVector":                     return "\(UnicodeScalar(UInt32(0x000021C0))!)"
+                case "RightVectorBar":                  return "\(UnicodeScalar(UInt32(0x00002953))!)"
+                case "ring":                            return "\(UnicodeScalar(UInt32(0x000002DA))!)"
+                case "risingdotseq":                    return "\(UnicodeScalar(UInt32(0x00002253))!)"
+                case "rlarr":                           return "\(UnicodeScalar(UInt32(0x000021C4))!)"
+                case "rlhar":                           return "\(UnicodeScalar(UInt32(0x000021CC))!)"
+                case "rlm":                             return "\(UnicodeScalar(UInt32(0x0000200F))!)"
+                case "rmoust":                          return "\(UnicodeScalar(UInt32(0x000023B1))!)"
+                case "rmoustache":                      return "\(UnicodeScalar(UInt32(0x000023B1))!)"
+                case "rnmid":                           return "\(UnicodeScalar(UInt32(0x00002AEE))!)"
+                case "roang":                           return "\(UnicodeScalar(UInt32(0x000027ED))!)"
+                case "roarr":                           return "\(UnicodeScalar(UInt32(0x000021FE))!)"
+                case "robrk":                           return "\(UnicodeScalar(UInt32(0x000027E7))!)"
+                case "ropar":                           return "\(UnicodeScalar(UInt32(0x00002986))!)"
+                case "Ropf":                            return "\(UnicodeScalar(UInt32(0x0000211D))!)"
+                case "ropf":                            return "\(UnicodeScalar(UInt32(0x0001D563))!)"
+                case "roplus":                          return "\(UnicodeScalar(UInt32(0x00002A2E))!)"
+                case "rotimes":                         return "\(UnicodeScalar(UInt32(0x00002A35))!)"
+                case "RoundImplies":                    return "\(UnicodeScalar(UInt32(0x00002970))!)"
+                case "rpar":                            return "\(UnicodeScalar(UInt32(0x00000029))!)"
+                case "rpargt":                          return "\(UnicodeScalar(UInt32(0x00002994))!)"
+                case "rppolint":                        return "\(UnicodeScalar(UInt32(0x00002A12))!)"
+                case "rrarr":                           return "\(UnicodeScalar(UInt32(0x000021C9))!)"
+                case "Rrightarrow":                     return "\(UnicodeScalar(UInt32(0x000021DB))!)"
+                case "rsaquo":                          return "\(UnicodeScalar(UInt32(0x0000203A))!)"
+                case "Rscr":                            return "\(UnicodeScalar(UInt32(0x0000211B))!)"
+                case "rscr":                            return "\(UnicodeScalar(UInt32(0x0001D4C7))!)"
+                case "rsh":                             return "\(UnicodeScalar(UInt32(0x000021B1))!)"
+                case "Rsh":                             return "\(UnicodeScalar(UInt32(0x000021B1))!)"
+                case "rsqb":                            return "\(UnicodeScalar(UInt32(0x0000005D))!)"
+                case "rsquo":                           return "\(UnicodeScalar(UInt32(0x00002019))!)"
+                case "rsquor":                          return "\(UnicodeScalar(UInt32(0x00002019))!)"
+                case "rthree":                          return "\(UnicodeScalar(UInt32(0x000022CC))!)"
+                case "rtimes":                          return "\(UnicodeScalar(UInt32(0x000022CA))!)"
+                case "rtri":                            return "\(UnicodeScalar(UInt32(0x000025B9))!)"
+                case "rtrie":                           return "\(UnicodeScalar(UInt32(0x000022B5))!)"
+                case "rtrif":                           return "\(UnicodeScalar(UInt32(0x000025B8))!)"
+                case "rtriltri":                        return "\(UnicodeScalar(UInt32(0x000029CE))!)"
+                case "RuleDelayed":                     return "\(UnicodeScalar(UInt32(0x000029F4))!)"
+                case "ruluhar":                         return "\(UnicodeScalar(UInt32(0x00002968))!)"
+                case "rx":                              return "\(UnicodeScalar(UInt32(0x0000211E))!)"
+                case "Sacute":                          return "\(UnicodeScalar(UInt32(0x0000015A))!)"
+                case "sacute":                          return "\(UnicodeScalar(UInt32(0x0000015B))!)"
+                case "sbquo":                           return "\(UnicodeScalar(UInt32(0x0000201A))!)"
+                case "sc":                              return "\(UnicodeScalar(UInt32(0x0000227B))!)"
+                case "Sc":                              return "\(UnicodeScalar(UInt32(0x00002ABC))!)"
+                case "scap":                            return "\(UnicodeScalar(UInt32(0x00002AB8))!)"
+                case "Scaron":                          return "\(UnicodeScalar(UInt32(0x00000160))!)"
+                case "scaron":                          return "\(UnicodeScalar(UInt32(0x00000161))!)"
+                case "sccue":                           return "\(UnicodeScalar(UInt32(0x0000227D))!)"
+                case "sce":                             return "\(UnicodeScalar(UInt32(0x00002AB0))!)"
+                case "scE":                             return "\(UnicodeScalar(UInt32(0x00002AB4))!)"
+                case "Scedil":                          return "\(UnicodeScalar(UInt32(0x0000015E))!)"
+                case "scedil":                          return "\(UnicodeScalar(UInt32(0x0000015F))!)"
+                case "Scirc":                           return "\(UnicodeScalar(UInt32(0x0000015C))!)"
+                case "scirc":                           return "\(UnicodeScalar(UInt32(0x0000015D))!)"
+                case "scnap":                           return "\(UnicodeScalar(UInt32(0x00002ABA))!)"
+                case "scnE":                            return "\(UnicodeScalar(UInt32(0x00002AB6))!)"
+                case "scnsim":                          return "\(UnicodeScalar(UInt32(0x000022E9))!)"
+                case "scpolint":                        return "\(UnicodeScalar(UInt32(0x00002A13))!)"
+                case "scsim":                           return "\(UnicodeScalar(UInt32(0x0000227F))!)"
+                case "Scy":                             return "\(UnicodeScalar(UInt32(0x00000421))!)"
+                case "scy":                             return "\(UnicodeScalar(UInt32(0x00000441))!)"
+                case "sdot":                            return "\(UnicodeScalar(UInt32(0x000022C5))!)"
+                case "sdotb":                           return "\(UnicodeScalar(UInt32(0x000022A1))!)"
+                case "sdote":                           return "\(UnicodeScalar(UInt32(0x00002A66))!)"
+                case "searhk":                          return "\(UnicodeScalar(UInt32(0x00002925))!)"
+                case "searr":                           return "\(UnicodeScalar(UInt32(0x00002198))!)"
+                case "seArr":                           return "\(UnicodeScalar(UInt32(0x000021D8))!)"
+                case "searrow":                         return "\(UnicodeScalar(UInt32(0x00002198))!)"
+                case "sect":                            return "\(UnicodeScalar(UInt32(0x000000A7))!)"
+                case "semi":                            return "\(UnicodeScalar(UInt32(0x0000003B))!)"
+                case "seswar":                          return "\(UnicodeScalar(UInt32(0x00002929))!)"
+                case "setminus":                        return "\(UnicodeScalar(UInt32(0x00002216))!)"
+                case "setmn":                           return "\(UnicodeScalar(UInt32(0x00002216))!)"
+                case "sext":                            return "\(UnicodeScalar(UInt32(0x00002736))!)"
+                case "Sfr":                             return "\(UnicodeScalar(UInt32(0x0001D516))!)"
+                case "sfr":                             return "\(UnicodeScalar(UInt32(0x0001D530))!)"
+                case "sfrown":                          return "\(UnicodeScalar(UInt32(0x00002322))!)"
+                case "sharp":                           return "\(UnicodeScalar(UInt32(0x0000266F))!)"
+                case "SHCHcy":                          return "\(UnicodeScalar(UInt32(0x00000429))!)"
+                case "shchcy":                          return "\(UnicodeScalar(UInt32(0x00000449))!)"
+                case "SHcy":                            return "\(UnicodeScalar(UInt32(0x00000428))!)"
+                case "shcy":                            return "\(UnicodeScalar(UInt32(0x00000448))!)"
+                case "ShortDownArrow":                  return "\(UnicodeScalar(UInt32(0x00002193))!)"
+                case "ShortLeftArrow":                  return "\(UnicodeScalar(UInt32(0x00002190))!)"
+                case "shortmid":                        return "\(UnicodeScalar(UInt32(0x00002223))!)"
+                case "shortparallel":                   return "\(UnicodeScalar(UInt32(0x00002225))!)"
+                case "ShortRightArrow":                 return "\(UnicodeScalar(UInt32(0x00002192))!)"
+                case "ShortUpArrow":                    return "\(UnicodeScalar(UInt32(0x00002191))!)"
+                case "shy":                             return "\(UnicodeScalar(UInt32(0x000000AD))!)"
+                case "Sigma":                           return "\(UnicodeScalar(UInt32(0x000003A3))!)"
+                case "sigma":                           return "\(UnicodeScalar(UInt32(0x000003C3))!)"
+                case "sigmaf":                          return "\(UnicodeScalar(UInt32(0x000003C2))!)"
+                case "sigmav":                          return "\(UnicodeScalar(UInt32(0x000003C2))!)"
+                case "sim":                             return "\(UnicodeScalar(UInt32(0x0000223C))!)"
+                case "simdot":                          return "\(UnicodeScalar(UInt32(0x00002A6A))!)"
+                case "sime":                            return "\(UnicodeScalar(UInt32(0x00002243))!)"
+                case "simeq":                           return "\(UnicodeScalar(UInt32(0x00002243))!)"
+                case "simg":                            return "\(UnicodeScalar(UInt32(0x00002A9E))!)"
+                case "simgE":                           return "\(UnicodeScalar(UInt32(0x00002AA0))!)"
+                case "siml":                            return "\(UnicodeScalar(UInt32(0x00002A9D))!)"
+                case "simlE":                           return "\(UnicodeScalar(UInt32(0x00002A9F))!)"
+                case "simne":                           return "\(UnicodeScalar(UInt32(0x00002246))!)"
+                case "simplus":                         return "\(UnicodeScalar(UInt32(0x00002A24))!)"
+                case "simrarr":                         return "\(UnicodeScalar(UInt32(0x00002972))!)"
+                case "slarr":                           return "\(UnicodeScalar(UInt32(0x00002190))!)"
+                case "SmallCircle":                     return "\(UnicodeScalar(UInt32(0x00002218))!)"
+                case "smallsetminus":                   return "\(UnicodeScalar(UInt32(0x00002216))!)"
+                case "smashp":                          return "\(UnicodeScalar(UInt32(0x00002A33))!)"
+                case "smeparsl":                        return "\(UnicodeScalar(UInt32(0x000029E4))!)"
+                case "smid":                            return "\(UnicodeScalar(UInt32(0x00002223))!)"
+                case "smile":                           return "\(UnicodeScalar(UInt32(0x00002323))!)"
+                case "smt":                             return "\(UnicodeScalar(UInt32(0x00002AAA))!)"
+                case "smte":                            return "\(UnicodeScalar(UInt32(0x00002AAC))!)"
+                case "smtes":                           return "\(UnicodeScalar(UInt32(0x00002AAC))!)\(UnicodeScalar(UInt32(0x0000FE00))!)"
+                case "SOFTcy":                          return "\(UnicodeScalar(UInt32(0x0000042C))!)"
+                case "softcy":                          return "\(UnicodeScalar(UInt32(0x0000044C))!)"
+                case "sol":                             return "\(UnicodeScalar(UInt32(0x0000002F))!)"
+                case "solb":                            return "\(UnicodeScalar(UInt32(0x000029C4))!)"
+                case "solbar":                          return "\(UnicodeScalar(UInt32(0x0000233F))!)"
+                case "Sopf":                            return "\(UnicodeScalar(UInt32(0x0001D54A))!)"
+                case "sopf":                            return "\(UnicodeScalar(UInt32(0x0001D564))!)"
+                case "spades":                          return "\(UnicodeScalar(UInt32(0x00002660))!)"
+                case "spadesuit":                       return "\(UnicodeScalar(UInt32(0x00002660))!)"
+                case "spar":                            return "\(UnicodeScalar(UInt32(0x00002225))!)"
+                case "sqcap":                           return "\(UnicodeScalar(UInt32(0x00002293))!)"
+                case "sqcaps":                          return "\(UnicodeScalar(UInt32(0x00002293))!)\(UnicodeScalar(UInt32(0x0000FE00))!)"
+                case "sqcup":                           return "\(UnicodeScalar(UInt32(0x00002294))!)"
+                case "sqcups":                          return "\(UnicodeScalar(UInt32(0x00002294))!)\(UnicodeScalar(UInt32(0x0000FE00))!)"
+                case "Sqrt":                            return "\(UnicodeScalar(UInt32(0x0000221A))!)"
+                case "sqsub":                           return "\(UnicodeScalar(UInt32(0x0000228F))!)"
+                case "sqsube":                          return "\(UnicodeScalar(UInt32(0x00002291))!)"
+                case "sqsubset":                        return "\(UnicodeScalar(UInt32(0x0000228F))!)"
+                case "sqsubseteq":                      return "\(UnicodeScalar(UInt32(0x00002291))!)"
+                case "sqsup":                           return "\(UnicodeScalar(UInt32(0x00002290))!)"
+                case "sqsupe":                          return "\(UnicodeScalar(UInt32(0x00002292))!)"
+                case "sqsupset":                        return "\(UnicodeScalar(UInt32(0x00002290))!)"
+                case "sqsupseteq":                      return "\(UnicodeScalar(UInt32(0x00002292))!)"
+                case "squ":                             return "\(UnicodeScalar(UInt32(0x000025A1))!)"
+                case "square":                          return "\(UnicodeScalar(UInt32(0x000025A1))!)"
+                case "Square":                          return "\(UnicodeScalar(UInt32(0x000025A1))!)"
+                case "SquareIntersection":              return "\(UnicodeScalar(UInt32(0x00002293))!)"
+                case "SquareSubset":                    return "\(UnicodeScalar(UInt32(0x0000228F))!)"
+                case "SquareSubsetEqual":               return "\(UnicodeScalar(UInt32(0x00002291))!)"
+                case "SquareSuperset":                  return "\(UnicodeScalar(UInt32(0x00002290))!)"
+                case "SquareSupersetEqual":             return "\(UnicodeScalar(UInt32(0x00002292))!)"
+                case "SquareUnion":                     return "\(UnicodeScalar(UInt32(0x00002294))!)"
+                case "squarf":                          return "\(UnicodeScalar(UInt32(0x000025AA))!)"
+                case "squf":                            return "\(UnicodeScalar(UInt32(0x000025AA))!)"
+                case "srarr":                           return "\(UnicodeScalar(UInt32(0x00002192))!)"
+                case "Sscr":                            return "\(UnicodeScalar(UInt32(0x0001D4AE))!)"
+                case "sscr":                            return "\(UnicodeScalar(UInt32(0x0001D4C8))!)"
+                case "ssetmn":                          return "\(UnicodeScalar(UInt32(0x00002216))!)"
+                case "ssmile":                          return "\(UnicodeScalar(UInt32(0x00002323))!)"
+                case "sstarf":                          return "\(UnicodeScalar(UInt32(0x000022C6))!)"
+                case "Star":                            return "\(UnicodeScalar(UInt32(0x000022C6))!)"
+                case "star":                            return "\(UnicodeScalar(UInt32(0x00002606))!)"
+                case "starf":                           return "\(UnicodeScalar(UInt32(0x00002605))!)"
+                case "straightepsilon":                 return "\(UnicodeScalar(UInt32(0x000003F5))!)"
+                case "straightphi":                     return "\(UnicodeScalar(UInt32(0x000003D5))!)"
+                case "strns":                           return "\(UnicodeScalar(UInt32(0x000000AF))!)"
+                case "sub":                             return "\(UnicodeScalar(UInt32(0x00002282))!)"
+                case "Sub":                             return "\(UnicodeScalar(UInt32(0x000022D0))!)"
+                case "subdot":                          return "\(UnicodeScalar(UInt32(0x00002ABD))!)"
+                case "sube":                            return "\(UnicodeScalar(UInt32(0x00002286))!)"
+                case "subE":                            return "\(UnicodeScalar(UInt32(0x00002AC5))!)"
+                case "subedot":                         return "\(UnicodeScalar(UInt32(0x00002AC3))!)"
+                case "submult":                         return "\(UnicodeScalar(UInt32(0x00002AC1))!)"
+                case "subne":                           return "\(UnicodeScalar(UInt32(0x0000228A))!)"
+                case "subnE":                           return "\(UnicodeScalar(UInt32(0x00002ACB))!)"
+                case "subplus":                         return "\(UnicodeScalar(UInt32(0x00002ABF))!)"
+                case "subrarr":                         return "\(UnicodeScalar(UInt32(0x00002979))!)"
+                case "subset":                          return "\(UnicodeScalar(UInt32(0x00002282))!)"
+                case "Subset":                          return "\(UnicodeScalar(UInt32(0x000022D0))!)"
+                case "subseteq":                        return "\(UnicodeScalar(UInt32(0x00002286))!)"
+                case "subseteqq":                       return "\(UnicodeScalar(UInt32(0x00002AC5))!)"
+                case "SubsetEqual":                     return "\(UnicodeScalar(UInt32(0x00002286))!)"
+                case "subsetneq":                       return "\(UnicodeScalar(UInt32(0x0000228A))!)"
+                case "subsetneqq":                      return "\(UnicodeScalar(UInt32(0x00002ACB))!)"
+                case "subsim":                          return "\(UnicodeScalar(UInt32(0x00002AC7))!)"
+                case "subsub":                          return "\(UnicodeScalar(UInt32(0x00002AD5))!)"
+                case "subsup":                          return "\(UnicodeScalar(UInt32(0x00002AD3))!)"
+                case "succ":                            return "\(UnicodeScalar(UInt32(0x0000227B))!)"
+                case "succapprox":                      return "\(UnicodeScalar(UInt32(0x00002AB8))!)"
+                case "succcurlyeq":                     return "\(UnicodeScalar(UInt32(0x0000227D))!)"
+                case "Succeeds":                        return "\(UnicodeScalar(UInt32(0x0000227B))!)"
+                case "SucceedsEqual":                   return "\(UnicodeScalar(UInt32(0x00002AB0))!)"
+                case "SucceedsSlantEqual":              return "\(UnicodeScalar(UInt32(0x0000227D))!)"
+                case "SucceedsTilde":                   return "\(UnicodeScalar(UInt32(0x0000227F))!)"
+                case "succeq":                          return "\(UnicodeScalar(UInt32(0x00002AB0))!)"
+                case "succnapprox":                     return "\(UnicodeScalar(UInt32(0x00002ABA))!)"
+                case "succneqq":                        return "\(UnicodeScalar(UInt32(0x00002AB6))!)"
+                case "succnsim":                        return "\(UnicodeScalar(UInt32(0x000022E9))!)"
+                case "succsim":                         return "\(UnicodeScalar(UInt32(0x0000227F))!)"
+                case "SuchThat":                        return "\(UnicodeScalar(UInt32(0x0000220B))!)"
+                case "sum":                             return "\(UnicodeScalar(UInt32(0x00002211))!)"
+                case "Sum":                             return "\(UnicodeScalar(UInt32(0x00002211))!)"
+                case "sung":                            return "\(UnicodeScalar(UInt32(0x0000266A))!)"
+                case "sup":                             return "\(UnicodeScalar(UInt32(0x00002283))!)"
+                case "Sup":                             return "\(UnicodeScalar(UInt32(0x000022D1))!)"
+                case "sup1":                            return "\(UnicodeScalar(UInt32(0x000000B9))!)"
+                case "sup2":                            return "\(UnicodeScalar(UInt32(0x000000B2))!)"
+                case "sup3":                            return "\(UnicodeScalar(UInt32(0x000000B3))!)"
+                case "supdot":                          return "\(UnicodeScalar(UInt32(0x00002ABE))!)"
+                case "supdsub":                         return "\(UnicodeScalar(UInt32(0x00002AD8))!)"
+                case "supe":                            return "\(UnicodeScalar(UInt32(0x00002287))!)"
+                case "supE":                            return "\(UnicodeScalar(UInt32(0x00002AC6))!)"
+                case "supedot":                         return "\(UnicodeScalar(UInt32(0x00002AC4))!)"
+                case "Superset":                        return "\(UnicodeScalar(UInt32(0x00002283))!)"
+                case "SupersetEqual":                   return "\(UnicodeScalar(UInt32(0x00002287))!)"
+                case "suphsol":                         return "\(UnicodeScalar(UInt32(0x000027C9))!)"
+                case "suphsub":                         return "\(UnicodeScalar(UInt32(0x00002AD7))!)"
+                case "suplarr":                         return "\(UnicodeScalar(UInt32(0x0000297B))!)"
+                case "supmult":                         return "\(UnicodeScalar(UInt32(0x00002AC2))!)"
+                case "supne":                           return "\(UnicodeScalar(UInt32(0x0000228B))!)"
+                case "supnE":                           return "\(UnicodeScalar(UInt32(0x00002ACC))!)"
+                case "supplus":                         return "\(UnicodeScalar(UInt32(0x00002AC0))!)"
+                case "supset":                          return "\(UnicodeScalar(UInt32(0x00002283))!)"
+                case "Supset":                          return "\(UnicodeScalar(UInt32(0x000022D1))!)"
+                case "supseteq":                        return "\(UnicodeScalar(UInt32(0x00002287))!)"
+                case "supseteqq":                       return "\(UnicodeScalar(UInt32(0x00002AC6))!)"
+                case "supsetneq":                       return "\(UnicodeScalar(UInt32(0x0000228B))!)"
+                case "supsetneqq":                      return "\(UnicodeScalar(UInt32(0x00002ACC))!)"
+                case "supsim":                          return "\(UnicodeScalar(UInt32(0x00002AC8))!)"
+                case "supsub":                          return "\(UnicodeScalar(UInt32(0x00002AD4))!)"
+                case "supsup":                          return "\(UnicodeScalar(UInt32(0x00002AD6))!)"
+                case "swarhk":                          return "\(UnicodeScalar(UInt32(0x00002926))!)"
+                case "swarr":                           return "\(UnicodeScalar(UInt32(0x00002199))!)"
+                case "swArr":                           return "\(UnicodeScalar(UInt32(0x000021D9))!)"
+                case "swarrow":                         return "\(UnicodeScalar(UInt32(0x00002199))!)"
+                case "swnwar":                          return "\(UnicodeScalar(UInt32(0x0000292A))!)"
+                case "szlig":                           return "\(UnicodeScalar(UInt32(0x000000DF))!)"
+                case "Tab":                             return "\(UnicodeScalar(UInt32(0x00000009))!)"
+                case "target":                          return "\(UnicodeScalar(UInt32(0x00002316))!)"
+                case "Tau":                             return "\(UnicodeScalar(UInt32(0x000003A4))!)"
+                case "tau":                             return "\(UnicodeScalar(UInt32(0x000003C4))!)"
+                case "tbrk":                            return "\(UnicodeScalar(UInt32(0x000023B4))!)"
+                case "Tcaron":                          return "\(UnicodeScalar(UInt32(0x00000164))!)"
+                case "tcaron":                          return "\(UnicodeScalar(UInt32(0x00000165))!)"
+                case "Tcedil":                          return "\(UnicodeScalar(UInt32(0x00000162))!)"
+                case "tcedil":                          return "\(UnicodeScalar(UInt32(0x00000163))!)"
+                case "Tcy":                             return "\(UnicodeScalar(UInt32(0x00000422))!)"
+                case "tcy":                             return "\(UnicodeScalar(UInt32(0x00000442))!)"
+                case "tdot":                            return "\(UnicodeScalar(UInt32(0x000020DB))!)"
+                case "telrec":                          return "\(UnicodeScalar(UInt32(0x00002315))!)"
+                case "Tfr":                             return "\(UnicodeScalar(UInt32(0x0001D517))!)"
+                case "tfr":                             return "\(UnicodeScalar(UInt32(0x0001D531))!)"
+                case "there4":                          return "\(UnicodeScalar(UInt32(0x00002234))!)"
+                case "therefore":                       return "\(UnicodeScalar(UInt32(0x00002234))!)"
+                case "Therefore":                       return "\(UnicodeScalar(UInt32(0x00002234))!)"
+                case "Theta":                           return "\(UnicodeScalar(UInt32(0x00000398))!)"
+                case "theta":                           return "\(UnicodeScalar(UInt32(0x000003B8))!)"
+                case "thetasym":                        return "\(UnicodeScalar(UInt32(0x000003D1))!)"
+                case "thetav":                          return "\(UnicodeScalar(UInt32(0x000003D1))!)"
+                case "thickapprox":                     return "\(UnicodeScalar(UInt32(0x00002248))!)"
+                case "thicksim":                        return "\(UnicodeScalar(UInt32(0x0000223C))!)"
+                case "ThickSpace":                      return "\(UnicodeScalar(UInt32(0x0000205F))!)\(UnicodeScalar(UInt32(0x0000200A))!)"
+                case "thinsp":                          return "\(UnicodeScalar(UInt32(0x00002009))!)"
+                case "ThinSpace":                       return "\(UnicodeScalar(UInt32(0x00002009))!)"
+                case "thkap":                           return "\(UnicodeScalar(UInt32(0x00002248))!)"
+                case "thksim":                          return "\(UnicodeScalar(UInt32(0x0000223C))!)"
+                case "THORN":                           return "\(UnicodeScalar(UInt32(0x000000DE))!)"
+                case "thorn":                           return "\(UnicodeScalar(UInt32(0x000000FE))!)"
+                case "tilde":                           return "\(UnicodeScalar(UInt32(0x000002DC))!)"
+                case "Tilde":                           return "\(UnicodeScalar(UInt32(0x0000223C))!)"
+                case "TildeEqual":                      return "\(UnicodeScalar(UInt32(0x00002243))!)"
+                case "TildeFullEqual":                  return "\(UnicodeScalar(UInt32(0x00002245))!)"
+                case "TildeTilde":                      return "\(UnicodeScalar(UInt32(0x00002248))!)"
+                case "times":                           return "\(UnicodeScalar(UInt32(0x000000D7))!)"
+                case "timesb":                          return "\(UnicodeScalar(UInt32(0x000022A0))!)"
+                case "timesbar":                        return "\(UnicodeScalar(UInt32(0x00002A31))!)"
+                case "timesd":                          return "\(UnicodeScalar(UInt32(0x00002A30))!)"
+                case "tint":                            return "\(UnicodeScalar(UInt32(0x0000222D))!)"
+                case "toea":                            return "\(UnicodeScalar(UInt32(0x00002928))!)"
+                case "top":                             return "\(UnicodeScalar(UInt32(0x000022A4))!)"
+                case "topbot":                          return "\(UnicodeScalar(UInt32(0x00002336))!)"
+                case "topcir":                          return "\(UnicodeScalar(UInt32(0x00002AF1))!)"
+                case "Topf":                            return "\(UnicodeScalar(UInt32(0x0001D54B))!)"
+                case "topf":                            return "\(UnicodeScalar(UInt32(0x0001D565))!)"
+                case "topfork":                         return "\(UnicodeScalar(UInt32(0x00002ADA))!)"
+                case "tosa":                            return "\(UnicodeScalar(UInt32(0x00002929))!)"
+                case "tprime":                          return "\(UnicodeScalar(UInt32(0x00002034))!)"
+                case "trade":                           return "\(UnicodeScalar(UInt32(0x00002122))!)"
+                case "TRADE":                           return "\(UnicodeScalar(UInt32(0x00002122))!)"
+                case "triangle":                        return "\(UnicodeScalar(UInt32(0x000025B5))!)"
+                case "triangledown":                    return "\(UnicodeScalar(UInt32(0x000025BF))!)"
+                case "triangleleft":                    return "\(UnicodeScalar(UInt32(0x000025C3))!)"
+                case "trianglelefteq":                  return "\(UnicodeScalar(UInt32(0x000022B4))!)"
+                case "triangleq":                       return "\(UnicodeScalar(UInt32(0x0000225C))!)"
+                case "triangleright":                   return "\(UnicodeScalar(UInt32(0x000025B9))!)"
+                case "trianglerighteq":                 return "\(UnicodeScalar(UInt32(0x000022B5))!)"
+                case "tridot":                          return "\(UnicodeScalar(UInt32(0x000025EC))!)"
+                case "trie":                            return "\(UnicodeScalar(UInt32(0x0000225C))!)"
+                case "triminus":                        return "\(UnicodeScalar(UInt32(0x00002A3A))!)"
+                case "TripleDot":                       return "\(UnicodeScalar(UInt32(0x000020DB))!)"
+                case "triplus":                         return "\(UnicodeScalar(UInt32(0x00002A39))!)"
+                case "trisb":                           return "\(UnicodeScalar(UInt32(0x000029CD))!)"
+                case "tritime":                         return "\(UnicodeScalar(UInt32(0x00002A3B))!)"
+                case "trpezium":                        return "\(UnicodeScalar(UInt32(0x000023E2))!)"
+                case "Tscr":                            return "\(UnicodeScalar(UInt32(0x0001D4AF))!)"
+                case "tscr":                            return "\(UnicodeScalar(UInt32(0x0001D4C9))!)"
+                case "TScy":                            return "\(UnicodeScalar(UInt32(0x00000426))!)"
+                case "tscy":                            return "\(UnicodeScalar(UInt32(0x00000446))!)"
+                case "TSHcy":                           return "\(UnicodeScalar(UInt32(0x0000040B))!)"
+                case "tshcy":                           return "\(UnicodeScalar(UInt32(0x0000045B))!)"
+                case "Tstrok":                          return "\(UnicodeScalar(UInt32(0x00000166))!)"
+                case "tstrok":                          return "\(UnicodeScalar(UInt32(0x00000167))!)"
+                case "twixt":                           return "\(UnicodeScalar(UInt32(0x0000226C))!)"
+                case "twoheadleftarrow":                return "\(UnicodeScalar(UInt32(0x0000219E))!)"
+                case "twoheadrightarrow":               return "\(UnicodeScalar(UInt32(0x000021A0))!)"
+                case "Uacute":                          return "\(UnicodeScalar(UInt32(0x000000DA))!)"
+                case "uacute":                          return "\(UnicodeScalar(UInt32(0x000000FA))!)"
+                case "uarr":                            return "\(UnicodeScalar(UInt32(0x00002191))!)"
+                case "Uarr":                            return "\(UnicodeScalar(UInt32(0x0000219F))!)"
+                case "uArr":                            return "\(UnicodeScalar(UInt32(0x000021D1))!)"
+                case "Uarrocir":                        return "\(UnicodeScalar(UInt32(0x00002949))!)"
+                case "Ubrcy":                           return "\(UnicodeScalar(UInt32(0x0000040E))!)"
+                case "ubrcy":                           return "\(UnicodeScalar(UInt32(0x0000045E))!)"
+                case "Ubreve":                          return "\(UnicodeScalar(UInt32(0x0000016C))!)"
+                case "ubreve":                          return "\(UnicodeScalar(UInt32(0x0000016D))!)"
+                case "Ucirc":                           return "\(UnicodeScalar(UInt32(0x000000DB))!)"
+                case "ucirc":                           return "\(UnicodeScalar(UInt32(0x000000FB))!)"
+                case "Ucy":                             return "\(UnicodeScalar(UInt32(0x00000423))!)"
+                case "ucy":                             return "\(UnicodeScalar(UInt32(0x00000443))!)"
+                case "udarr":                           return "\(UnicodeScalar(UInt32(0x000021C5))!)"
+                case "Udblac":                          return "\(UnicodeScalar(UInt32(0x00000170))!)"
+                case "udblac":                          return "\(UnicodeScalar(UInt32(0x00000171))!)"
+                case "udhar":                           return "\(UnicodeScalar(UInt32(0x0000296E))!)"
+                case "ufisht":                          return "\(UnicodeScalar(UInt32(0x0000297E))!)"
+                case "Ufr":                             return "\(UnicodeScalar(UInt32(0x0001D518))!)"
+                case "ufr":                             return "\(UnicodeScalar(UInt32(0x0001D532))!)"
+                case "Ugrave":                          return "\(UnicodeScalar(UInt32(0x000000D9))!)"
+                case "ugrave":                          return "\(UnicodeScalar(UInt32(0x000000F9))!)"
+                case "uHar":                            return "\(UnicodeScalar(UInt32(0x00002963))!)"
+                case "uharl":                           return "\(UnicodeScalar(UInt32(0x000021BF))!)"
+                case "uharr":                           return "\(UnicodeScalar(UInt32(0x000021BE))!)"
+                case "uhblk":                           return "\(UnicodeScalar(UInt32(0x00002580))!)"
+                case "ulcorn":                          return "\(UnicodeScalar(UInt32(0x0000231C))!)"
+                case "ulcorner":                        return "\(UnicodeScalar(UInt32(0x0000231C))!)"
+                case "ulcrop":                          return "\(UnicodeScalar(UInt32(0x0000230F))!)"
+                case "ultri":                           return "\(UnicodeScalar(UInt32(0x000025F8))!)"
+                case "Umacr":                           return "\(UnicodeScalar(UInt32(0x0000016A))!)"
+                case "umacr":                           return "\(UnicodeScalar(UInt32(0x0000016B))!)"
+                case "uml":                             return "\(UnicodeScalar(UInt32(0x000000A8))!)"
+                case "UnderBar":                        return "\(UnicodeScalar(UInt32(0x0000005F))!)"
+                case "UnderBrace":                      return "\(UnicodeScalar(UInt32(0x000023DF))!)"
+                case "UnderBracket":                    return "\(UnicodeScalar(UInt32(0x000023B5))!)"
+                case "UnderParenthesis":                return "\(UnicodeScalar(UInt32(0x000023DD))!)"
+                case "Union":                           return "\(UnicodeScalar(UInt32(0x000022C3))!)"
+                case "UnionPlus":                       return "\(UnicodeScalar(UInt32(0x0000228E))!)"
+                case "Uogon":                           return "\(UnicodeScalar(UInt32(0x00000172))!)"
+                case "uogon":                           return "\(UnicodeScalar(UInt32(0x00000173))!)"
+                case "Uopf":                            return "\(UnicodeScalar(UInt32(0x0001D54C))!)"
+                case "uopf":                            return "\(UnicodeScalar(UInt32(0x0001D566))!)"
+                case "uparrow":                         return "\(UnicodeScalar(UInt32(0x00002191))!)"
+                case "UpArrow":                         return "\(UnicodeScalar(UInt32(0x00002191))!)"
+                case "Uparrow":                         return "\(UnicodeScalar(UInt32(0x000021D1))!)"
+                case "UpArrowBar":                      return "\(UnicodeScalar(UInt32(0x00002912))!)"
+                case "UpArrowDownArrow":                return "\(UnicodeScalar(UInt32(0x000021C5))!)"
+                case "updownarrow":                     return "\(UnicodeScalar(UInt32(0x00002195))!)"
+                case "UpDownArrow":                     return "\(UnicodeScalar(UInt32(0x00002195))!)"
+                case "Updownarrow":                     return "\(UnicodeScalar(UInt32(0x000021D5))!)"
+                case "UpEquilibrium":                   return "\(UnicodeScalar(UInt32(0x0000296E))!)"
+                case "upharpoonleft":                   return "\(UnicodeScalar(UInt32(0x000021BF))!)"
+                case "upharpoonright":                  return "\(UnicodeScalar(UInt32(0x000021BE))!)"
+                case "uplus":                           return "\(UnicodeScalar(UInt32(0x0000228E))!)"
+                case "UpperLeftArrow":                  return "\(UnicodeScalar(UInt32(0x00002196))!)"
+                case "UpperRightArrow":                 return "\(UnicodeScalar(UInt32(0x00002197))!)"
+                case "upsi":                            return "\(UnicodeScalar(UInt32(0x000003C5))!)"
+                case "Upsi":                            return "\(UnicodeScalar(UInt32(0x000003D2))!)"
+                case "upsih":                           return "\(UnicodeScalar(UInt32(0x000003D2))!)"
+                case "Upsilon":                         return "\(UnicodeScalar(UInt32(0x000003A5))!)"
+                case "upsilon":                         return "\(UnicodeScalar(UInt32(0x000003C5))!)"
+                case "UpTee":                           return "\(UnicodeScalar(UInt32(0x000022A5))!)"
+                case "UpTeeArrow":                      return "\(UnicodeScalar(UInt32(0x000021A5))!)"
+                case "upuparrows":                      return "\(UnicodeScalar(UInt32(0x000021C8))!)"
+                case "urcorn":                          return "\(UnicodeScalar(UInt32(0x0000231D))!)"
+                case "urcorner":                        return "\(UnicodeScalar(UInt32(0x0000231D))!)"
+                case "urcrop":                          return "\(UnicodeScalar(UInt32(0x0000230E))!)"
+                case "Uring":                           return "\(UnicodeScalar(UInt32(0x0000016E))!)"
+                case "uring":                           return "\(UnicodeScalar(UInt32(0x0000016F))!)"
+                case "urtri":                           return "\(UnicodeScalar(UInt32(0x000025F9))!)"
+                case "Uscr":                            return "\(UnicodeScalar(UInt32(0x0001D4B0))!)"
+                case "uscr":                            return "\(UnicodeScalar(UInt32(0x0001D4CA))!)"
+                case "utdot":                           return "\(UnicodeScalar(UInt32(0x000022F0))!)"
+                case "Utilde":                          return "\(UnicodeScalar(UInt32(0x00000168))!)"
+                case "utilde":                          return "\(UnicodeScalar(UInt32(0x00000169))!)"
+                case "utri":                            return "\(UnicodeScalar(UInt32(0x000025B5))!)"
+                case "utrif":                           return "\(UnicodeScalar(UInt32(0x000025B4))!)"
+                case "uuarr":                           return "\(UnicodeScalar(UInt32(0x000021C8))!)"
+                case "Uuml":                            return "\(UnicodeScalar(UInt32(0x000000DC))!)"
+                case "uuml":                            return "\(UnicodeScalar(UInt32(0x000000FC))!)"
+                case "uwangle":                         return "\(UnicodeScalar(UInt32(0x000029A7))!)"
+                case "vangrt":                          return "\(UnicodeScalar(UInt32(0x0000299C))!)"
+                case "varepsilon":                      return "\(UnicodeScalar(UInt32(0x000003F5))!)"
+                case "varkappa":                        return "\(UnicodeScalar(UInt32(0x000003F0))!)"
+                case "varnothing":                      return "\(UnicodeScalar(UInt32(0x00002205))!)"
+                case "varphi":                          return "\(UnicodeScalar(UInt32(0x000003D5))!)"
+                case "varpi":                           return "\(UnicodeScalar(UInt32(0x000003D6))!)"
+                case "varpropto":                       return "\(UnicodeScalar(UInt32(0x0000221D))!)"
+                case "varr":                            return "\(UnicodeScalar(UInt32(0x00002195))!)"
+                case "vArr":                            return "\(UnicodeScalar(UInt32(0x000021D5))!)"
+                case "varrho":                          return "\(UnicodeScalar(UInt32(0x000003F1))!)"
+                case "varsigma":                        return "\(UnicodeScalar(UInt32(0x000003C2))!)"
+                case "varsubsetneq":                    return "\(UnicodeScalar(UInt32(0x0000228A))!)\(UnicodeScalar(UInt32(0x0000FE00))!)"
+                case "varsubsetneqq":                   return "\(UnicodeScalar(UInt32(0x00002ACB))!)\(UnicodeScalar(UInt32(0x0000FE00))!)"
+                case "varsupsetneq":                    return "\(UnicodeScalar(UInt32(0x0000228B))!)\(UnicodeScalar(UInt32(0x0000FE00))!)"
+                case "varsupsetneqq":                   return "\(UnicodeScalar(UInt32(0x00002ACC))!)\(UnicodeScalar(UInt32(0x0000FE00))!)"
+                case "vartheta":                        return "\(UnicodeScalar(UInt32(0x000003D1))!)"
+                case "vartriangleleft":                 return "\(UnicodeScalar(UInt32(0x000022B2))!)"
+                case "vartriangleright":                return "\(UnicodeScalar(UInt32(0x000022B3))!)"
+                case "vBar":                            return "\(UnicodeScalar(UInt32(0x00002AE8))!)"
+                case "Vbar":                            return "\(UnicodeScalar(UInt32(0x00002AEB))!)"
+                case "vBarv":                           return "\(UnicodeScalar(UInt32(0x00002AE9))!)"
+                case "Vcy":                             return "\(UnicodeScalar(UInt32(0x00000412))!)"
+                case "vcy":                             return "\(UnicodeScalar(UInt32(0x00000432))!)"
+                case "vdash":                           return "\(UnicodeScalar(UInt32(0x000022A2))!)"
+                case "vDash":                           return "\(UnicodeScalar(UInt32(0x000022A8))!)"
+                case "Vdash":                           return "\(UnicodeScalar(UInt32(0x000022A9))!)"
+                case "VDash":                           return "\(UnicodeScalar(UInt32(0x000022AB))!)"
+                case "Vdashl":                          return "\(UnicodeScalar(UInt32(0x00002AE6))!)"
+                case "vee":                             return "\(UnicodeScalar(UInt32(0x00002228))!)"
+                case "Vee":                             return "\(UnicodeScalar(UInt32(0x000022C1))!)"
+                case "veebar":                          return "\(UnicodeScalar(UInt32(0x000022BB))!)"
+                case "veeeq":                           return "\(UnicodeScalar(UInt32(0x0000225A))!)"
+                case "vellip":                          return "\(UnicodeScalar(UInt32(0x000022EE))!)"
+                case "verbar":                          return "\(UnicodeScalar(UInt32(0x0000007C))!)"
+                case "Verbar":                          return "\(UnicodeScalar(UInt32(0x00002016))!)"
+                case "vert":                            return "\(UnicodeScalar(UInt32(0x0000007C))!)"
+                case "Vert":                            return "\(UnicodeScalar(UInt32(0x00002016))!)"
+                case "VerticalBar":                     return "\(UnicodeScalar(UInt32(0x00002223))!)"
+                case "VerticalLine":                    return "\(UnicodeScalar(UInt32(0x0000007C))!)"
+                case "VerticalSeparator":               return "\(UnicodeScalar(UInt32(0x00002758))!)"
+                case "VerticalTilde":                   return "\(UnicodeScalar(UInt32(0x00002240))!)"
+                case "VeryThinSpace":                   return "\(UnicodeScalar(UInt32(0x0000200A))!)"
+                case "Vfr":                             return "\(UnicodeScalar(UInt32(0x0001D519))!)"
+                case "vfr":                             return "\(UnicodeScalar(UInt32(0x0001D533))!)"
+                case "vltri":                           return "\(UnicodeScalar(UInt32(0x000022B2))!)"
+                case "vnsub":                           return "\(UnicodeScalar(UInt32(0x00002282))!)\(UnicodeScalar(UInt32(0x000020D2))!)"
+                case "vnsup":                           return "\(UnicodeScalar(UInt32(0x00002283))!)\(UnicodeScalar(UInt32(0x000020D2))!)"
+                case "Vopf":                            return "\(UnicodeScalar(UInt32(0x0001D54D))!)"
+                case "vopf":                            return "\(UnicodeScalar(UInt32(0x0001D567))!)"
+                case "vprop":                           return "\(UnicodeScalar(UInt32(0x0000221D))!)"
+                case "vrtri":                           return "\(UnicodeScalar(UInt32(0x000022B3))!)"
+                case "Vscr":                            return "\(UnicodeScalar(UInt32(0x0001D4B1))!)"
+                case "vscr":                            return "\(UnicodeScalar(UInt32(0x0001D4CB))!)"
+                case "vsubne":                          return "\(UnicodeScalar(UInt32(0x0000228A))!)\(UnicodeScalar(UInt32(0x0000FE00))!)"
+                case "vsubnE":                          return "\(UnicodeScalar(UInt32(0x00002ACB))!)\(UnicodeScalar(UInt32(0x0000FE00))!)"
+                case "vsupne":                          return "\(UnicodeScalar(UInt32(0x0000228B))!)\(UnicodeScalar(UInt32(0x0000FE00))!)"
+                case "vsupnE":                          return "\(UnicodeScalar(UInt32(0x00002ACC))!)\(UnicodeScalar(UInt32(0x0000FE00))!)"
+                case "Vvdash":                          return "\(UnicodeScalar(UInt32(0x000022AA))!)"
+                case "vzigzag":                         return "\(UnicodeScalar(UInt32(0x0000299A))!)"
+                case "Wcirc":                           return "\(UnicodeScalar(UInt32(0x00000174))!)"
+                case "wcirc":                           return "\(UnicodeScalar(UInt32(0x00000175))!)"
+                case "wedbar":                          return "\(UnicodeScalar(UInt32(0x00002A5F))!)"
+                case "wedge":                           return "\(UnicodeScalar(UInt32(0x00002227))!)"
+                case "Wedge":                           return "\(UnicodeScalar(UInt32(0x000022C0))!)"
+                case "wedgeq":                          return "\(UnicodeScalar(UInt32(0x00002259))!)"
+                case "weierp":                          return "\(UnicodeScalar(UInt32(0x00002118))!)"
+                case "Wfr":                             return "\(UnicodeScalar(UInt32(0x0001D51A))!)"
+                case "wfr":                             return "\(UnicodeScalar(UInt32(0x0001D534))!)"
+                case "Wopf":                            return "\(UnicodeScalar(UInt32(0x0001D54E))!)"
+                case "wopf":                            return "\(UnicodeScalar(UInt32(0x0001D568))!)"
+                case "wp":                              return "\(UnicodeScalar(UInt32(0x00002118))!)"
+                case "wr":                              return "\(UnicodeScalar(UInt32(0x00002240))!)"
+                case "wreath":                          return "\(UnicodeScalar(UInt32(0x00002240))!)"
+                case "Wscr":                            return "\(UnicodeScalar(UInt32(0x0001D4B2))!)"
+                case "wscr":                            return "\(UnicodeScalar(UInt32(0x0001D4CC))!)"
+                case "xcap":                            return "\(UnicodeScalar(UInt32(0x000022C2))!)"
+                case "xcirc":                           return "\(UnicodeScalar(UInt32(0x000025EF))!)"
+                case "xcup":                            return "\(UnicodeScalar(UInt32(0x000022C3))!)"
+                case "xdtri":                           return "\(UnicodeScalar(UInt32(0x000025BD))!)"
+                case "Xfr":                             return "\(UnicodeScalar(UInt32(0x0001D51B))!)"
+                case "xfr":                             return "\(UnicodeScalar(UInt32(0x0001D535))!)"
+                case "xharr":                           return "\(UnicodeScalar(UInt32(0x000027F7))!)"
+                case "xhArr":                           return "\(UnicodeScalar(UInt32(0x000027FA))!)"
+                case "Xi":                              return "\(UnicodeScalar(UInt32(0x0000039E))!)"
+                case "xi":                              return "\(UnicodeScalar(UInt32(0x000003BE))!)"
+                case "xlarr":                           return "\(UnicodeScalar(UInt32(0x000027F5))!)"
+                case "xlArr":                           return "\(UnicodeScalar(UInt32(0x000027F8))!)"
+                case "xmap":                            return "\(UnicodeScalar(UInt32(0x000027FC))!)"
+                case "xnis":                            return "\(UnicodeScalar(UInt32(0x000022FB))!)"
+                case "xodot":                           return "\(UnicodeScalar(UInt32(0x00002A00))!)"
+                case "Xopf":                            return "\(UnicodeScalar(UInt32(0x0001D54F))!)"
+                case "xopf":                            return "\(UnicodeScalar(UInt32(0x0001D569))!)"
+                case "xoplus":                          return "\(UnicodeScalar(UInt32(0x00002A01))!)"
+                case "xotime":                          return "\(UnicodeScalar(UInt32(0x00002A02))!)"
+                case "xrarr":                           return "\(UnicodeScalar(UInt32(0x000027F6))!)"
+                case "xrArr":                           return "\(UnicodeScalar(UInt32(0x000027F9))!)"
+                case "Xscr":                            return "\(UnicodeScalar(UInt32(0x0001D4B3))!)"
+                case "xscr":                            return "\(UnicodeScalar(UInt32(0x0001D4CD))!)"
+                case "xsqcup":                          return "\(UnicodeScalar(UInt32(0x00002A06))!)"
+                case "xuplus":                          return "\(UnicodeScalar(UInt32(0x00002A04))!)"
+                case "xutri":                           return "\(UnicodeScalar(UInt32(0x000025B3))!)"
+                case "xvee":                            return "\(UnicodeScalar(UInt32(0x000022C1))!)"
+                case "xwedge":                          return "\(UnicodeScalar(UInt32(0x000022C0))!)"
+                case "Yacute":                          return "\(UnicodeScalar(UInt32(0x000000DD))!)"
+                case "yacute":                          return "\(UnicodeScalar(UInt32(0x000000FD))!)"
+                case "YAcy":                            return "\(UnicodeScalar(UInt32(0x0000042F))!)"
+                case "yacy":                            return "\(UnicodeScalar(UInt32(0x0000044F))!)"
+                case "Ycirc":                           return "\(UnicodeScalar(UInt32(0x00000176))!)"
+                case "ycirc":                           return "\(UnicodeScalar(UInt32(0x00000177))!)"
+                case "Ycy":                             return "\(UnicodeScalar(UInt32(0x0000042B))!)"
+                case "ycy":                             return "\(UnicodeScalar(UInt32(0x0000044B))!)"
+                case "yen":                             return "\(UnicodeScalar(UInt32(0x000000A5))!)"
+                case "Yfr":                             return "\(UnicodeScalar(UInt32(0x0001D51C))!)"
+                case "yfr":                             return "\(UnicodeScalar(UInt32(0x0001D536))!)"
+                case "YIcy":                            return "\(UnicodeScalar(UInt32(0x00000407))!)"
+                case "yicy":                            return "\(UnicodeScalar(UInt32(0x00000457))!)"
+                case "Yopf":                            return "\(UnicodeScalar(UInt32(0x0001D550))!)"
+                case "yopf":                            return "\(UnicodeScalar(UInt32(0x0001D56A))!)"
+                case "Yscr":                            return "\(UnicodeScalar(UInt32(0x0001D4B4))!)"
+                case "yscr":                            return "\(UnicodeScalar(UInt32(0x0001D4CE))!)"
+                case "YUcy":                            return "\(UnicodeScalar(UInt32(0x0000042E))!)"
+                case "yucy":                            return "\(UnicodeScalar(UInt32(0x0000044E))!)"
+                case "yuml":                            return "\(UnicodeScalar(UInt32(0x000000FF))!)"
+                case "Yuml":                            return "\(UnicodeScalar(UInt32(0x00000178))!)"
+                case "Zacute":                          return "\(UnicodeScalar(UInt32(0x00000179))!)"
+                case "zacute":                          return "\(UnicodeScalar(UInt32(0x0000017A))!)"
+                case "Zcaron":                          return "\(UnicodeScalar(UInt32(0x0000017D))!)"
+                case "zcaron":                          return "\(UnicodeScalar(UInt32(0x0000017E))!)"
+                case "Zcy":                             return "\(UnicodeScalar(UInt32(0x00000417))!)"
+                case "zcy":                             return "\(UnicodeScalar(UInt32(0x00000437))!)"
+                case "Zdot":                            return "\(UnicodeScalar(UInt32(0x0000017B))!)"
+                case "zdot":                            return "\(UnicodeScalar(UInt32(0x0000017C))!)"
+                case "zeetrf":                          return "\(UnicodeScalar(UInt32(0x00002128))!)"
+                case "ZeroWidthSpace":                  return "\(UnicodeScalar(UInt32(0x0000200B))!)"
+                case "Zeta":                            return "\(UnicodeScalar(UInt32(0x00000396))!)"
+                case "zeta":                            return "\(UnicodeScalar(UInt32(0x000003B6))!)"
+                case "Zfr":                             return "\(UnicodeScalar(UInt32(0x00002128))!)"
+                case "zfr":                             return "\(UnicodeScalar(UInt32(0x0001D537))!)"
+                case "ZHcy":                            return "\(UnicodeScalar(UInt32(0x00000416))!)"
+                case "zhcy":                            return "\(UnicodeScalar(UInt32(0x00000436))!)"
+                case "zigrarr":                         return "\(UnicodeScalar(UInt32(0x000021DD))!)"
+                case "Zopf":                            return "\(UnicodeScalar(UInt32(0x00002124))!)"
+                case "zopf":                            return "\(UnicodeScalar(UInt32(0x0001D56B))!)"
+                case "Zscr":                            return "\(UnicodeScalar(UInt32(0x0001D4B5))!)"
+                case "zscr":                            return "\(UnicodeScalar(UInt32(0x0001D4CF))!)"
+                case "zwj":                             return "\(UnicodeScalar(UInt32(0x0000200D))!)"
+                case "zwnj":                            return "\(UnicodeScalar(UInt32(0x0000200C))!)"
+                default:                                return nil
+            }
+        }
+
+        if let val = exCache[named] { return val }
+        guard let val = _e(named) else { return nil }
+        exCache[named] = val
+        return val
+    }
 }

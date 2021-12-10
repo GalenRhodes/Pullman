@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		1117D0960477884ECD959318 /* CharacterSets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1117D6BA7A92F4F443802C55 /* CharacterSets.swift */; };
 		1117D179062FC5E07EC4B22E /* DTDLocated.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1117DDB2AC08E2D375D2EA97 /* DTDLocated.swift */; };
+		1117D1833D9DFBEE9B7F0F14 /* AttributeDecl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1117D8D97D504C349CEE223F /* AttributeDecl.swift */; };
 		1117D18681B05370B4FBAED4 /* NotationDecl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1117DC319568C890BD2EE808 /* NotationDecl.swift */; };
 		1117D1BA24567F5D1FF3F734 /* EntityDecl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1117DA2F1C02947D5CD67275 /* EntityDecl.swift */; };
 		1117D26F8CF623B9FCD25FE2 /* Element.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1117D2AFED472F1648154B84 /* Element.swift */; };
@@ -19,6 +20,7 @@
 		1117D48F87A29D46B510126C /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1117D4B555B98DC50AD3C662 /* Utilities.swift */; };
 		1117D55215101272C1415D3B /* ProcessingInstruction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1117DD359EDCF17F2DE6FDC4 /* ProcessingInstruction.swift */; };
 		1117D57649F7E100A3D82B29 /* CharacterContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1117D4F9DE23587CE424A415 /* CharacterContent.swift */; };
+		1117D58C21572B8711C57603 /* DocType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1117D5B5FD0F71FC75BA92C5 /* DocType.swift */; };
 		1117D58FAF670A4466A644FC /* EntityRef.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1117D70CD4144630308A9B20 /* EntityRef.swift */; };
 		1117D747E088B66B8C2163E2 /* DTDType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1117DA64ACDB24DD22C3EA5E /* DTDType.swift */; };
 		1117D751982CF584F3CB507B /* ParentNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1117D0801B0A4C2FEAE7C455 /* ParentNode.swift */; };
@@ -62,11 +64,13 @@
 		1117D4B555B98DC50AD3C662 /* Utilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
 		1117D4F9DE23587CE424A415 /* CharacterContent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CharacterContent.swift; sourceTree = "<group>"; };
 		1117D54D34EF67AA03768FDD /* Package.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Package.swift; sourceTree = "<group>"; };
+		1117D5B5FD0F71FC75BA92C5 /* DocType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DocType.swift; sourceTree = "<group>"; };
 		1117D658E3432CF708ECB048 /* NSName.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSName.swift; sourceTree = "<group>"; };
 		1117D6BA7A92F4F443802C55 /* CharacterSets.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CharacterSets.swift; sourceTree = "<group>"; };
 		1117D6DACBD89E8A55E5B37E /* DOMError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DOMError.swift; sourceTree = "<group>"; };
 		1117D70CD4144630308A9B20 /* EntityRef.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EntityRef.swift; sourceTree = "<group>"; };
 		1117D89DBD66570A95EDD2C5 /* DocumentFragment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DocumentFragment.swift; sourceTree = "<group>"; };
+		1117D8D97D504C349CEE223F /* AttributeDecl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttributeDecl.swift; sourceTree = "<group>"; };
 		1117D8EF86DC32144A533E89 /* Pullman.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Pullman.h; sourceTree = "<group>"; };
 		1117DA2F1C02947D5CD67275 /* EntityDecl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EntityDecl.swift; sourceTree = "<group>"; };
 		1117DA64ACDB24DD22C3EA5E /* DTDType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DTDType.swift; sourceTree = "<group>"; };
@@ -158,6 +162,8 @@
 				1117DC319568C890BD2EE808 /* NotationDecl.swift */,
 				1117DBABEC05FAACEF805B6E /* ElementDecl.swift */,
 				1117DA6F832DCF56D9FD337D /* Support */,
+				1117D5B5FD0F71FC75BA92C5 /* DocType.swift */,
+				1117D8D97D504C349CEE223F /* AttributeDecl.swift */,
 			);
 			path = DTD;
 			sourceTree = "<group>";
@@ -385,6 +391,8 @@
 				1117D37E9C38702FD477864B /* RegexPatterns.swift in Sources */,
 				1117D0960477884ECD959318 /* CharacterSets.swift in Sources */,
 				1117D85477B70D3C44BB6A85 /* NodeList.swift in Sources */,
+				1117D58C21572B8711C57603 /* DocType.swift in Sources */,
+				1117D1833D9DFBEE9B7F0F14 /* AttributeDecl.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -664,7 +672,7 @@
 			repositoryURL = "https://github.com/GalenRhodes/RedBlackTree";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 2.0.0;
+				minimumVersion = 2.0.5;
 			};
 		};
 		830F5E80274FC2E800A2F726 /* XCRemoteSwiftPackageReference "Rubicon.git" */ = {
@@ -672,7 +680,7 @@
 			repositoryURL = "https://github.com/GalenRhodes/Rubicon.git";
 			requirement = {
 				kind = upToNextMinorVersion;
-				minimumVersion = 0.9.0;
+				minimumVersion = 0.10.1;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */

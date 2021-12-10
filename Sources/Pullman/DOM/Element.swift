@@ -47,7 +47,7 @@ public class Element: ParentNode {
 
     override func set(qualifiedName: String, namespaceURI: String?) throws { try nsName.set(qualifiedName: qualifiedName, namespaceURI: namespaceURI) }
 
-    override func set(prefix: String?) throws { try nsName.set(prefix: prefix) }
+    override public func set(prefix: String?) throws { try nsName.set(prefix: prefix) }
 
     public override func lookupPrefix(namespaceURI: String) -> String? {
         if let p = prefix, self.namespaceURI == namespaceURI { return p }
@@ -67,45 +67,68 @@ public class Element: ParentNode {
         for attr in _attributes { if attr.prefix == nil && attr.localName == "xmlns" { return attr.value } }
         return (parentNode as? Element)?._lookupDefaultNamespaceURI()
     }
+
+    @discardableResult public func setAttribute(_ attr: Attribute) throws -> Attribute? {
+        guard attr.ownerElement == nil else { throw DOMError.IllegalOperation(description: "Attribute is already owned by another element.") }
+        guard attr.ownerDocument === ownerDocument else { throw DOMError.WrongDocumentError(description: "Attribute belongs to a different document.") }
+        attr.ownerElement = self
+        let old = _attributes.add(node: attr)
+        if let o = old { o.ownerElement = nil }
+        return old
+    }
+
+    public func getAttribute(localName: String, namespaceURI uri: String?) -> Attribute? {
+        ((uri == nil) ? _attributes[localName] : _attributes[localName, uri!])
+    }
+
+    public func removeAttribute(_ attr: Attribute) -> Attribute? {
+        guard attr.ownerDocument === ownerDocument && attr.ownerElement === self else { return nil }
+        _attributes.remove(node: attr)
+        attr.ownerElement = nil
+        return attr
+    }
 }
 
 extension Element {
-    private func addAttr(_ qName: String, _ uri: String?, _ value: String) throws {
-        setAttribute(try Attribute(ownerDocument: ownerDocument, ownerElement: self, qualifiedName: qName, namespaceURI: uri, value: value, isSpecified: false, isID: false))
-    }
-
-    public func setAttribute(qualifiedName qName: String, namespaceURI uri: String?, value: String) throws {
-        if let _uri = uri {
-            if let a = _attributes.nodeWith(qualifiedName: qName, namespaceURI: _uri) {
-                let prefix = NSName.split(qualifiedName: qName).prefix
-                if a.prefix != prefix { try a.set(prefix: prefix) }
+    @inlinable public func setAttribute(qualifiedName qName: String, namespaceURI uri: String?, value: String) throws -> Attribute? {
+        if let u = uri {
+            let n = NSName.split(qualifiedName: qName)
+            if let a = getAttribute(localName: n.localName, namespaceURI: u) {
                 a.value = value
-            }
-            else {
-                try addAttr(qName, _uri, value)
+                try a.set(prefix: a.prefix)
+                return a
             }
         }
-        else if let a = _attributes[qName] {
+        else if let a = getAttribute(name: qName) {
             a.value = value
+            return a
         }
-        else {
-            try addAttr(qName, nil, value)
-        }
+
+        return try setAttribute(ownerDocument.createAttribute(qualifiedName: qName, namespaceURI: uri, value: value))
     }
 
-    @inlinable public func setAttribute(name: String, value: String) throws { try setAttribute(qualifiedName: name, namespaceURI: nil, value: value) }
+    @inlinable public func setAttribute(name: String, value: String) throws -> Attribute? { try setAttribute(qualifiedName: name, namespaceURI: nil, value: value) }
 
-    @discardableResult public func setAttribute(_ attr: Attribute) -> Attribute? { _attributes.add(node: attr) }
+    @inlinable public func getAttribute(name: String) -> Attribute? { getAttribute(localName: name, namespaceURI: nil) }
 
-    public func getAttribute(qualifiedName qName: String, namespaceURI uri: String?) -> Attribute? { _attributes.nodeWith(qualifiedName: qName, namespaceURI: uri) }
+    @inlinable public func getAttributeValue(localName: String, namespaceURI: String?) -> String? { getAttribute(localName: localName, namespaceURI: namespaceURI)?.value }
 
-    @inlinable public func getAttribute(name: String) -> Attribute? { getAttribute(qualifiedName: name, namespaceURI: nil) }
+    @inlinable public func getAttributeValue(name: String) -> String? { getAttribute(localName: name, namespaceURI: nil)?.value }
 
-    @inlinable public func getAttributeValue(qualifiedName qName: String, namespaceURI: String?) -> String? { getAttribute(qualifiedName: qName, namespaceURI: namespaceURI)?.value }
+    @inlinable public func hasAttribute(localName: String, namespaceURI: String?) -> Bool { getAttribute(localName: localName, namespaceURI: namespaceURI) != nil }
 
-    @inlinable public func getAttributeValue(name: String) -> String? { getAttribute(qualifiedName: name, namespaceURI: nil)?.value }
+    @inlinable public func hasAttribute(name: String) -> Bool { getAttribute(localName: name, namespaceURI: nil) != nil }
 
-    @inlinable public func hasAttribute(qualifiedName qName: String, namespaceURI: String?) -> Bool { getAttribute(qualifiedName: qName, namespaceURI: namespaceURI) != nil }
+    @inlinable public func removeAttribute(localName: String, namespaceURI: String?) -> Attribute? {
+        guard let attr = getAttribute(localName: localName, namespaceURI: namespaceURI) else { return nil }
+        return removeAttribute(attr)
+    }
 
-    @inlinable public func hasAttribute(name: String) -> Bool { getAttribute(qualifiedName: name, namespaceURI: nil) != nil }
+    @inlinable public func removeAttribute(name: String) -> Attribute? { removeAttribute(localName: name, namespaceURI: nil) }
+}
+
+extension Document {
+    public func createElement(qualifiedName: String, namespaceURI: String?) throws -> Element {
+        try Element(ownerDocument: self, tagName: qualifiedName, namespaceURI: namespaceURI)
+    }
 }

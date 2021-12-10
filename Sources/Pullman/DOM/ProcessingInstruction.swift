@@ -30,9 +30,15 @@ public class ProcessingInstruction: Node {
     public          var data:      String
     //@f:1
 
-    public init(ownerDocument: Document, target: String, data: String) {
+    init(ownerDocument: Document, target: String, data: String) {
         self.target = target
         self.data = data
         super.init(ownerDocument: ownerDocument)
+    }
+}
+
+extension Document {
+    public func createProcessingInstruction(target: String, data: String) -> ProcessingInstruction {
+        ProcessingInstruction(ownerDocument: self, target: target, data: data)
     }
 }

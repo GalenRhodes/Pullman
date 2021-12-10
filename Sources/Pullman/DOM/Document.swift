@@ -39,4 +39,21 @@ public class Document: ParentNode {
 
     public func renameNode(node: Node, qualifiedName: String, namespaceURI: String?) throws {
     }
+
+    private var standardEntityCache: [String: EntityDecl] = [:]
+
+    public func createEntityRef(qualifiedName: String, namespaceURI: String?) throws -> EntityRef? {
+        if namespaceURI == nil {
+            if let stdDecl = standardEntityCache[qualifiedName] {
+                return try EntityRef(ownerDocument: self, qualifiedName: qualifiedName, namespaceURI: nil, entity: stdDecl)
+            }
+            if let std = EntityDecl.expandHTMLEntity(named: qualifiedName) {
+                let stdDecl = try EntityDecl(ownerDocument: self, qualifiedName: qualifiedName, namespaceURI: nil, textContent: std, location: nil, publicID: nil, systemID: nil)
+                standardEntityCache[qualifiedName] = stdDecl
+                return try EntityRef(ownerDocument: self, qualifiedName: qualifiedName, namespaceURI: nil, entity: stdDecl)
+            }
+        }
+        // TODO: Search for entity in the DOCTYPE.
+        return nil
+    }
 }

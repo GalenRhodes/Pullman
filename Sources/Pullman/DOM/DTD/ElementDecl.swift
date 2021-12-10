@@ -20,4 +20,12 @@ import CoreFoundation
 import Rubicon
 
 public class ElementDecl: DTDType {
+
+    public override var nodeType: NodeType { .ElementDecl }
+
+    public override func insert(node newNode: Node, before refNode: Node?) throws -> Node { newNode }
+
+    public override func addChildNodeListener(listener: ChildNodeListener) {}
+
+    public override func removeChildNodeListener(listener: ChildNodeListener) {}
 }

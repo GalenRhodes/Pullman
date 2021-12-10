@@ -88,15 +88,7 @@ public class Node {
         return try removeNode(xNode)
     }
 
-    func set(qualifiedName: String, namespaceURI: String?) throws {
-        throw DOMError.IllegalOperation(description: "Node cannot be renamed.")
-    }
-
-    func set(prefix: String?, localName: String, namespaceURI: String) throws {
-        throw DOMError.IllegalOperation(description: "Node cannot be renamed.")
-    }
-
-    func set(prefix: String?) throws {
+    public func set(prefix: String?) throws {
         throw DOMError.IllegalOperation(description: "Node prefix cannot be changed.")
     }
 
@@ -121,8 +113,6 @@ public class Node {
 
     public func lookupNamespaceURI(prefix: String) -> String? { parentNode?.lookupNamespaceURI(prefix: prefix) }
 
-    func sendEvent(event: DocumentNodeEvent, source: Node, destination: Node?) { for ud in userData { if let h = ud.value.handler { h(event, ud.key, ud.value.data, source, destination) } } }
-
     public func getUserData(key: String) -> Any? { userData[key]?.data }
 
     @discardableResult public func setUserData(key: String, data: Any?, handler: UserDataHandler? = nil) -> Any? {
@@ -134,6 +124,12 @@ public class Node {
         else {
             return userData.removeValue(forKey: key)?.data
         }
+    }
+
+    func sendEvent(event: DocumentNodeEvent, source: Node, destination: Node?) { for ud in userData { if let h = ud.value.handler { h(event, ud.key, ud.value.data, source, destination) } } }
+
+    func set(qualifiedName: String, namespaceURI: String?) throws {
+        throw DOMError.IllegalOperation(description: "Node cannot be renamed.")
     }
 
     private struct UserData {

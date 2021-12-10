@@ -1,9 +1,9 @@
 /*===============================================================================================================================================================================*
  *     PROJECT: Pullman
- *    FILENAME: EntityRef.swift
+ *    FILENAME: DocType.swift
  *         IDE: AppCode
  *      AUTHOR: Galen Rhodes
- *        DATE: 11/28/21
+ *        DATE: 12/10/21
  *
  * Copyright © 2021. All rights reserved.
  *
@@ -19,23 +19,21 @@ import Foundation
 import CoreFoundation
 import Rubicon
 
-public class EntityRef: Node {
-    //@f:0
-    public override var nodeType:     NodeType { .EntityRef }
-    public override var nodeName:     String   { nsName.qualifiedName }
-    public override var localName:    String   { nsName.localName }
-    public override var prefix:       String?  { nsName.prefix }
-    public override var namespaceURI: String?  { nsName.namespaceURI }
+public class DocType: DTDLocated {
+    public override var nodeType: NodeType { .DocType }
 
-    public          var name:         String   { nsName.qualifiedName }
+    public var elementName:    String
+    public var internalSubset: String?
 
-    private         let nsName:       NSName
-    internal        var entity:       EntityDecl
-    //@f:1
-
-    public init(ownerDocument: Document, qualifiedName: String, namespaceURI: String?, entity: EntityDecl) throws {
-        nsName = try NSName(qualifiedName: qualifiedName, namespaceURI: namespaceURI)
-        self.entity = entity
-        super.init(ownerDocument: ownerDocument)
+    init(ownerDocument doc: Document, elementName elem: String, qualifiedName qName: String, namespaceURI uri: String?, location loc: Location?, publicID pid: String?, systemID sid: String?, internalSubset sub: String?) throws {
+        elementName = elem
+        internalSubset = sub
+        try super.init(ownerDocument: doc, qualifiedName: qName, namespaceURI: uri, location: loc, publicID: pid, systemID: sid)
     }
+
+    public override func addChildNodeListener(listener: ChildNodeListener) {}
+
+    public override func removeChildNodeListener(listener: ChildNodeListener) {}
+
+    public override func insert(node newNode: Node, before refNode: Node?) throws -> Node { newNode }
 }

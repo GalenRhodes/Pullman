@@ -11,7 +11,7 @@ let package = Package(
         .library(name: "Pullman", targets: [ "Pullman" ]),
     ],
     dependencies: [
-        .package(name: "Rubicon", url: "https://github.com/GalenRhodes/Rubicon.git", .upToNextMinor(from: "0.9.0")),
+        .package(name: "Rubicon", url: "https://github.com/GalenRhodes/Rubicon.git", .upToNextMinor(from: "0.10.1")),
         .package(name: "RedBlackTree", url: "https://github.com/GalenRhodes/RedBlackTree.git", .upToNextMajor(from: "2.0.5"))
     ],
     targets: [

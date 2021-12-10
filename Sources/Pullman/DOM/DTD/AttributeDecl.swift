@@ -1,9 +1,9 @@
 /*===============================================================================================================================================================================*
  *     PROJECT: Pullman
- *    FILENAME: EntityRef.swift
+ *    FILENAME: AttributeDecl.swift
  *         IDE: AppCode
  *      AUTHOR: Galen Rhodes
- *        DATE: 11/28/21
+ *        DATE: 12/10/21
  *
  * Copyright © 2021. All rights reserved.
  *
@@ -19,23 +19,12 @@ import Foundation
 import CoreFoundation
 import Rubicon
 
-public class EntityRef: Node {
-    //@f:0
-    public override var nodeType:     NodeType { .EntityRef }
-    public override var nodeName:     String   { nsName.qualifiedName }
-    public override var localName:    String   { nsName.localName }
-    public override var prefix:       String?  { nsName.prefix }
-    public override var namespaceURI: String?  { nsName.namespaceURI }
+public class AttributeDecl: DTDType {
+    public override var nodeType: NodeType { .AttributeDecl }
 
-    public          var name:         String   { nsName.qualifiedName }
+    public override func insert(node newNode: Node, before refNode: Node?) throws -> Node { newNode }
 
-    private         let nsName:       NSName
-    internal        var entity:       EntityDecl
-    //@f:1
+    public override func addChildNodeListener(listener: ChildNodeListener) {}
 
-    public init(ownerDocument: Document, qualifiedName: String, namespaceURI: String?, entity: EntityDecl) throws {
-        nsName = try NSName(qualifiedName: qualifiedName, namespaceURI: namespaceURI)
-        self.entity = entity
-        super.init(ownerDocument: ownerDocument)
-    }
+    public override func removeChildNodeListener(listener: ChildNodeListener) {}
 }

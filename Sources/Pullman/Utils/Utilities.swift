@@ -18,15 +18,3 @@
 import Foundation
 import CoreFoundation
 import Rubicon
-
-/*===========================================================================================================================================================================*/
-/// Compare two optional types to see if the left-hand type should be ordered before the right-hand optional type.
-/// The generic type of both must be the same and also implement the Comparable protocol.
-///
-/// - Parameters:
-///   - l: The left-hand optional.
-///   - r: The right-hand optional.
-/// - Returns: true if the left-hand optional is nil and the right-hand optional is not nil or if both optionals
-///            are not nil and the left-hand should be ordered before the right-hand.
-///
-@inlinable func < <T>(l: T?, r: T?) -> Bool where T: Comparable { ((r != nil) && ((l == nil) || (l! < r!))) }

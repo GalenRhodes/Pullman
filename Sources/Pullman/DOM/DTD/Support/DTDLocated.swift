@@ -22,11 +22,11 @@ import Rubicon
 public class DTDLocated: DTDType {
     public enum Location: String { case PUBLIC, SYSTEM }
 
-    public let location: Location
-    public let publicID: String
-    public let systemID: String
+    public let location: Location?
+    public let publicID: String?
+    public let systemID: String?
 
-    public init(ownerDocument: Document, qualifiedName: String, namespaceURI: String?, location: Location, publicID: String, systemID: String) throws {
+    public init(ownerDocument: Document, qualifiedName: String, namespaceURI: String?, location: Location?, publicID: String?, systemID: String?) throws {
         self.location = location
         self.publicID = publicID
         self.systemID = systemID

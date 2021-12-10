@@ -25,3 +25,7 @@ public class DocumentFragment: ParentNode {
 
     override init(ownerDocument: Document) { super.init(ownerDocument: ownerDocument) }
 }
+
+extension Document {
+    public func createDocumentFragment() -> DocumentFragment { DocumentFragment(ownerDocument: self) }
+}
