@@ -332,7 +332,7 @@
 			mainGroup = 830F5E56274FC1D600A2F726;
 			packageReferences = (
 				830F5E7A274FC24E00A2F726 /* XCRemoteSwiftPackageReference "RedBlackTree" */,
-				830F5E80274FC2E800A2F726 /* XCRemoteSwiftPackageReference "Rubicon.git" */,
+				830F5E80274FC2E800A2F726 /* XCRemoteSwiftPackageReference "Rubicon" */,
 			);
 			productRefGroup = 830F5E61274FC1D600A2F726 /* Products */;
 			projectDirPath = "";
@@ -675,12 +675,12 @@
 				minimumVersion = 2.0.5;
 			};
 		};
-		830F5E80274FC2E800A2F726 /* XCRemoteSwiftPackageReference "Rubicon.git" */ = {
+		830F5E80274FC2E800A2F726 /* XCRemoteSwiftPackageReference "Rubicon" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/GalenRhodes/Rubicon.git";
 			requirement = {
 				kind = upToNextMinorVersion;
-				minimumVersion = 0.10.1;
+				minimumVersion = 0.10.2;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
@@ -693,7 +693,7 @@
 		};
 		830F5E81274FC2E800A2F726 /* Rubicon */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 830F5E80274FC2E800A2F726 /* XCRemoteSwiftPackageReference "Rubicon.git" */;
+			package = 830F5E80274FC2E800A2F726 /* XCRemoteSwiftPackageReference "Rubicon" */;
 			productName = Rubicon;
 		};
 /* End XCSwiftPackageProductDependency section */

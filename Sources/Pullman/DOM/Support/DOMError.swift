@@ -29,4 +29,6 @@ public enum DOMError: Error {
     case InvalidNameError(description: String)
     case IllegalOperation(description: String)
     case ReadOnlyError(description: String = "Node is read-only.")
+    case ElementDeclError(description: String)
+    case AttributeDeclError(description: String)
 }

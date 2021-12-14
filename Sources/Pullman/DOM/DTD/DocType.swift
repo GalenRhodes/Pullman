@@ -22,10 +22,21 @@ import Rubicon
 public class DocType: DTDLocated {
     public override var nodeType: NodeType { .DocType }
 
-    public var elementName:    String
-    public var internalSubset: String?
+    public internal(set) var elementName:    String
+    public internal(set) var internalSubset: String?
+    public internal(set) var entityDecls:    [EntityDecl]    = []
+    public internal(set) var notationDecls:  [NotationDecl]  = []
+    public internal(set) var elementDecls:   [ElementDecl]   = []
+    public internal(set) var attributeDecls: [AttributeDecl] = []
 
-    init(ownerDocument doc: Document, elementName elem: String, qualifiedName qName: String, namespaceURI uri: String?, location loc: Location?, publicID pid: String?, systemID sid: String?, internalSubset sub: String?) throws {
+    internal init(ownerDocument doc: Document,
+                  elementName elem: String,
+                  qualifiedName qName: String,
+                  namespaceURI uri: String?,
+                  location loc: Location?,
+                  publicID pid: String?,
+                  systemID sid: String?,
+                  internalSubset sub: String?) throws {
         elementName = elem
         internalSubset = sub
         try super.init(ownerDocument: doc, qualifiedName: qName, namespaceURI: uri, location: loc, publicID: pid, systemID: sid)

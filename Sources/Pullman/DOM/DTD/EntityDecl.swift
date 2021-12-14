@@ -20,9 +20,23 @@ import CoreFoundation
 import Rubicon
 
 public class EntityDecl: DTDLocated {
-    public override var nodeType: NodeType { .Entity }
+    public override var      nodeType:      NodeType { .Entity }
+    public internal(set) var notation:      NotationDecl? = nil
+    public internal(set) var inputEncoding: String        = "UTF-8"
+    public internal(set) var xmlEncoding:   String        = "UTF-8"
+    public internal(set) var xmlVersion:    String        = "1.0"
 
-    init(ownerDocument doc: Document, qualifiedName qName: String, namespaceURI uri: String?, textContent s: String?, location loc: Location?, publicID pid: String?, systemID sid: String?) throws {
+    internal init(ownerDocument doc: Document,
+                  qualifiedName qName: String,
+                  namespaceURI uri: String?,
+                  textContent s: String?,
+                  location loc: Location?,
+                  publicID pid: String?,
+                  systemID sid: String?,
+                  notation: NotationDecl? = nil,
+                  inputEncoding iEnc: String = "UTF-8",
+                  xmlEncoding xEnc: String = "UTF-8",
+                  xmlVersion xVer: String = "1.0") throws {
         try super.init(ownerDocument: doc, qualifiedName: qName, namespaceURI: uri, location: loc, publicID: pid, systemID: sid)
         if let content = s { try appendNode(doc.createTextNode(content: content)) }
     }
